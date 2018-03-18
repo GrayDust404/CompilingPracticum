@@ -1,23 +1,25 @@
 %{
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
-#include <string>
+#include<stdio.h>
+#include<stdlib.h>
+#include<iostream>
+#include"parser.h"
 
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 
 void yyerror(const char* s);
+std::vector<ParseTreeNode> parseTree;
+int parseTreeRoot;
 %}
 
 %union{
-	char* sval;
+	int ival;
 }
 
-%token<sval> ID
-%token EOL
+%token<ival> ID
+%type<ival> idlist
 
 
 
@@ -26,8 +28,11 @@ void yyerror(const char* s);
 %%
 
 idlist: 
-	   | idlist ID EOL { std::cout << std::string($2);}
-	   | idlist EOL
+	   | idlist ID {
+				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{$1,$2}));
+				   $$ = parseTree.size() - 1;
+				   parseTreeRoot = parseTree.size() - 1; //仅最上层规则需要 
+				   }
 ;
 
 %%
@@ -35,7 +40,6 @@ idlist:
 int main(int argc, char* argv[]) 
 {
 	yyin = stdin;
-
 	do { 
 		yyparse();
 	} while(!feof(yyin));

@@ -33,6 +33,9 @@
     <ClCompile Include="parser.tab.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ast.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Flex Include="lexer.l">
@@ -52,6 +55,9 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="semantic.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ast.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>
