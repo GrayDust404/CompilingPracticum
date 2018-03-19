@@ -63,7 +63,7 @@
 
 /* Copy the first part of user declarations.  */
 /* Line 371 of yacc.c  */
-#line 1 "parser.y"
+#line 2 "parser.y"
 
 
 #include<stdio.h>
@@ -116,7 +116,7 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     ID = 258
+     id = 258
    };
 #endif
 
@@ -125,7 +125,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 17 "parser.y"
+#line 18 "parser.y"
 
 	int ival;
 
@@ -445,7 +445,7 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    30,    30,    31
+       0,    31,    31,    32
 };
 #endif
 
@@ -454,7 +454,7 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "ID", "$accept", "idlist", YY_NULL
+  "$end", "error", "$undefined", "id", "$accept", "idlist", YY_NULL
 };
 #endif
 
@@ -1333,16 +1333,17 @@ yyreduce:
     {
         case 3:
 /* Line 1792 of yacc.c  */
-#line 31 "parser.y"
+#line 32 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   yylval.ival = parseTree.size() - 1;
+				   (yyval.ival) = parseTree.size() - 1;
+				   parseTreeRoot = parseTree.size() - 1; //仅最上层规则需要 
 				   }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1346 "parser.tab.cpp"
+#line 1347 "parser.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1574,15 +1575,13 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 37 "parser.y"
+#line 39 "parser.y"
 
 
 int main(int argc, char* argv[]) 
 {
-	yyin = stdin;
-	do { 
+	yyin = fopen("test.txt","r");
 		yyparse();
-	} while(!feof(yyin));
 
 	return 0;
 }

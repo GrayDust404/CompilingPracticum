@@ -1,3 +1,4 @@
+
 %{
 
 #include<stdio.h>
@@ -39,10 +40,8 @@ idlist:
 
 int main(int argc, char* argv[]) 
 {
-	yyin = stdin;
-	do { 
-		yyparse();
-	} while(!feof(yyin));
+	yyin = fopen("test.txt","r");
+	yyparse();
 
 	return 0;
 }

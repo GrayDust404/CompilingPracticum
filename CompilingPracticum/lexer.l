@@ -1,7 +1,9 @@
 %option noyywrap
+%option yylineno
 
 %{
 #include<stdio.h>
+#include<iostream>
 #include"parser.h"
 
 #define YY_DECL int yylex()
@@ -13,9 +15,10 @@ extern std::vector<ParseTreeNode> parseTree;
 %%
 
 [a-zA-Z][0-9a-zA-Z]* 	{
-						parseTree.push_back(ParseTreeNode(std::string("ID"),std::string(yytext)));
+						parseTree.push_back(ParseTreeNode(std::string("id"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
-						return ID;
+						return id;
 						}
+\n						{}
 
 %%
