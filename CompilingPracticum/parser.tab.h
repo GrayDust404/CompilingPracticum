@@ -46,7 +46,7 @@ extern int yydebug;
    /* Put the tokens into the symbol table, so that GDB and other debuggers
       know about them.  */
    enum yytokentype {
-     ID = 258
+     id = 258
    };
 #endif
 
@@ -55,7 +55,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 17 "parser.y"
+#line 18 "parser.y"
 
 	int ival;
 

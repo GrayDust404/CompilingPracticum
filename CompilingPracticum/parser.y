@@ -1,3 +1,4 @@
+
 %{
 
 #include<stdio.h>
@@ -18,7 +19,7 @@ int parseTreeRoot;
 	int ival;
 }
 
-%token<ival> ID
+%token<ival> id
 %type<ival> idlist
 
 
@@ -28,7 +29,7 @@ int parseTreeRoot;
 %%
 
 idlist: 
-	   | idlist ID {
+	   | idlist id {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{$1,$2}));
 				   $$ = parseTree.size() - 1;
 				   parseTreeRoot = parseTree.size() - 1; //仅最上层规则需要 
@@ -39,10 +40,8 @@ idlist:
 
 int main(int argc, char* argv[]) 
 {
-	yyin = stdin;
-	do { 
-		yyparse();
-	} while(!feof(yyin));
+	yyin = fopen("test.txt","r");
+	yyparse();
 
 	return 0;
 }
