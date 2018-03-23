@@ -31,8 +31,13 @@ int parseTreeRoot;
 idlist: 
 	   | idlist id {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{$1,$2}));
+				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
-				   parseTreeRoot = parseTree.size() - 1; //仅最上层规则需要 
+				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
+				   parseTree[$2].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
 				   }
 ;
 
