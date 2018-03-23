@@ -1336,14 +1336,19 @@ yyreduce:
 #line 32 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
-				   parseTreeRoot = parseTree.size() - 1; //仅最上层规则需要 
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
 				   }
     break;
 
 
 /* Line 1792 of yacc.c  */
-#line 1347 "parser.tab.cpp"
+#line 1352 "parser.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1575,13 +1580,13 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 39 "parser.y"
+#line 44 "parser.y"
 
 
 int main(int argc, char* argv[]) 
 {
 	yyin = fopen("test.txt","r");
-		yyparse();
+	yyparse();
 
 	return 0;
 }
