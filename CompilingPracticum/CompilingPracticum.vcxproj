@@ -124,6 +124,7 @@
     <ClCompile Include="parser.tab.cpp" />
     <ClCompile Include="symbol_table.cpp" />
     <ClCompile Include="ast.cpp" />
+    <ClCompile Include="transform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Flex Include="lexer.l">

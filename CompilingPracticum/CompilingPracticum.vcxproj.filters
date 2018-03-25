@@ -36,6 +36,9 @@
     <ClCompile Include="symbol_table.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="transform.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Flex Include="lexer.l">

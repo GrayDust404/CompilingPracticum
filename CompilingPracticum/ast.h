@@ -5,7 +5,11 @@
 
 class TypeStruct {
 public:
-	TypeStruct(std::string _simpleType,std::vector<std::pair<int,int>> _peroid = std::vector<std::pair<int, int>>()):simpleType(_simpleType),period(_peroid){}
+	
+	TypeStruct(std::string _simpleType, std::vector<std::pair<int,int>> _peroid):
+		simpleType(_simpleType),period(_peroid){}
+	TypeStruct(std::string _simpleType, bool _isRef = false):
+		simpleType(_simpleType), isRef(_isRef),period(std::vector<std::pair<int, int>>()) {}
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
@@ -28,6 +32,7 @@ protected:
 class VarNode : public ASTNode
 {
 public:
+
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
