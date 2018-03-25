@@ -122,7 +122,7 @@
     <ClCompile Include="lexer.flex.cpp" />
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="parser.tab.cpp" />
-    <ClCompile Include="semantic.cpp" />
+    <ClCompile Include="symbol_table.cpp" />
     <ClCompile Include="ast.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -141,7 +141,7 @@
     <ClInclude Include="ast.h" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="parser.tab.h" />
-    <ClInclude Include="semantic.h" />
+    <ClInclude Include="symbol_table.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

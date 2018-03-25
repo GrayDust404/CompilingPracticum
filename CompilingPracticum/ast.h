@@ -5,10 +5,11 @@
 
 class TypeStruct {
 public:
-	TypeStruct(std::string t){}
+	TypeStruct(std::string _simpleType,std::vector<std::pair<int,int>> _peroid = std::vector<std::pair<int, int>>()):simpleType(_simpleType),period(_peroid){}
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
+	bool isRef;
 };
 
 class ASTNode 
@@ -172,6 +173,7 @@ public:
 private:
 	std::string id;
 	std::string simpleType;
+	int parameterNum;
 };
 
 class ParameterNode : public ASTNode
