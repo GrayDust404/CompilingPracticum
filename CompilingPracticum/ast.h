@@ -5,7 +5,12 @@
 
 class TypeStruct {
 public:
-	TypeStruct(std::string _simpleType,std::vector<std::pair<int,int>> _peroid = std::vector<std::pair<int, int>>()):simpleType(_simpleType),period(_peroid){}
+	TypeStruct() = default;
+	TypeStruct(std::string _simpleType, bool _isRef = false) :simpleType(_simpleType), isRef(_isRef), period(std::vector<std::pair<int, int>>()) {}
+	TypeStruct(std::string _simpleType, std::vector<std::pair<int, int>> _peroid) :simpleType(_simpleType), isRef(false), period(_peroid) {}
+	std::string getSimpleType() { return simpleType; }
+	std::vector<std::pair<int, int>> getPeroid() { return period; }
+	bool checkRef() { return isRef; }
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
@@ -19,8 +24,8 @@ public:
 	virtual std::string codeGenerator() = 0;
 	virtual bool scopeCheck() = 0;
 	virtual bool typeCheck() = 0;
-	virtual std::string getID() = 0;
-	virtual TypeStruct getType() = 0;
+	virtual std::string getID() { return std::string(); }
+	virtual TypeStruct getType() { return TypeStruct(); }
 protected:
 	std::vector<ASTNode&> child;
 };
