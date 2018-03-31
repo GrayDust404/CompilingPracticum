@@ -2,6 +2,7 @@
 #include<string>
 #include<vector>
 #include<utility>
+#include<memory>
 
 class TypeStruct {
 public:
@@ -20,14 +21,15 @@ private:
 class ASTNode 
 {
 public:
-	ASTNode():child(std::vector<ASTNode&>()){}
+	ASTNode() :children(std::vector<std::shared_ptr<ASTNode>>()) {}
+	ASTNode(std::vector<std::shared_ptr<ASTNode>> _children):children(_children){}
 	virtual std::string codeGenerator() = 0;
 	virtual bool scopeCheck() = 0;
 	virtual bool typeCheck() = 0;
 	virtual std::string getID() { return std::string(); }
 	virtual TypeStruct getType() { return TypeStruct(); }
 protected:
-	std::vector<ASTNode&> child;
+	std::vector<std::shared_ptr<ASTNode>> children;
 };
 
 class VarNode : public ASTNode
