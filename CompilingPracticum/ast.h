@@ -49,7 +49,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
 	TypeStruct getType() override;
 private:
 	std::string value;
@@ -75,7 +74,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
 	TypeStruct getType() override;
 private:
 	std::string operation;
@@ -87,8 +85,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -99,8 +95,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -111,8 +105,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -123,8 +115,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -135,8 +125,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -147,8 +135,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 	std::vector<std::string> idlist;
 	TypeStruct type;
@@ -160,8 +146,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 	std::string id;
 	std::string value;
@@ -173,8 +157,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 	std::string id;
 	std::string simpleType;
