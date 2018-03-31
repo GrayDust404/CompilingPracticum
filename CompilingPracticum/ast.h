@@ -5,11 +5,12 @@
 
 class TypeStruct {
 public:
-	
-	TypeStruct(std::string _simpleType, std::vector<std::pair<int,int>> _peroid):
-		simpleType(_simpleType),period(_peroid){}
-	TypeStruct(std::string _simpleType, bool _isRef = false):
-		simpleType(_simpleType), isRef(_isRef),period(std::vector<std::pair<int, int>>()) {}
+	TypeStruct() = default;
+	TypeStruct(std::string _simpleType, bool _isRef = false) :simpleType(_simpleType), isRef(_isRef), period(std::vector<std::pair<int, int>>()) {}
+	TypeStruct(std::string _simpleType, std::vector<std::pair<int, int>> _peroid) :simpleType(_simpleType), isRef(false), period(_peroid) {}
+	std::string getSimpleType() { return simpleType; }
+	std::vector<std::pair<int, int>> getPeroid() { return period; }
+	bool checkRef() { return isRef; }
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
@@ -23,8 +24,8 @@ public:
 	virtual std::string codeGenerator() = 0;
 	virtual bool scopeCheck() = 0;
 	virtual bool typeCheck() = 0;
-	virtual std::string getID() = 0;
-	virtual TypeStruct getType() = 0;
+	virtual std::string getID() { return std::string(); }
+	virtual TypeStruct getType() { return TypeStruct(); }
 protected:
 	std::vector<ASTNode&> child;
 };
@@ -32,7 +33,6 @@ protected:
 class VarNode : public ASTNode
 {
 public:
-
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -49,7 +49,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
 	TypeStruct getType() override;
 private:
 	std::string value;
@@ -75,7 +74,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
 	TypeStruct getType() override;
 private:
 	std::string operation;
@@ -87,8 +85,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -99,8 +95,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -111,8 +105,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -123,8 +115,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -135,8 +125,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 
 };
@@ -147,8 +135,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 	std::vector<std::string> idlist;
 	TypeStruct type;
@@ -160,8 +146,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 	std::string id;
 	std::string value;
@@ -173,8 +157,6 @@ public:
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
-	TypeStruct getType() override;
 private:
 	std::string id;
 	std::string simpleType;
