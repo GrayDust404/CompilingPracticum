@@ -135,6 +135,7 @@
   <ItemGroup>
     <Bison Include="parser.y">
       <Debug Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</Debug>
+      <Warnings Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">all</Warnings>
     </Bison>
   </ItemGroup>
   <ItemGroup>
