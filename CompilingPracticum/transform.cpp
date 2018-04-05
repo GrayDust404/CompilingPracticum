@@ -28,7 +28,7 @@ std::vector<std::shared_ptr<ASTNode>> transform(int root)
 	}
 	else if (token == std::string("program_head"))
 	{
-
+		return std::vector<std::shared_ptr<ASTNode>>();
 	}
 	else if (token == std::string("id"))
 	{
