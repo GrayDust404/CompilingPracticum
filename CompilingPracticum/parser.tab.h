@@ -47,9 +47,19 @@ extern int yydebug;
       know about them.  */
    enum yytokentype {
      id = 258,
-     program = 259,
-     leftB = 260,
-     rightB = 261
+     semicolon = 259,
+     comma = 260,
+     _const = 261,
+     _var = 262,
+     colon = 263,
+     simple_type = 264,
+     assignop = 265,
+     num = 266,
+     program = 267,
+     leftB = 268,
+     rightB = 269,
+     BEGINTOK = 270,
+     ENDTOK = 271
    };
 #endif
 
@@ -64,7 +74,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 68 "parser.tab.h"
+#line 78 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
