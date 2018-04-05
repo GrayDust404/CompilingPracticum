@@ -182,6 +182,7 @@ private:
 class ProgramNode : public ASTNode
 {
 public:
+	ProgramNode(std::vector<std::shared_ptr<ASTNode>> _children):ASTNode(_children){}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;

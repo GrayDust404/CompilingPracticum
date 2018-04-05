@@ -22,7 +22,9 @@ std::vector<std::shared_ptr<ASTNode>> transform(int root)
 				}
 			}
 		}
-
+		std::vector<std::shared_ptr<ASTNode>> result;
+		result.push_back(std::shared_ptr<ASTNode>(new ProgramNode(ASTChildren)));
+		return result;
 	}
 	else if (token == std::string("program_head"))
 	{
@@ -30,7 +32,7 @@ std::vector<std::shared_ptr<ASTNode>> transform(int root)
 	}
 	else if (token == std::string("id"))
 	{
-
+		
 	}
 	else if (token == std::string("idlist"))
 	{
