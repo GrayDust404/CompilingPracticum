@@ -15,7 +15,7 @@ public:
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
-	bool isRef;
+	bool isRef; //符号表中记录是否引用
 };
 
 class ASTNode 
@@ -23,6 +23,7 @@ class ASTNode
 public:
 	ASTNode() :children(std::vector<std::shared_ptr<ASTNode>>()) {}
 	ASTNode(std::vector<std::shared_ptr<ASTNode>> _children):children(_children){}
+	void addChildren(std::vector<std::shared_ptr<ASTNode>> newChildren);
 	virtual std::string codeGenerator() = 0;
 	virtual bool scopeCheck() = 0;
 	virtual bool typeCheck() = 0;
@@ -108,7 +109,7 @@ public:
 	bool scopeCheck() override;
 	bool typeCheck() override;
 private:
-
+	std::string iterator;
 };
 
 class WhileNode : public ASTNode
@@ -124,6 +125,7 @@ private:
 class CompoundNode : public ASTNode
 {
 public:
+	CompoundNode(std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -134,6 +136,7 @@ private:
 class VarDeclarationNode : public ASTNode
 {
 public:
+	VarDeclarationNode(std::vector<std::string> _idlist, TypeStruct _type) :idlist(_idlist), type(_type) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -145,6 +148,7 @@ private:
 class ConstDeclarationNode : public ASTNode
 {
 public:
+	ConstDeclarationNode(std::string _id,std::string _value):id(_id),value(_value){}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -156,6 +160,18 @@ private:
 class FunctionDeclarationNode : public ASTNode
 {
 public:
+	FunctionDeclarationNode(std::string _id, std::string _simpleType, std::vector<std::shared_ptr<ParameterNode>> _parameter)
+	{
+		id = _id;
+		simpleType = _simpleType;
+		int num = 0;
+		for (auto i : _parameter)
+		{
+			num += i->getIdNum();
+			children.push_back(i);
+		}
+		parameterNum = num;
+	}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -168,15 +184,17 @@ private:
 class ParameterNode : public ASTNode
 {
 public:
+	ParameterNode(std::vector<std::string> _idlist, std::string _simpleType) :idlist(_idlist), simpleType(_simpleType), isVar(false) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
-	std::string getID() override;
 	TypeStruct getType() override;
+	int getIdNum() { return idlist.size(); }
+	void setIsVar() { isVar = true; }
 private:
-	bool isVar;
-	std::string simpleType;
 	std::vector<std::string> idlist;
+	std::string simpleType;
+	bool isVar;
 };
 
 class ProgramNode : public ASTNode

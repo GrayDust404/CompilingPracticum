@@ -4,8 +4,8 @@
 class ParseTreeNode 
 {
 public:
-	ParseTreeNode(std::string t, std::string v, std::vector<int> c) :lineNum(0),token(t), value(v), childen(c),parent(-1) {}
-	ParseTreeNode(std::string t, std::string v, int l) :lineNum(l), token(t), value(v), childen(std::vector<int>()),parent(-1) {}
+	ParseTreeNode(std::string t, std::string v, std::vector<int> c) :lineNum(0),token(t), value(v), children(c),parent(-1) {}
+	ParseTreeNode(std::string t, std::string v, int l) :lineNum(l), token(t), value(v), children(std::vector<int>()),parent(-1) {}
 	void setParent(int p);
 	int getLineNum() { return lineNum; }
 	std::string getToken() { return token; }

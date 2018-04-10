@@ -28,7 +28,7 @@ class SymbolTable {
 public:
 	SymbolTable() = default;
 	void insert(Symbol item);
-	void lookUp(std::string id);
+	Symbol lookUp(std::string id);
 	void initializationScope();
 	void finalizeScope();
 private:
