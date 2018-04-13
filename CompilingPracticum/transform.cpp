@@ -1,3 +1,4 @@
+#include<iostream>
 #include"parser.h"
 #include"ast.h"
 #include"transform.h"
@@ -652,4 +653,10 @@ std::shared_ptr<ASTNode> transformProgramStruct(int root)
 		}
 	}
 	return std::shared_ptr<ASTNode>(new ProgramNode(ASTChildren));
+}
+
+void test()
+{
+	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
+	return;
 }

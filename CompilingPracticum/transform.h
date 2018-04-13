@@ -31,3 +31,4 @@ std::vector<std::shared_ptr<ASTNode>> transformConstDeclaration(int root);
 std::vector<std::shared_ptr<ASTNode>> transformConstDeclarationS(int root);
 std::vector<std::shared_ptr<ASTNode>> transformProgramBody(int root);
 std::shared_ptr<ASTNode> transformProgramStruct(int root);
+void test();

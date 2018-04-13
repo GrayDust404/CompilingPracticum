@@ -1,4 +1,32 @@
-adf684as
-dyf6584
-asd
-fds
+program example(input);
+var x,y:integer;
+function gcd(a,b:integer):integer;
+begin
+if b=0 then gcd:=a
+else gcd:=gcd(b, a mod b)
+end;
+begin
+read(x, y);
+write(gcd(x, y));
+for I := 1 to 10 do
+begin
+	x := x+1;
+end;
+begin
+   if n=1 then
+      fibonacci := 0
+   
+   else if n=2 then
+      fibonacci := 1
+   
+   else
+      fibonacci := fibonacci(n-1) + fibonacci(n-2);
+end; 
+   if x < y then
+      m := x
+   else
+      m := y;
+   
+   if z <m then
+      m := z;
+end.

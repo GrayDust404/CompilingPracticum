@@ -5,6 +5,7 @@
 #include<stdlib.h>
 #include<iostream>
 #include"parser.h"
+#include"transform.h"
 
 extern int yylex();
 extern int yyparse();
@@ -848,7 +849,7 @@ int main(int argc, char* argv[])
 {
 	yyin = fopen("test.txt","r");
 	yyparse();
-
+	test();
 	return 0;
 }
 
