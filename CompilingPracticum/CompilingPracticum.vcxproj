@@ -144,6 +144,7 @@
     <ClInclude Include="parser.h" />
     <ClInclude Include="parser.tab.h" />
     <ClInclude Include="symbol_table.h" />
+    <ClInclude Include="transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

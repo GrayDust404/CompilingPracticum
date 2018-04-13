@@ -63,5 +63,8 @@
     <ClInclude Include="symbol_table.h">
       <Filter>源文件</Filter>
     </ClInclude>
+    <ClInclude Include="transform.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

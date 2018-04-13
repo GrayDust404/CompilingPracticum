@@ -1,8 +1,195 @@
 #include"parser.h"
 #include"ast.h"
-
+#include"transform.h"
 extern std::vector<ParseTreeNode> parseTree;
 extern int parseTreeRoot;
+
+std::shared_ptr<ASTNode> transformFactor(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("num")|| token == std::string("digits"))
+		{
+			return std::shared_ptr<ASTNode>(new ConstNode(parseTree[children[i]].getValue()));
+		}
+		else if (token == std::string("variable"))
+		{
+			return transformVariable(children[i]);
+		}
+		else if (token == std::string("id"))
+		{
+			std::string id = parseTree[children[i]].getValue();
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren = transformExpressionList(children[i + 2]);
+			return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren));
+		}
+		else if (token == std::string("leftB"))
+		{
+			return transformExpression(children[i + 1]);
+		}
+		else if (token == std::string("not") || token == std::string("sub"))
+		{
+			std::string operation = parseTree[children[i]].getValue();
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			ASTChildren.push_back(transformFactor(children[i + 1]));
+			return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+		}
+	}
+	return std::shared_ptr<ASTNode>();
+}
+
+std::shared_ptr<ASTNode> transformTerm(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+	std::string operation;
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("factor"))
+		{
+			if (i == 2)
+			{
+				ASTChildren.push_back(transformTerm(children[i - 2]));
+				ASTChildren.push_back(transformFactor(children[i]));
+				operation = parseTree[children[i - 1]].getValue();
+				return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+			}
+			else if (i == 0)
+				return transformFactor(children[i]);
+		}
+	}
+	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+}
+
+std::shared_ptr<ASTNode> transformSimpleExpression(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+	std::string operation;
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("term"))
+		{
+			if (i == 2)
+			{
+				ASTChildren.push_back(transformSimpleExpression(children[i - 2]));
+				ASTChildren.push_back(transformTerm(children[i]));
+				operation = parseTree[children[i - 1]].getValue();
+				return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+			}
+			else if (i == 0)
+				return transformTerm(children[i]);
+		}
+	}
+	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+}
+
+std::shared_ptr<ASTNode> transformExpression(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+	std::string operation;
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("simple_expression"))
+		{
+			ASTChildren.push_back(transformExpression(children[i]));
+		}
+		else
+		{
+			operation = parseTree[children[i]].getValue();
+		}
+	}
+	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+}
+
+std::vector<std::shared_ptr<ASTNode>> transformExpressionList(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	std::vector<std::shared_ptr<ASTNode>> result;
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("expression_list"))
+		{
+			result = transformExpressionList(children[i]);
+		}
+		else if (token == std::string("expression"))
+		{
+			result.push_back(transformExpression(children[i]));
+			return result;
+		}
+	}
+	return result;
+}
+
+std::shared_ptr<ASTNode> transformVarPart(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("expression_list"))
+		{
+			return std::shared_ptr<ASTNode>(new VarpartNode(transformExpressionList(children[i])));
+		}
+	}
+	return std::shared_ptr<ASTNode>();
+}
+
+std::shared_ptr<ASTNode> transformVariable(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("id"))
+		{
+			std::vector<std::shared_ptr<ASTNode>> temp;
+			temp.push_back(transformVarPart(children[i + 1]));
+			return std::shared_ptr<ASTNode>(new VarNode(parseTree[children[i]].getValue(),temp));
+		}
+	}
+	return std::shared_ptr<ASTNode>();
+}
+
+std::shared_ptr<ASTNode> transformFunctionCall(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	std::string id;
+	std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("id"))
+		{
+			id = parseTree[children[i]].getValue();
+		}
+		else if (token == std::string("expression_list"))
+		{
+			ASTChildren = transformExpressionList(children[i]);
+		}
+	}
+	return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren));
+}
+
+std::shared_ptr<ASTNode> transformElsePart(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	for (int i = 0; i < children.size(); i++)
+	{
+		std::string token = parseTree[children[i]].getToken();
+		if (token == std::string("statement"))
+		{
+			return transformStatement(children[i]);
+		}
+	}
+	return std::shared_ptr<ASTNode>();
+}
 
 std::shared_ptr<ASTNode> transformStatement(int root)
 {
@@ -12,27 +199,53 @@ std::shared_ptr<ASTNode> transformStatement(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("variable"))
 		{
-			
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			ASTChildren.push_back(transformVariable(children[i]));
+			ASTChildren.push_back(transformExpression(children[i+2]));
+			return std::shared_ptr<ASTNode>(new AssignmentNode(ASTChildren));
 		}
 		else if (token == std::string("procedure_call"))
 		{
-
+			return transformFunctionCall(children[i]);
 		}
 		else if (token == std::string("compound_statement"))
 		{
-
+			return transformCompound(children[i]);
 		}
 		else if (token == std::string("if"))
 		{
-
+			std::shared_ptr<ASTNode> condition = transformExpression(children[i + 1]);
+			std::shared_ptr<ASTNode> thenPart = transformStatement(children[i + 3]);
+			std::shared_ptr<ASTNode> elsePart = transformElsePart(children[i + 4]);
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			ASTChildren.push_back(condition);
+			if (thenPart)
+				ASTChildren.push_back(thenPart);
+			if (elsePart) 
+				ASTChildren.push_back(elsePart);
+			return std::shared_ptr<ASTNode>(new IfNode(ASTChildren));
 		}
 		else if (token == std::string("for"))
 		{
-
+			std::string iterator = parseTree[children[i + 1]].getValue();
+			std::shared_ptr<ASTNode> low = transformExpression(children[i + 3]);
+			std::shared_ptr<ASTNode> heigh = transformExpression(children[i + 5]);
+			std::shared_ptr<ASTNode> forBody = transformStatement(children[i + 7]);
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			ASTChildren.push_back(low);
+			ASTChildren.push_back(heigh);
+			if (forBody)
+				ASTChildren.push_back(forBody);
+			return std::shared_ptr<ASTNode>(new ForNode(iterator, ASTChildren));
 		}
 		else if (token == std::string("while"))
 		{
-
+			std::shared_ptr<ASTNode> condition = transformExpression(children[i + 1]);
+			std::shared_ptr<ASTNode> whileBody = transformStatement(children[i + 3]);
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			if (whileBody)
+				ASTChildren.push_back(whileBody);
+			return std::shared_ptr<ASTNode>(new WhileNode(ASTChildren));
 		}
 	}
 	return std::shared_ptr<ASTNode>();
@@ -148,20 +361,20 @@ std::shared_ptr<ParameterNode> transformParameter(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("var_parameter"))
 		{
-			return std::shared_ptr<ASTNode>(new ParameterNode(transformVarParameter(children[i])));
+			return std::shared_ptr<ParameterNode>(new ParameterNode(transformVarParameter(children[i])));
 		}
 		else if (token == std::string("value_parameter"))
 		{
-			return std::shared_ptr<ASTNode>(new ParameterNode(transformValueParameter(children[i])));
+			return std::shared_ptr<ParameterNode>(new ParameterNode(transformValueParameter(children[i])));
 		}
 	}
-	return std::shared_ptr<ASTNode>();
+	return std::shared_ptr<ParameterNode>();
 }
 
 std::vector<std::shared_ptr<ParameterNode>> transformParameterList(int root)
 {
 	std::vector<int> children = parseTree[root].getChildren();
-	std::vector<std::shared_ptr<ASTNode>> parameterList;
+	std::vector<std::shared_ptr<ParameterNode>> parameterList;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();
@@ -180,7 +393,7 @@ std::vector<std::shared_ptr<ParameterNode>> transformParameterList(int root)
 std::vector<std::shared_ptr<ParameterNode>> transformFormalParameter(int root)
 {
 	std::vector<int> children = parseTree[root].getChildren();
-	std::vector<std::shared_ptr<ASTNode>> parameterList;
+	std::vector<std::shared_ptr<ParameterNode>> parameterList;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();

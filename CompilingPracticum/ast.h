@@ -36,6 +36,7 @@ protected:
 class VarNode : public ASTNode
 {
 public:
+	VarNode(std::string _id, std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children) { id = _id; }
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -43,12 +44,25 @@ public:
 	TypeStruct getType() override;
 private:
 	std::string id;
-	std::vector<int> subscript;
+};
+
+class VarpartNode : public ASTNode
+{
+public:
+	VarpartNode(std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children) {}
+	std::string codeGenerator() override;
+	bool scopeCheck() override;
+	bool typeCheck() override;
+	std::string getID() override;
+	TypeStruct getType() override;
+private:
+
 };
 
 class ConstNode : public ASTNode
 {
 public:
+	ConstNode(std::string _value) :value(_value) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -61,6 +75,10 @@ private:
 class FunctionCallNode : public ASTNode
 {
 public:
+	FunctionCallNode(std::string _id, std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children)
+	{
+		id = _id;
+	}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -74,6 +92,10 @@ private:
 class ExpressionNode : public ASTNode
 {
 public:
+	ExpressionNode(std::string _operation, std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children)
+	{
+		operation = _operation;
+	}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -85,6 +107,7 @@ private:
 class AssignmentNode : public ASTNode
 {
 public:
+	AssignmentNode(std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -95,6 +118,7 @@ private:
 class IfNode : public ASTNode
 {
 public:
+	IfNode(std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -105,6 +129,10 @@ private:
 class ForNode : public ASTNode
 {
 public:
+	ForNode(std::string _iterator, std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children)
+	{
+		iterator = _iterator;
+	}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -115,6 +143,7 @@ private:
 class WhileNode : public ASTNode
 {
 public:
+	WhileNode(std::vector<std::shared_ptr<ASTNode>> _children) :ASTNode(_children) {}
 	std::string codeGenerator() override;
 	bool scopeCheck() override;
 	bool typeCheck() override;
@@ -157,6 +186,22 @@ private:
 	std::string value;
 };
 
+class ParameterNode : public ASTNode
+{
+public:
+	ParameterNode(std::vector<std::string> _idlist, std::string _simpleType) :idlist(_idlist), simpleType(_simpleType), isVar(false) {}
+	std::string codeGenerator() override;
+	bool scopeCheck() override;
+	bool typeCheck() override;
+	TypeStruct getType() override;
+	int getIdNum() { return idlist.size(); }
+	void setIsVar() { isVar = true; }
+private:
+	std::vector<std::string> idlist;
+	std::string simpleType;
+	bool isVar;
+};
+
 class FunctionDeclarationNode : public ASTNode
 {
 public:
@@ -179,22 +224,6 @@ private:
 	std::string id;
 	std::string simpleType;
 	int parameterNum;
-};
-
-class ParameterNode : public ASTNode
-{
-public:
-	ParameterNode(std::vector<std::string> _idlist, std::string _simpleType) :idlist(_idlist), simpleType(_simpleType), isVar(false) {}
-	std::string codeGenerator() override;
-	bool scopeCheck() override;
-	bool typeCheck() override;
-	TypeStruct getType() override;
-	int getIdNum() { return idlist.size(); }
-	void setIsVar() { isVar = true; }
-private:
-	std::vector<std::string> idlist;
-	std::string simpleType;
-	bool isVar;
 };
 
 class ProgramNode : public ASTNode
