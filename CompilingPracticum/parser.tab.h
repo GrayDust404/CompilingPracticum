@@ -54,12 +54,44 @@ extern int yydebug;
      colon = 263,
      simple_type = 264,
      assignop = 265,
-     num = 266,
-     program = 267,
-     leftB = 268,
-     rightB = 269,
-     BEGINTOK = 270,
-     ENDTOK = 271
+     digits = 266,
+     assign = 267,
+     relop = 268,
+     plus = 269,
+     minus = 270,
+     letter = 271,
+     procedure = 272,
+     function = 273,
+     num = 274,
+     _array = 275,
+     multiply = 276,
+     divide = 277,
+     _div = 278,
+     _mod = 279,
+     _and = 280,
+     _not = 281,
+     _if = 282,
+     _then = 283,
+     _for = 284,
+     _else = 285,
+     _to = 286,
+     _do = 287,
+     _or = 288,
+     _of = 289,
+     _range = 290,
+     _while = 291,
+     noequal = 292,
+     GE = 293,
+     GT = 294,
+     LE = 295,
+     LT = 296,
+     program = 297,
+     leftB = 298,
+     rightB = 299,
+     BEGINTOK = 300,
+     ENDTOK = 301,
+     leftSB = 302,
+     rightSB = 303
    };
 #endif
 
@@ -74,7 +106,7 @@ typedef union YYSTYPE
 
 
 /* Line 2058 of yacc.c  */
-#line 78 "parser.tab.h"
+#line 110 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
