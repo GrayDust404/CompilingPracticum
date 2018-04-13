@@ -351,6 +351,7 @@ ParameterNode transformVarParameter(int root)
 			return result;
 		}
 	}
+	return ParameterNode();
 }
 
 std::shared_ptr<ParameterNode> transformParameter(int root)
