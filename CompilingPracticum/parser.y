@@ -23,8 +23,8 @@ int parseTreeRoot;
 %token<ival> id semicolon comma _const _var colon simple_type assignop digits assign relop plus minus letter procedure function num _array
 %token<ival> multiply divide _div _mod _and _not
 %token<ival> _if _then _for _else _to _do _or _of _range _while
-%token<ival> noequal GE GT LE LT 
-%token program leftB rightB BEGINTOK ENDTOK leftSB rightSB
+%token<ival> noequal GE GT LE LT leftB rightB leftSB rightSB
+%token program BEGINTOK ENDTOK 
 %type<ival> programstruct program_head program_body idlist type variable const_value
 %type<ival> const_declarations var_declarations const_declaration var_declaration subprogram_declarations subprogram
 %type<ival> subprogram_head subprogram_body formal_parameter parameter_list parameter var_parameter value_parameter
@@ -50,12 +50,14 @@ programstruct: program_head semicolon program_body{
 
 program_head: program id leftB idlist rightB	
 				   {
-				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{$2,$4}));
+				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{$2,$3,$4,$5}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[$2].setParent(parseTree.size() - 1);
+				   parseTree[$3].setParent(parseTree.size() - 1);
 				   parseTree[$4].setParent(parseTree.size() - 1);
+				   parseTree[$5].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 				   }
@@ -306,11 +308,13 @@ formal_parameter : {
 				   parseTreeRoot = parseTree.size() - 1;
 }
 |leftB parameter_list rightB{
-				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{$2}));
+				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
 				   parseTree[$2].setParent(parseTree.size() - 1);
+				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 };
@@ -519,12 +523,14 @@ procedure_call : id{
 				   parseTreeRoot = parseTree.size() - 1;
 }
 | id leftB expression_list rightB{
-				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{$1,$3}));
+				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{$1,$2,$3,$4}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[$1].setParent(parseTree.size() - 1);
+				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
+				   parseTree[$4].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 };
@@ -545,11 +551,13 @@ id_varpart: {
 				   //为子节点设置父节点指针
 }
 |leftSB expression_list rightSB{
-				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{$2}));
+				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
 				   parseTree[$2].setParent(parseTree.size() - 1);
+				   parseTree[$3].setParent(parseTree.size() - 1);
 };
 expression_list : expression_list comma expression {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{$1,$2,$3}));
@@ -771,21 +779,25 @@ factor: digits {
 				   parseTreeRoot = parseTree.size() - 1;
 }
 |id leftB expression_list rightB{
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$3}));
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$2,$3,$4}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[$1].setParent(parseTree.size() - 1);
+				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
+				   parseTree[$4].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 }
 |leftB expression rightB{
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$2}));
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
 				   parseTree[$2].setParent(parseTree.size() - 1);
+				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 }
@@ -820,12 +832,14 @@ type : simple_type{
 				   parseTreeRoot = parseTree.size() - 1;
 }
 | _array leftSB period rightSB _of simple_type{
-				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{$1,$3,$5,$6}));
+				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{$1,$2,$3,$4,$5,$6}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[$1].setParent(parseTree.size() - 1);
+				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
+				   parseTree[$4].setParent(parseTree.size() - 1);
 				   parseTree[$5].setParent(parseTree.size() - 1);
 				   parseTree[$6].setParent(parseTree.size() - 1);
 };

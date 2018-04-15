@@ -134,8 +134,16 @@ extern std::vector<ParseTreeNode> parseTree;
 						yylval.ival = parseTree.size() - 1;
 						return digits;
 						}
-"["						{return leftSB;}
-"]"						{return rightSB;}
+"["						{
+						parseTree.push_back(ParseTreeNode(std::string("left square bracket"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return leftSB;
+						}
+"]"						{
+						parseTree.push_back(ParseTreeNode(std::string("right square bracket"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;						
+						return rightSB;
+						}
 ","						{
 						parseTree.push_back(ParseTreeNode(std::string("comma"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -212,8 +220,16 @@ extern std::vector<ParseTreeNode> parseTree;
 						return divide;
 						}
 
-"("						{return leftB;}
-")"						{return rightB;}
+"("						{	
+						parseTree.push_back(ParseTreeNode(std::string("left bracket"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return leftB;
+						}
+")"						{
+						parseTree.push_back(ParseTreeNode(std::string("right bracket"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return rightB;
+						}
 \n						{}
 [ \t]					{}
 %%

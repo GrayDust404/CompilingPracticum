@@ -85,13 +85,13 @@ extern int yydebug;
      GT = 294,
      LE = 295,
      LT = 296,
-     program = 297,
-     leftB = 298,
-     rightB = 299,
-     BEGINTOK = 300,
-     ENDTOK = 301,
-     leftSB = 302,
-     rightSB = 303
+     leftB = 297,
+     rightB = 298,
+     leftSB = 299,
+     rightSB = 300,
+     program = 301,
+     BEGINTOK = 302,
+     ENDTOK = 303
    };
 #endif
 
