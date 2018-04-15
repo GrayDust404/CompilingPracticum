@@ -98,13 +98,15 @@ std::shared_ptr<ASTNode> transformExpression(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("simple_expression"))
 		{
-			ASTChildren.push_back(transformExpression(children[i]));
+			ASTChildren.push_back(transformSimpleExpression(children[i]));
 		}
 		else
 		{
 			operation = parseTree[children[i]].getValue();
 		}
 	}
+	if (ASTChildren.size() < 2)
+		return ASTChildren[0];
 	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
 }
 
@@ -150,9 +152,11 @@ std::shared_ptr<ASTNode> transformVariable(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("id"))
 		{
-			std::vector<std::shared_ptr<ASTNode>> temp;
-			temp.push_back(transformVarPart(children[i + 1]));
-			return std::shared_ptr<ASTNode>(new VarNode(parseTree[children[i]].getValue(),temp));
+			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			std::shared_ptr<ASTNode> temp = transformVarPart(children[i + 1]);
+			if(temp)
+				ASTChildren.push_back(temp);
+			return std::shared_ptr<ASTNode>(new VarNode(parseTree[children[i]].getValue(),ASTChildren));
 		}
 	}
 	return std::shared_ptr<ASTNode>();
