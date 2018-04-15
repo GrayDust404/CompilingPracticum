@@ -81,13 +81,14 @@ idlist: idlist comma id	{
 				   parseTreeRoot = parseTree.size() - 1;
 };
 program_body: const_declarations var_declarations subprogram_declarations compound_statement{
-				   parseTree.push_back(ParseTreeNode(std::string("program_body"),std::string(""),std::vector<int>{$1,$2,$3}));
+				   parseTree.push_back(ParseTreeNode(std::string("program_body"),std::string(""),std::vector<int>{$1,$2,$3,$4}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[$1].setParent(parseTree.size() - 1);
 				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
+				   parseTree[$4].setParent(parseTree.size() - 1);
 };
 
 const_declarations: {

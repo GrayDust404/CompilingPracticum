@@ -1,5 +1,17 @@
-program test();
-var a:integer;
+program ex(input,output);
+var
+x,y,z:integer;
+procedure s(x:integer; var y:integer);
+var
+z:integer
 begin
-a:=0;
-end
+x:=5; y:=6; z:=7;
+end;
+begin
+x:=1; 
+y:=2; 
+z:=x*y/(x-y)+x; 
+z:=3;
+s(x,y);
+writeln(x,y,z);
+end.
