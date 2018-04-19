@@ -80,7 +80,6 @@ public:
 	TypeStruct getType() override { return TypeStruct(); }
 private:
 	std::string value;
-	std::string simpleType;
 };
 
 class FunctionCallNode : public ASTNode
@@ -97,7 +96,6 @@ public:
 	TypeStruct getType() override { return TypeStruct(); }
 private:
 	std::string id;
-	std::string simpleType;
 };
 
 class ExpressionNode : public ASTNode

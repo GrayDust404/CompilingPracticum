@@ -8,6 +8,7 @@ class SymbolTable;
 
 class Symbol {
 public:
+	Symbol() = default;
 	Symbol(std::string _id,
 		TypeStruct _type,
 		std::string _category,
@@ -15,6 +16,7 @@ public:
 		std::vector<TypeStruct> _parameterType = std::vector<TypeStruct>()
 	) :
 		id(_id), type(_type), category(_category), isConst(_isConst), parameterType(_parameterType), childTable(std::shared_ptr<SymbolTable>()){}
+	std::string getId() { return id; }
 private:
 	std::string id;
 	TypeStruct type;
