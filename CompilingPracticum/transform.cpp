@@ -486,7 +486,7 @@ std::vector<std::pair<int, int>> transformPeriod(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("digits"))
 		{
-			result.push_back(std::pair<int, int>(std::stoi(parseTree[children[i]].getValue()), std::stoi(parseTree[children[i + 3]].getValue())));
+			result.push_back(std::pair<int, int>(std::stoi(parseTree[children[i]].getValue()), std::stoi(parseTree[children[i + 2]].getValue())));
 			return result;
 		}
 		else if (token == std::string("period"))
@@ -663,4 +663,4 @@ void test()
 {
 	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
 	return;
-}
+} 

@@ -535,11 +535,11 @@ static const yytype_uint16 yyrline[] =
      128,   139,   149,   159,   168,   178,   188,   197,   207,   215,
      226,   237,   251,   259,   270,   281,   291,   302,   310,   321,
      332,   341,   350,   359,   369,   380,   392,   401,   412,   421,
-     429,   440,   449,   458,   471,   487,   497,   505,   516,   525,
-     537,   547,   553,   562,   573,   582,   591,   602,   613,   624,
-     635,   646,   657,   668,   679,   690,   699,   710,   721,   732,
-     743,   754,   763,   772,   781,   793,   804,   814,   825,   834,
-     847,   858
+     429,   440,   449,   458,   471,   488,   498,   506,   517,   526,
+     538,   548,   554,   563,   574,   583,   592,   603,   614,   625,
+     636,   647,   658,   669,   680,   691,   700,   711,   722,   733,
+     744,   755,   764,   773,   782,   794,   805,   815,   826,   835,
+     848,   859
 };
 #endif
 
@@ -2190,6 +2190,7 @@ yyreduce:
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
+				   std::cout << (yyvsp[(7) - (8)].ival) << std::endl; 
 				   parseTree[(yyvsp[(1) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (8)].ival)].setParent(parseTree.size() - 1);
@@ -2205,7 +2206,7 @@ yyreduce:
 
   case 45:
 /* Line 1792 of yacc.c  */
-#line 487 "parser.y"
+#line 488 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -2220,7 +2221,7 @@ yyreduce:
 
   case 46:
 /* Line 1792 of yacc.c  */
-#line 497 "parser.y"
+#line 498 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2233,7 +2234,7 @@ yyreduce:
 
   case 47:
 /* Line 1792 of yacc.c  */
-#line 505 "parser.y"
+#line 506 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2248,7 +2249,7 @@ yyreduce:
 
   case 48:
 /* Line 1792 of yacc.c  */
-#line 516 "parser.y"
+#line 517 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2262,7 +2263,7 @@ yyreduce:
 
   case 49:
 /* Line 1792 of yacc.c  */
-#line 525 "parser.y"
+#line 526 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -2279,7 +2280,7 @@ yyreduce:
 
   case 50:
 /* Line 1792 of yacc.c  */
-#line 537 "parser.y"
+#line 538 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("variable"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2294,7 +2295,7 @@ yyreduce:
 
   case 51:
 /* Line 1792 of yacc.c  */
-#line 547 "parser.y"
+#line 548 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2305,7 +2306,7 @@ yyreduce:
 
   case 52:
 /* Line 1792 of yacc.c  */
-#line 553 "parser.y"
+#line 554 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2319,7 +2320,7 @@ yyreduce:
 
   case 53:
 /* Line 1792 of yacc.c  */
-#line 562 "parser.y"
+#line 563 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2335,7 +2336,7 @@ yyreduce:
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 573 "parser.y"
+#line 574 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2349,7 +2350,7 @@ yyreduce:
 
   case 55:
 /* Line 1792 of yacc.c  */
-#line 582 "parser.y"
+#line 583 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2363,7 +2364,7 @@ yyreduce:
 
   case 56:
 /* Line 1792 of yacc.c  */
-#line 591 "parser.y"
+#line 592 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2379,7 +2380,7 @@ yyreduce:
 
   case 57:
 /* Line 1792 of yacc.c  */
-#line 602 "parser.y"
+#line 603 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2395,7 +2396,7 @@ yyreduce:
 
   case 58:
 /* Line 1792 of yacc.c  */
-#line 613 "parser.y"
+#line 614 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2411,7 +2412,7 @@ yyreduce:
 
   case 59:
 /* Line 1792 of yacc.c  */
-#line 624 "parser.y"
+#line 625 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2427,7 +2428,7 @@ yyreduce:
 
   case 60:
 /* Line 1792 of yacc.c  */
-#line 635 "parser.y"
+#line 636 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2443,7 +2444,7 @@ yyreduce:
 
   case 61:
 /* Line 1792 of yacc.c  */
-#line 646 "parser.y"
+#line 647 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2459,7 +2460,7 @@ yyreduce:
 
   case 62:
 /* Line 1792 of yacc.c  */
-#line 657 "parser.y"
+#line 658 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2475,7 +2476,7 @@ yyreduce:
 
   case 63:
 /* Line 1792 of yacc.c  */
-#line 668 "parser.y"
+#line 669 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2491,7 +2492,7 @@ yyreduce:
 
   case 64:
 /* Line 1792 of yacc.c  */
-#line 679 "parser.y"
+#line 680 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2507,7 +2508,7 @@ yyreduce:
 
   case 65:
 /* Line 1792 of yacc.c  */
-#line 690 "parser.y"
+#line 691 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2521,7 +2522,7 @@ yyreduce:
 
   case 66:
 /* Line 1792 of yacc.c  */
-#line 699 "parser.y"
+#line 700 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2537,7 +2538,7 @@ yyreduce:
 
   case 67:
 /* Line 1792 of yacc.c  */
-#line 710 "parser.y"
+#line 711 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2553,7 +2554,7 @@ yyreduce:
 
   case 68:
 /* Line 1792 of yacc.c  */
-#line 721 "parser.y"
+#line 722 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2569,7 +2570,7 @@ yyreduce:
 
   case 69:
 /* Line 1792 of yacc.c  */
-#line 732 "parser.y"
+#line 733 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2585,7 +2586,7 @@ yyreduce:
 
   case 70:
 /* Line 1792 of yacc.c  */
-#line 743 "parser.y"
+#line 744 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2601,7 +2602,7 @@ yyreduce:
 
   case 71:
 /* Line 1792 of yacc.c  */
-#line 754 "parser.y"
+#line 755 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2615,7 +2616,7 @@ yyreduce:
 
   case 72:
 /* Line 1792 of yacc.c  */
-#line 763 "parser.y"
+#line 764 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2629,7 +2630,7 @@ yyreduce:
 
   case 73:
 /* Line 1792 of yacc.c  */
-#line 772 "parser.y"
+#line 773 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2643,7 +2644,7 @@ yyreduce:
 
   case 74:
 /* Line 1792 of yacc.c  */
-#line 781 "parser.y"
+#line 782 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -2660,7 +2661,7 @@ yyreduce:
 
   case 75:
 /* Line 1792 of yacc.c  */
-#line 793 "parser.y"
+#line 794 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2676,7 +2677,7 @@ yyreduce:
 
   case 76:
 /* Line 1792 of yacc.c  */
-#line 804 "parser.y"
+#line 805 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2691,7 +2692,7 @@ yyreduce:
 
   case 77:
 /* Line 1792 of yacc.c  */
-#line 814 "parser.y"
+#line 815 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2706,7 +2707,7 @@ yyreduce:
 
   case 78:
 /* Line 1792 of yacc.c  */
-#line 825 "parser.y"
+#line 826 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2720,7 +2721,7 @@ yyreduce:
 
   case 79:
 /* Line 1792 of yacc.c  */
-#line 834 "parser.y"
+#line 835 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (6)].ival),(yyvsp[(2) - (6)].ival),(yyvsp[(3) - (6)].ival),(yyvsp[(4) - (6)].ival),(yyvsp[(5) - (6)].ival),(yyvsp[(6) - (6)].ival)}));
 				   //记录指向本节点的指针
@@ -2737,7 +2738,7 @@ yyreduce:
 
   case 80:
 /* Line 1792 of yacc.c  */
-#line 847 "parser.y"
+#line 848 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
 				   //记录指向本节点的指针
@@ -2753,7 +2754,7 @@ yyreduce:
 
   case 81:
 /* Line 1792 of yacc.c  */
-#line 858 "parser.y"
+#line 859 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2767,7 +2768,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 2771 "parser.tab.cpp"
+#line 2772 "parser.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2999,7 +3000,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 869 "parser.y"
+#line 870 "parser.y"
 
 
 int main(int argc, char* argv[]) 
