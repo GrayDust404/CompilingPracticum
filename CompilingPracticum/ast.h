@@ -3,6 +3,7 @@
 #include<vector>
 #include<utility>
 #include<memory>
+#include"symbol_table.h"
 
 class TypeStruct {
 public:
@@ -31,7 +32,7 @@ public:
 		}
 	}
 	virtual std::string codeGenerator() = 0;
-	virtual bool scopeCheck() = 0;
+	virtual bool scopeCheck(std::shared_ptr<SymbolTable> parentScope);
 	virtual bool typeCheck() = 0;
 	virtual std::string getID() { return std::string(); }
 	virtual TypeStruct getType() { return TypeStruct(); }
@@ -39,6 +40,7 @@ public:
 protected:
 	std::vector<std::shared_ptr<ASTNode>> children;
 	int lineNum;
+	std::shared_ptr<SymbolTable> scope;
 };
 
 class VarNode : public ASTNode
@@ -46,7 +48,7 @@ class VarNode : public ASTNode
 public:
 	VarNode(std::string _id, std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) { id = _id; }
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 	std::string getID() override { return std::string(); }
 	TypeStruct getType() override { return TypeStruct(); }
@@ -59,7 +61,6 @@ class VarpartNode : public ASTNode
 public:
 	VarpartNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) {}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
 	bool typeCheck() override { return false; }
 	std::string getID() override { return std::string(); }
 	TypeStruct getType() override { return TypeStruct(); }
@@ -75,9 +76,8 @@ public:
 		value = _value;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
 	bool typeCheck() override { return false; }
-	TypeStruct getType() override { return TypeStruct(); }
+	TypeStruct getType() override { return TypeStruct();}
 private:
 	std::string value;
 };
@@ -90,7 +90,7 @@ public:
 		id = _id;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 	std::string getID() override { return std::string(); }
 	TypeStruct getType() override { return TypeStruct(); }
@@ -105,8 +105,7 @@ public:
 	{
 		operation = _operation;
 	}
-	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	std::string codeGenerator() override { return std::string();}
 	bool typeCheck() override { return false; }
 	TypeStruct getType() override { return TypeStruct(); }
 private:
@@ -118,7 +117,6 @@ class AssignmentNode : public ASTNode
 public:
 	AssignmentNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) {}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
 	bool typeCheck() override { return false; }
 private:
 
@@ -129,7 +127,6 @@ class IfNode : public ASTNode
 public:
 	IfNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children, _lineNum) {}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
 	bool typeCheck() override { return false; }
 private:
 
@@ -143,7 +140,7 @@ public:
 		iterator = _iterator;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 private:
 	std::string iterator;
@@ -153,8 +150,7 @@ class WhileNode : public ASTNode
 {
 public:
 	WhileNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children, _lineNum) {}
-	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	std::string codeGenerator() override { return std::string();}
 	bool typeCheck() override { return false; }
 private:
 
@@ -165,7 +161,6 @@ class CompoundNode : public ASTNode
 public:
 	CompoundNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children, _lineNum) {}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
 	bool typeCheck() override { return false; }
 private:
 
@@ -180,7 +175,7 @@ public:
 		type = _type;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 private:
 	std::vector<std::string> idlist;
@@ -196,7 +191,7 @@ public:
 		value = _value;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 private:
 	std::string id;
@@ -214,7 +209,7 @@ public:
 		isVar = false;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 	TypeStruct getType() override { return TypeStruct(); }
 	int getIdNum() { return idlist.size(); }
@@ -242,7 +237,7 @@ public:
 		lineNum = _lineNum;
 	}
 	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 private:
 	std::string id;
@@ -254,8 +249,7 @@ class ProgramNode : public ASTNode
 {
 public:
 	ProgramNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum):ASTNode(_children,_lineNum){}
-	std::string codeGenerator() override { return std::string(); }
-	bool scopeCheck() override { return false; }
+	std::string codeGenerator() override { return std::string();}
 	bool typeCheck() override { return false; }
 private:
 
