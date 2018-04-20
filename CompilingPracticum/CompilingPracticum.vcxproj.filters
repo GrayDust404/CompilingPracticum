@@ -36,7 +36,7 @@
     <ClCompile Include="transform.cpp">
       <Filter>资源文件\源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ast.cpp">
+    <ClCompile Include="scope_check.cpp">
       <Filter>资源文件\源文件</Filter>
     </ClCompile>
   </ItemGroup>
