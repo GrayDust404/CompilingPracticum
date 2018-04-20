@@ -67,7 +67,7 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	for (auto id : idlist)
 	{
-		scope->insert(Symbol(std::string(id), type, std::string(), false));
+		scope->insert(Symbol(std::string(id), type, false));
 	}
 	for (auto i : children)
 	{
@@ -83,20 +83,20 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	if (value.find(std::string(".")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")), std::string(), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")), false));
 	}
 	else if (value.find(std::string("'")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("letter")), std::string(), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("letter")), false));
 	}
 	else if (!(scope->lookUp(value).getId().empty()))
 	{
 		//fix me
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string()), std::string(), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string()), false));
 	}
 	else
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")), std::string(), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")), false));
 	}
 	for (auto i : children)
 	{
@@ -114,7 +114,7 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	for (auto i : idlist)
 	{
 		// fix me
-		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar),std::string(),false));
+		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar), false));
 	}
 	for (auto i : children)
 	{
@@ -128,9 +128,11 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 {
 	bool flag = true;
 	scope = parentScope;
-	// fix me Õâ¸öµØ·½Ðè²»ÐèÒª¼ÓÉÏcategoriesÕâ¸öÊôÐÔ£¬Õâ¸öÊôÐÔÊÇÎªÁË´¦Àíº¯ÊýµÄ²Ù×÷
+	// fix me è¿™ä¸ªåœ°æ–¹éœ€ä¸éœ€è¦åŠ ä¸Šcategoriesè¿™ä¸ªå±žæ€§ï¼Œè¿™ä¸ªå±žæ€§æ˜¯ä¸ºäº†å¤„ç†å‡½æ•°çš„æ“ä½œ
+	
 	scope->insert(Symbol(std::string(id),std::string(simpleType)));
 	scope = scope->initializationScope();
+
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
