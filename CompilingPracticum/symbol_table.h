@@ -58,7 +58,7 @@ public:
 	std::shared_ptr<SymbolTable> initializationScope()
 	{
 		symbolList.back().setChildTable(std::shared_ptr<SymbolTable>(new SymbolTable(std::shared_ptr<SymbolTable>(this))));
-		symbolList.back().getChildTable()->insert(Symbol(symbolList.back().getId(), symbolList.back().getType()));
+		symbolList.back().getChildTable()->insert(Symbol(std::string("_")+symbolList.back().getId(), symbolList.back().getType()));
 		return symbolList.back().getChildTable();
 	}
 private:
