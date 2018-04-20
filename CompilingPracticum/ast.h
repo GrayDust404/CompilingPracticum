@@ -36,6 +36,7 @@ public:
 	virtual bool typeCheck() = 0;
 	virtual std::string getID() { return std::string(); }
 	virtual TypeStruct getType() { return TypeStruct(); }
+	virtual int getIdNum() { return -1; }
 	int getLineNum() { return lineNum; }
 protected:
 	std::vector<std::shared_ptr<ASTNode>> children;
@@ -212,7 +213,7 @@ public:
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	bool typeCheck() override { return false; }
 	TypeStruct getType() override { return TypeStruct(); }
-	int getIdNum() { return idlist.size(); }
+	int getIdNum() override { return idlist.size(); }
 	void setIsVar() { isVar = true; }
 private:
 	std::vector<std::string> idlist;

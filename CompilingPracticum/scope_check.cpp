@@ -89,10 +89,14 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		scope->insert(Symbol(std::string(id), TypeStruct(std::string("letter")), false));
 	}
-	else if (!(scope->lookUp(value).getId().empty()))
+	else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
 	{
 		//fix me
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string()), false));
+		if (!(scope->lookUp(value).getId().empty()))
+		{
+			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType()), false));
+		}
+		flag = false;
 	}
 	else
 	{
@@ -129,8 +133,19 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 	bool flag = true;
 	scope = parentScope;
 	// fix me 这个地方需不需要加上categories这个属性，这个属性是为了处理函数的操作
-	
-	scope->insert(Symbol(std::string(id),std::string(simpleType)));
+	std::vector<TypeStruct> parameterType;
+	int count = 0;
+	for (int i = 0;; i++) 
+	{
+		if (count >= parameterNum) break;
+		TypeStruct tempType = children[i]->getType();
+		for (int j = 0; j < children[i]->getIdNum(); j++)
+		{
+			parameterType.push_back(tempType);
+			count++;
+		}
+	}
+	scope->insert(Symbol(std::string(id),TypeStruct(simpleType),parameterType));
 	scope = scope->initializationScope();
 
 	for (auto i : children)
