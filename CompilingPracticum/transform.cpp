@@ -676,5 +676,7 @@ std::shared_ptr<ASTNode> transformProgramStruct(int root)
 void test()
 {
 	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
+	std::shared_ptr<SymbolTable> symbolTable = std::shared_ptr<SymbolTable>(new SymbolTable(std::shared_ptr<SymbolTable>()));
+	tree->scopeCheck(symbolTable);
 	return;
 }
