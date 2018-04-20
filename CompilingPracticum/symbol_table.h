@@ -3,6 +3,7 @@
 
 class SymbolTable;
 
+
 class Symbol {
 public:
 	Symbol() = default;
@@ -24,7 +25,10 @@ public:
 	bool checkConst() { return isConst; }
 	std::shared_ptr<SymbolTable> getChildTable() { return childTable; }
 	std::vector<TypeStruct> getParameterType() { return parameterType; }
-	void createChildTable(std::shared_ptr<SymbolTable> parentTable) { childTable = std::shared_ptr<SymbolTable>(new SymbolTable(parentTable)); }
+	void setChildTable(std::shared_ptr<SymbolTable> _childTable)
+	{ 
+		childTable = _childTable;
+	}
 private:
 	std::string id;
 	TypeStruct type;
@@ -53,7 +57,7 @@ public:
 	}
 	std::shared_ptr<SymbolTable> initializationScope()
 	{
-		symbolList.back().createChildTable(std::shared_ptr<SymbolTable>(this));
+		symbolList.back().setChildTable(std::shared_ptr<SymbolTable>(new SymbolTable(std::shared_ptr<SymbolTable>(this))));
 		symbolList.back().getChildTable()->insert(Symbol(symbolList.back().getId(), symbolList.back().getType()));
 		return symbolList.back().getChildTable();
 	}
