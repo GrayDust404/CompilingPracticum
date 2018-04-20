@@ -132,7 +132,6 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 {
 	bool flag = true;
 	scope = parentScope;
-	// fix me 这个地方需不需要加上categories这个属性，这个属性是为了处理函数的操作
 	std::vector<TypeStruct> parameterType;
 	int count = 0;
 	for (int i = 0;; i++) 

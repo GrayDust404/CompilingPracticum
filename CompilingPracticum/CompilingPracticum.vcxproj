@@ -123,7 +123,6 @@
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="parser.tab.cpp" />
     <ClCompile Include="scope_check.cpp" />
-    <ClCompile Include="symbol_table.cpp" />
     <ClCompile Include="transform.cpp" />
   </ItemGroup>
   <ItemGroup>

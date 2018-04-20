@@ -12,7 +12,7 @@ public:
 	Symbol(std::string _id) :id(_id) {}
 	Symbol(std::string _id,
 		TypeStruct _type,
-		bool _isConst
+		bool _isConst = false
 		) :
 		id(_id), type(_type), isConst(_isConst), parameterType(std::vector<TypeStruct>()), childTable(std::shared_ptr<SymbolTable>()) {}
 	Symbol(std::string _id,
@@ -55,6 +55,7 @@ public:
 	std::shared_ptr<SymbolTable> initializationScope()
 	{
 		symbolList.back().createChildTable(std::shared_ptr<SymbolTable>(this));
+		symbolList.back().getChildTable()->insert(Symbol(symbolList.back().getId, symbolList.back().getType));
 		return symbolList.back().getChildTable();
 	}
 private:
