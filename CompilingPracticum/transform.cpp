@@ -13,7 +13,7 @@ std::shared_ptr<ASTNode> transformFactor(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("num")|| token == std::string("digits"))
 		{
-			return std::shared_ptr<ASTNode>(new ConstNode(parseTree[children[i]].getValue()));
+			return std::shared_ptr<ASTNode>(new ConstNode(parseTree[children[i]].getValue(),parseTree[children[i]].getLineNum()));
 		}
 		else if (token == std::string("variable"))
 		{
@@ -23,7 +23,7 @@ std::shared_ptr<ASTNode> transformFactor(int root)
 		{
 			std::string id = parseTree[children[i]].getValue();
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren = transformExpressionList(children[i + 2]);
-			return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren));
+			return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren, parseTree[children[i]].getLineNum()));
 		}
 		else if (token == std::string("leftB"))
 		{
@@ -34,7 +34,7 @@ std::shared_ptr<ASTNode> transformFactor(int root)
 			std::string operation = parseTree[children[i]].getValue();
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
 			ASTChildren.push_back(transformFactor(children[i + 1]));
-			return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+			return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren, parseTree[children[i]].getLineNum()));
 		}
 	}
 	return std::shared_ptr<ASTNode>();
@@ -55,13 +55,13 @@ std::shared_ptr<ASTNode> transformTerm(int root)
 				ASTChildren.push_back(transformTerm(children[i - 2]));
 				ASTChildren.push_back(transformFactor(children[i]));
 				operation = parseTree[children[i - 1]].getValue();
-				return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+				return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren, parseTree[children[i-1]].getLineNum()));
 			}
 			else if (i == 0)
 				return transformFactor(children[i]);
 		}
 	}
-	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+	return std::shared_ptr<ASTNode>();
 }
 
 std::shared_ptr<ASTNode> transformSimpleExpression(int root)
@@ -79,13 +79,13 @@ std::shared_ptr<ASTNode> transformSimpleExpression(int root)
 				ASTChildren.push_back(transformSimpleExpression(children[i - 2]));
 				ASTChildren.push_back(transformTerm(children[i]));
 				operation = parseTree[children[i - 1]].getValue();
-				return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+				return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren, parseTree[children[i-1]].getLineNum()));
 			}
 			else if (i == 0)
 				return transformTerm(children[i]);
 		}
 	}
-	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+	return std::shared_ptr<ASTNode>();
 }
 
 std::shared_ptr<ASTNode> transformExpression(int root)
@@ -93,6 +93,7 @@ std::shared_ptr<ASTNode> transformExpression(int root)
 	std::vector<int> children = parseTree[root].getChildren();
 	std::vector<std::shared_ptr<ASTNode>> ASTChildren;
 	std::string operation;
+	int lineNum = 0;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();
@@ -103,11 +104,12 @@ std::shared_ptr<ASTNode> transformExpression(int root)
 		else
 		{
 			operation = parseTree[children[i]].getValue();
+			lineNum = parseTree[children[i]].getLineNum();
 		}
 	}
 	if (ASTChildren.size() < 2)
 		return ASTChildren[0];
-	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren));
+	return std::shared_ptr<ASTNode>(new ExpressionNode(operation, ASTChildren,lineNum));
 }
 
 std::vector<std::shared_ptr<ASTNode>> transformExpressionList(int root)
@@ -133,12 +135,17 @@ std::vector<std::shared_ptr<ASTNode>> transformExpressionList(int root)
 std::shared_ptr<ASTNode> transformVarPart(int root)
 {
 	std::vector<int> children = parseTree[root].getChildren();
+	int lineNum = 0;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("expression_list"))
 		{
-			return std::shared_ptr<ASTNode>(new VarpartNode(transformExpressionList(children[i])));
+			return std::shared_ptr<ASTNode>(new VarpartNode(transformExpressionList(children[i]),lineNum));
+		}
+		if (token == std::string("leftSB"))
+		{
+			lineNum = parseTree[children[i]].getLineNum();
 		}
 	}
 	return std::shared_ptr<ASTNode>();
@@ -156,7 +163,7 @@ std::shared_ptr<ASTNode> transformVariable(int root)
 			std::shared_ptr<ASTNode> temp = transformVarPart(children[i + 1]);
 			if(temp)
 				ASTChildren.push_back(temp);
-			return std::shared_ptr<ASTNode>(new VarNode(parseTree[children[i]].getValue(),ASTChildren));
+			return std::shared_ptr<ASTNode>(new VarNode(parseTree[children[i]].getValue(),ASTChildren, parseTree[children[i]].getLineNum()));
 		}
 	}
 	return std::shared_ptr<ASTNode>();
@@ -167,19 +174,21 @@ std::shared_ptr<ASTNode> transformFunctionCall(int root)
 	std::vector<int> children = parseTree[root].getChildren();
 	std::string id;
 	std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+	int lineNum = 0;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("id"))
 		{
 			id = parseTree[children[i]].getValue();
+			lineNum = parseTree[children[i]].getLineNum();
 		}
 		else if (token == std::string("expression_list"))
 		{
 			ASTChildren = transformExpressionList(children[i]);
 		}
 	}
-	return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren));
+	return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren,lineNum));
 }
 
 std::shared_ptr<ASTNode> transformElsePart(int root)
@@ -207,7 +216,7 @@ std::shared_ptr<ASTNode> transformStatement(int root)
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
 			ASTChildren.push_back(transformVariable(children[i]));
 			ASTChildren.push_back(transformExpression(children[i+2]));
-			return std::shared_ptr<ASTNode>(new AssignmentNode(ASTChildren));
+			return std::shared_ptr<ASTNode>(new AssignmentNode(ASTChildren,parseTree[children[i+1]].getLineNum()));
 		}
 		else if (token == std::string("procedure_call"))
 		{
@@ -228,7 +237,7 @@ std::shared_ptr<ASTNode> transformStatement(int root)
 				ASTChildren.push_back(thenPart);
 			if (elsePart) 
 				ASTChildren.push_back(elsePart);
-			return std::shared_ptr<ASTNode>(new IfNode(ASTChildren));
+			return std::shared_ptr<ASTNode>(new IfNode(ASTChildren, parseTree[children[i]].getLineNum()));
 		}
 		else if (token == std::string("for"))
 		{
@@ -241,7 +250,7 @@ std::shared_ptr<ASTNode> transformStatement(int root)
 			ASTChildren.push_back(heigh);
 			if (forBody)
 				ASTChildren.push_back(forBody);
-			return std::shared_ptr<ASTNode>(new ForNode(iterator, ASTChildren));
+			return std::shared_ptr<ASTNode>(new ForNode(iterator, ASTChildren, parseTree[children[i]].getLineNum()));
 		}
 		else if (token == std::string("while"))
 		{
@@ -250,7 +259,7 @@ std::shared_ptr<ASTNode> transformStatement(int root)
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
 			if (whileBody)
 				ASTChildren.push_back(whileBody);
-			return std::shared_ptr<ASTNode>(new WhileNode(ASTChildren));
+			return std::shared_ptr<ASTNode>(new WhileNode(ASTChildren, parseTree[children[i]].getLineNum()));
 		}
 	}
 	return std::shared_ptr<ASTNode>();
@@ -289,7 +298,7 @@ std::shared_ptr<ASTNode> transformCompound(int root)
 			ASTChildren = transformStatementList(children[i]);
 		}
 	}
-	return std::shared_ptr<ASTNode>(new CompoundNode(ASTChildren));
+	return std::shared_ptr<ASTNode>(new CompoundNode(ASTChildren,ASTChildren[0]->getLineNum()));
 }
 
 std::vector<std::shared_ptr<ASTNode>> transformSubprogramBody(int root)
@@ -328,6 +337,7 @@ ParameterNode transformValueParameter(int root)
 	std::vector<int> children = parseTree[root].getChildren();
 	std::vector<std::string> idlist;
 	std::string simpleType;
+	int lineNum = 0;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();
@@ -338,9 +348,10 @@ ParameterNode transformValueParameter(int root)
 		else if(token == std::string("simple_type"))
 		{
 			simpleType = parseTree[children[i]].getValue();
+			lineNum = parseTree[children[i]].getLineNum();
 		}
 	}
-	return ParameterNode(idlist, simpleType);
+	return ParameterNode(idlist, simpleType,lineNum);
 }
 
 ParameterNode transformVarParameter(int root)
@@ -417,12 +428,14 @@ std::shared_ptr<ASTNode> transformSubprogramHead(int root)
 	std::vector<std::shared_ptr<ParameterNode>> formalParameter;
 	std::string id;
 	std::string simpleType;
+	int lineNum = 0;
 	for (int i = 0; i < children.size(); i++)
 	{
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("id"))
 		{
 			id = parseTree[children[i]].getValue();
+			lineNum = parseTree[children[i]].getLineNum();
 		}
 		else if (token == std::string("formal_parameter"))
 		{
@@ -433,7 +446,7 @@ std::shared_ptr<ASTNode> transformSubprogramHead(int root)
 			simpleType = parseTree[children[i]].getValue();
 		}
 	}
-	return std::shared_ptr<ASTNode>(new FunctionDeclarationNode(id, simpleType, formalParameter));
+	return std::shared_ptr<ASTNode>(new FunctionDeclarationNode(id, simpleType, formalParameter,lineNum));
 }
 
 std::shared_ptr<ASTNode> transformSubprogram(int root)
@@ -546,7 +559,8 @@ std::vector<std::shared_ptr<ASTNode>> transformVarDeclaration(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("idlist"))
 		{
-			result.push_back(std::shared_ptr<ASTNode>(new VarDeclarationNode(transformIDList(children[i]),transformType(children[i+2]))));
+			int lineNum = parseTree[parseTree[children[i + 2]].getChildren()[0]].getLineNum();
+			result.push_back(std::shared_ptr<ASTNode>(new VarDeclarationNode(transformIDList(children[i]),transformType(children[i+2]),lineNum)));
 			return result;
 		}
 		else if (token == std::string("var_declaration"))
@@ -580,7 +594,7 @@ std::vector<std::shared_ptr<ASTNode>> transformConstDeclaration(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("id"))
 		{
-			result.push_back(std::shared_ptr<ASTNode>(new ConstDeclarationNode(parseTree[children[i]].getValue(), parseTree[children[i+2]].getValue())));
+			result.push_back(std::shared_ptr<ASTNode>(new ConstDeclarationNode(parseTree[children[i]].getValue(), parseTree[children[i+2]].getValue(), parseTree[children[i]].getLineNum())));
 			return result;
 		}
 		else if (token == std::string("const_declaration"))
@@ -656,7 +670,7 @@ std::shared_ptr<ASTNode> transformProgramStruct(int root)
 			ASTChildren = transformProgramBody(children[i]);
 		}
 	}
-	return std::shared_ptr<ASTNode>(new ProgramNode(ASTChildren));
+	return std::shared_ptr<ASTNode>(new ProgramNode(ASTChildren,ASTChildren[0]->getLineNum()));
 }
 
 void test()
