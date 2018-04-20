@@ -3,7 +3,8 @@
 #include<vector>
 #include<utility>
 #include<memory>
-#include"symbol_table.h"
+
+class SymbolTable;
 
 class TypeStruct {
 public:

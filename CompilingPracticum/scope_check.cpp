@@ -1,4 +1,5 @@
 #include"ast.h"
+#include"symbol_table.h"
 
 bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
