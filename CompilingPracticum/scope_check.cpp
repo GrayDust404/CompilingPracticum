@@ -84,24 +84,24 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	if (value.find(std::string(".")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real"))));
 	}
 	else if (value.find(std::string("'")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("letter")), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("char"))));
 	}
 	else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
 	{
 		//fix me
 		if (!(scope->lookUp(value).getId().empty()))
 		{
-			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType()), false));
+			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType())));
 		}
 		flag = false;
 	}
 	else
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits"))));
 	}
 	for (auto i : children)
 	{
