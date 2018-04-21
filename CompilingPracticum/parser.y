@@ -16,6 +16,8 @@ std::vector<ParseTreeNode> parseTree;
 int parseTreeRoot;
 %}
 
+%error-verbose //
+
 %union{
 	int ival;
 }
@@ -101,7 +103,7 @@ const_declarations: {
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 } 
-|_const const_declaration {				   
+|_const const_declaration semicolon {				   
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{$1,$2}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
