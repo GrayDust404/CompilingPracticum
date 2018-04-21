@@ -92,12 +92,15 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	}
 	else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
 	{
-		//fix me
 		if (!(scope->lookUp(value).getId().empty()))
 		{
 			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType())));
 		}
-		flag = false;
+		else
+		{
+			//fix me
+			flag = false;
+		}
 	}
 	else
 	{
@@ -115,11 +118,9 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = false;
 	scope = parentScope;
-	//fix me
 	for (auto i : idlist)
 	{
-		// fix me
-		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar), false));
+		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar)));
 	}
 	for (auto i : children)
 	{
