@@ -10,7 +10,9 @@
 
 #include "parser.tab.h"
 extern std::vector<ParseTreeNode> parseTree;
+void warning(char* msg,char* s,int line);
 %}
+
 
 %%
 
@@ -232,4 +234,12 @@ extern std::vector<ParseTreeNode> parseTree;
 						}
 \n						{}
 [ \t]					{}
+[^\s]                  {
+						warning("Illegal characters",yytext,yylineno);
+						}
 %%
+
+void warning(char* msg,char* s,int line) {
+	printf("Lexical errors (%s) :%s in line %d\n",msg,s,line );
+	exit(1);
+}

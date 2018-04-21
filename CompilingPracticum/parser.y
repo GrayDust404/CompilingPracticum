@@ -16,6 +16,8 @@ std::vector<ParseTreeNode> parseTree;
 int parseTreeRoot;
 %}
 
+%error-verbose //
+
 %union{
 	int ival;
 }
