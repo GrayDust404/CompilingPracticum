@@ -62,11 +62,14 @@ private:
 class VarpartNode : public ASTNode
 {
 public:
-	VarpartNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) {}
+	VarpartNode(std::string _id,std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) 
+	{
+		id = _id;
+	}
 	std::string codeGenerator() override { return std::string(); }
 	bool typeCheck() override;
 private:
-
+	std::string id;
 };
 
 class ConstNode : public ASTNode
