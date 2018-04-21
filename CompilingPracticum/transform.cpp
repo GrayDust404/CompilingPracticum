@@ -25,11 +25,11 @@ std::shared_ptr<ASTNode> transformFactor(int root)
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren = transformExpressionList(children[i + 2]);
 			return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren, parseTree[children[i]].getLineNum()));
 		}
-		else if (token == std::string("left bracket"))
+		else if (token == std::string("leftB"))
 		{
 			return transformExpression(children[i + 1]);
 		}
-		else if (token == std::string("not") || token == std::string("minus"))
+		else if (token == std::string("not") || token == std::string("sub"))
 		{
 			std::string operation = parseTree[children[i]].getValue();
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
@@ -143,7 +143,7 @@ std::shared_ptr<ASTNode> transformVarPart(int root)
 		{
 			return std::shared_ptr<ASTNode>(new VarpartNode(transformExpressionList(children[i]),lineNum));
 		}
-		if (token == std::string("left square bracket"))
+		if (token == std::string("leftSB"))
 		{
 			lineNum = parseTree[children[i]].getLineNum();
 		}
