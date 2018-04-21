@@ -675,6 +675,6 @@ std::shared_ptr<ASTNode> transformProgramStruct(int root)
 
 void test()
 {
-	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
+	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot)
 	return;
 }
