@@ -4,13 +4,14 @@
 %{
 #include<stdio.h>
 #include<iostream>
+#include<string>
 #include"parser.h"
 
 #define YY_DECL int yylex()
 
 #include "parser.tab.h"
 extern std::vector<ParseTreeNode> parseTree;
-void lexerError(char* msg,char* s,int line);
+void lexerError(std::string msg,std::string s,int line);
 %}
 
 
@@ -255,6 +256,6 @@ void lexerError(char* msg,char* s,int line);
 						}
 %%
 
-void lexerError(char* msg,char* s,int line) {
-	fprintf(stderr,"Lexical errors (%s) :%s in line %d\n",msg,s,line);
+void lexerError(std::string msg,std::string s,int line) {
+	std::cout << "Lexical errors ("<<msg<<") : "<< s << " in line "<< line <<"\n";
 }
