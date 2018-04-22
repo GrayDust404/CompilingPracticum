@@ -44,6 +44,13 @@ public:
 	{
 		symbolList.push_back(item);
 	}
+	Symbol getFirstSymbol()
+	{
+		if (symbolList.empty())
+			return Symbol();
+		else
+			return symbolList[0];
+	}
 	Symbol lookUp(std::string id)
 	{
 		for (auto i : symbolList)
@@ -61,6 +68,7 @@ public:
 		symbolList.back().getChildTable()->insert(Symbol(std::string("_")+symbolList.back().getId(), symbolList.back().getType()));
 		return symbolList.back().getChildTable();
 	}
+	
 private:
 	std::vector<Symbol> symbolList;
 	std::shared_ptr<SymbolTable> parentTable;
