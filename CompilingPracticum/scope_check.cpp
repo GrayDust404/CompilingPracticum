@@ -132,6 +132,7 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 
 bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
+	
 	bool flag = true;
 	scope = parentScope;
 	std::vector<TypeStruct> parameterType;
