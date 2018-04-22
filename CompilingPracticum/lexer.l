@@ -10,7 +10,9 @@
 
 #include "parser.tab.h"
 extern std::vector<ParseTreeNode> parseTree;
+void lexerError(char* msg,char* s,int line);
 %}
+
 
 %%
 
@@ -118,13 +120,13 @@ extern std::vector<ParseTreeNode> parseTree;
 
 "begin"					{ return BEGINTOK;}
 "end"					{ return ENDTOK;}
-"\'[a-zA-Z]\'"			{ return letter;}
+\'[a-zA-Z]\'			{ return letter;}
 [a-zA-Z][0-9a-zA-Z]* 	{
 						parseTree.push_back(ParseTreeNode(std::string("id"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return id;
 						}
-[0-9]+'\.'[0-9]+			{
+[0-9]+'\.'[0-9]+		{
 						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return num;
@@ -149,7 +151,7 @@ extern std::vector<ParseTreeNode> parseTree;
 						yylval.ival = parseTree.size() - 1;
 						return comma;
 						}
-"\.\."					{
+\.\.					{
 						parseTree.push_back(ParseTreeNode(std::string("range"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return _range;						
@@ -233,3 +235,6 @@ extern std::vector<ParseTreeNode> parseTree;
 \n						{}
 [ \t]					{}
 %%
+void lexerError(char* msg,char* s,int line) {
+	fprintf(stderr,"Lexical errors (%s) :%s in line %d\n",msg,s,line);
+}

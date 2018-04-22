@@ -2,6 +2,7 @@
 #include"parser.h"
 #include"ast.h"
 #include"transform.h"
+#include"symbol_table.h"
 extern std::vector<ParseTreeNode> parseTree;
 extern int parseTreeRoot;
 
@@ -25,11 +26,11 @@ std::shared_ptr<ASTNode> transformFactor(int root)
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren = transformExpressionList(children[i + 2]);
 			return std::shared_ptr<ASTNode>(new FunctionCallNode(id, ASTChildren, parseTree[children[i]].getLineNum()));
 		}
-		else if (token == std::string("leftB"))
+		else if (token == std::string("left bracket"))
 		{
 			return transformExpression(children[i + 1]);
 		}
-		else if (token == std::string("not") || token == std::string("sub"))
+		else if (token == std::string("not") || token == std::string("minus"))
 		{
 			std::string operation = parseTree[children[i]].getValue();
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
@@ -132,7 +133,7 @@ std::vector<std::shared_ptr<ASTNode>> transformExpressionList(int root)
 	return result;
 }
 
-std::shared_ptr<ASTNode> transformVarPart(int root)
+std::shared_ptr<ASTNode> transformVarPart(int root, std::string id)
 {
 	std::vector<int> children = parseTree[root].getChildren();
 	int lineNum = 0;
@@ -141,9 +142,9 @@ std::shared_ptr<ASTNode> transformVarPart(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("expression_list"))
 		{
-			return std::shared_ptr<ASTNode>(new VarpartNode(transformExpressionList(children[i]),lineNum));
+			return std::shared_ptr<ASTNode>(new VarpartNode(id,transformExpressionList(children[i]),lineNum));
 		}
-		if (token == std::string("leftSB"))
+		if (token == std::string("left square bracket"))
 		{
 			lineNum = parseTree[children[i]].getLineNum();
 		}
@@ -160,7 +161,7 @@ std::shared_ptr<ASTNode> transformVariable(int root)
 		if (token == std::string("id"))
 		{
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
-			std::shared_ptr<ASTNode> temp = transformVarPart(children[i + 1]);
+			std::shared_ptr<ASTNode> temp = transformVarPart(children[i + 1], parseTree[children[i]].getValue());
 			if(temp)
 				ASTChildren.push_back(temp);
 			return std::shared_ptr<ASTNode>(new VarNode(parseTree[children[i]].getValue(),ASTChildren, parseTree[children[i]].getLineNum()));
@@ -676,5 +677,7 @@ std::shared_ptr<ASTNode> transformProgramStruct(int root)
 void test()
 {
 	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
+	std::shared_ptr<SymbolTable> symbolTable = std::shared_ptr<SymbolTable>(new SymbolTable(std::shared_ptr<SymbolTable>()));
+	tree->scopeCheck(symbolTable);
 	return;
 }

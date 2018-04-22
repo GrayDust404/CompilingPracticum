@@ -1,4 +1,5 @@
 #include"ast.h"
+#include"symbol_table.h"
 
 bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
@@ -83,24 +84,27 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	if (value.find(std::string(".")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real"))));
 	}
 	else if (value.find(std::string("'")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("letter")), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("char"))));
 	}
 	else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
 	{
-		//fix me
 		if (!(scope->lookUp(value).getId().empty()))
 		{
-			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType()), false));
+			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType())));
 		}
-		flag = false;
+		else
+		{
+			//fix me
+			flag = false;
+		}
 	}
 	else
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")), false));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits"))));
 	}
 	for (auto i : children)
 	{
@@ -114,11 +118,9 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = false;
 	scope = parentScope;
-	//fix me
 	for (auto i : idlist)
 	{
-		// fix me
-		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar), false));
+		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar)));
 	}
 	for (auto i : children)
 	{
@@ -132,7 +134,6 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 {
 	bool flag = true;
 	scope = parentScope;
-	// fix me 这个地方需不需要加上categories这个属性，这个属性是为了处理函数的操作
 	std::vector<TypeStruct> parameterType;
 	int count = 0;
 	for (int i = 0;; i++) 
@@ -145,7 +146,7 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 			count++;
 		}
 	}
-	scope->insert(Symbol(std::string(id),TypeStruct(simpleType),parameterType));
+	scope->insert(Symbol(std::string("_") + std::string(id),TypeStruct(simpleType),parameterType));
 	scope = scope->initializationScope();
 
 	for (auto i : children)
