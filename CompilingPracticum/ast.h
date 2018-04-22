@@ -210,7 +210,7 @@ public:
 	}
 	std::string codeGenerator() override { return std::string(); }
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	TypeStruct getType() override { return TypeStruct(); }
+	TypeStruct getType() override { return TypeStruct(simpleType); }
 	int getIdNum() override { return idlist.size(); }
 	void setIsVar() { isVar = true; }
 private:

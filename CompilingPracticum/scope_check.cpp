@@ -146,9 +146,8 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 			count++;
 		}
 	}
-	scope->insert(Symbol(std::string("_") + std::string(id),TypeStruct(simpleType),parameterType));
+	scope->insert(Symbol(std::string(id),TypeStruct(simpleType),parameterType));
 	scope = scope->initializationScope();
-
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
