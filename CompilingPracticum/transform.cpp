@@ -258,6 +258,7 @@ std::shared_ptr<ASTNode> transformStatement(int root)
 			std::shared_ptr<ASTNode> condition = transformExpression(children[i + 1]);
 			std::shared_ptr<ASTNode> whileBody = transformStatement(children[i + 3]);
 			std::vector<std::shared_ptr<ASTNode>> ASTChildren;
+			ASTChildren.push_back(condition);
 			if (whileBody)
 				ASTChildren.push_back(whileBody);
 			return std::shared_ptr<ASTNode>(new WhileNode(ASTChildren, parseTree[children[i]].getLineNum()));
@@ -686,6 +687,7 @@ void test()
 		std::cout << "True";
 	else
 		std::cout << "False";
+	std::cout << tree->codeGenerator();
 	system("pause");
 	return;
 }

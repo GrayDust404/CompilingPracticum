@@ -28,13 +28,27 @@ std::string ExpressionNode::codeGenerator()
 
 std::string VarNode::codeGenerator()
 {
-	if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+	if (children.size() == 0)
 	{
-		return '(' +"*"+id + ')';
+		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+		{
+			return '(' + "*" + id + ')';
+		}
+		else//不为引用时
+		{
+			return '(' + id + ')';
+		}
 	}
-	else//不为引用时
+	else
 	{
-		return '('+id+')';
+		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+		{
+			return '(' + "*" + id + children[0]->codeGenerator() + ')';
+		}
+		else//不为引用时
+		{
+			return '(' + id + children[0]->codeGenerator() + ')';
+		}
 	}
 }
 
@@ -47,7 +61,12 @@ std::string VarDeclarationNode::codeGenerator()
 {
 	string stringIdList;//多个id的字符串
 	for (int i = 0; i < idlist.size(); i++)//生成多个id的字符串
-		stringIdList = stringIdList +" " + idlist[i];
+	{
+		if(i != 0)
+			stringIdList = stringIdList + "," + idlist[i];
+		else
+			stringIdList = stringIdList + " " + idlist[i];
+	}
 	return type.getSimpleType() + stringIdList + ";";
 }
 
@@ -64,7 +83,7 @@ std::string AssignmentNode::codeGenerator()
 	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId())//判断是否为return值,是
 		return "return "+ children[1]->codeGenerator() + ";";
 	else		//不是return，则输出赋值语句
-		return children[0]->codeGenerator() + " = " + children[1]->codeGenerator() + ")";
+		return children[0]->codeGenerator() + " = " + children[1]->codeGenerator() + ";";
 }
 
 std::string ForNode::codeGenerator()
