@@ -678,6 +678,14 @@ void test()
 {
 	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
 	std::shared_ptr<SymbolTable> symbolTable = std::shared_ptr<SymbolTable>(new SymbolTable(nullptr));
-	tree->scopeCheck(symbolTable);
+	if (tree->scopeCheck(symbolTable))
+		std::cout << "True";
+	else
+		std::cout << "False";
+	if (tree->typeCheck())
+		std::cout << "True";
+	else
+		std::cout << "False";
+	system("pause");
 	return;
 }

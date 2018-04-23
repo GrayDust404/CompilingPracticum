@@ -7,7 +7,7 @@ class SymbolTable;
 class Symbol {
 public:
 	Symbol() = default;
-	Symbol(std::string _id) :id(_id) {}
+	Symbol(std::string _id) :id(_id),isConst(false){}
 	Symbol(std::string _id,TypeStruct _type,bool _isConst = false) 
 	{
 		id = _id;
@@ -19,6 +19,7 @@ public:
 		id = _id;
 		type = _type;
 		parameterType = _parameterType;
+		isConst = false;
 	}
 	std::string getId() { return id; }
 	TypeStruct getType() { return type; }
