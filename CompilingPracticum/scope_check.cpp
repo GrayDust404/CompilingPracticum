@@ -1,4 +1,3 @@
-#include"ast.h"
 #include"symbol_table.h"
 
 bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
@@ -8,7 +7,12 @@ bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
 			flag = false;
+			printf("%dAST",i->getLineNum());
+			printf(i->getID().c_str());
+			
+		}
 	}
 	return flag;
 }
@@ -20,12 +24,18 @@ bool VarNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty())
 	{
 		flag = false;
+		printf(id.c_str());
 		//fix me
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("%d", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
+			
 	}
 	return flag;
 }
@@ -37,12 +47,18 @@ bool FunctionCallNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty())
 	{
 		flag = false;
+		printf(id.c_str());
 		//fix me
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("%d", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
+
 	}
 	return  flag;
 }
@@ -57,7 +73,11 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("%d", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -73,7 +93,11 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("%d", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -84,39 +108,43 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	if (value.find(std::string(".")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real"))));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")),true));
 	}
 	else if (value.find(std::string("'")) != std::string::npos)
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("char"))));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("char")),true));
 	}
 	else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
 	{
 		if (!(scope->lookUp(value).getId().empty()))
 		{
-			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType())));
+			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType()),true));
 		}
 		else
 		{
-			//fix me
+			printf(value.c_str());
 			flag = false;
 		}
 	}
 	else
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits"))));
+		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")),true));
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("%d", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
 	}
 	return flag;
 }
 
 bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
-	bool flag = false;
+	bool flag = true;
 	scope = parentScope;
 	for (auto i : idlist)
 	{
@@ -125,13 +153,18 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("%dPara", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
 	}
 	return flag;
 }
 
 bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
+	
 	bool flag = true;
 	scope = parentScope;
 	std::vector<TypeStruct> parameterType;
@@ -146,13 +179,16 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 			count++;
 		}
 	}
-	scope->insert(Symbol(std::string("_") + std::string(id),TypeStruct(simpleType),parameterType));
+	scope->insert(Symbol(std::string(id),TypeStruct(simpleType),parameterType));
 	scope = scope->initializationScope();
-
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
+		{
+			printf("4%dFunc", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
+		}
 	}
 	return flag;
 }

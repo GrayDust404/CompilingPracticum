@@ -8,7 +8,7 @@ class SymbolTable;
 
 class TypeStruct {
 public:
-	TypeStruct() = default;
+	TypeStruct() :simpleType(std::string()), period(std::vector<std::pair<int, int>>()), isRef(false){}
 	TypeStruct(std::string _simpleType, bool _isRef = false) :simpleType(_simpleType), isRef(_isRef), period(std::vector<std::pair<int, int>>()) {}
 	TypeStruct(std::string _simpleType, std::vector<std::pair<int, int>> _peroid) :simpleType(_simpleType), isRef(false), period(_peroid) {}
 	std::string getSimpleType() { return simpleType; }
@@ -210,7 +210,7 @@ public:
 	}
 	std::string codeGenerator() override { return std::string(); }
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	TypeStruct getType() override { return TypeStruct(); }
+	TypeStruct getType() override { return TypeStruct(simpleType); }
 	int getIdNum() override { return idlist.size(); }
 	void setIsVar() { isVar = true; }
 private:

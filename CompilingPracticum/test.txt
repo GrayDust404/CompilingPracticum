@@ -1,17 +1,34 @@
-program example(input);
-var x,y:integer;
-function gcd(a,b:integer):integer;
+program aa(input,output);
+var a :array[1..100] of integer;
+i,j,x:integer;
+
+procedure ss(l,r:integer);
+var y,i,j,k,h:integer;
 begin
-if b=0 then gcd:=a
-else gcd:=gcd(b, a mod b)
+   i:=l;
+   j:=r;
+   k:=a[(l+r)/ 2];
+   while i< j do begin
+     while (a[i]<k)and(i<r)do i:=i+1;
+     while (a[j]>k)and(j>l)do j:=j+1;
+     if i<=j then
+     begin
+       h:=a[i];
+       a[i]:=a[j];
+       a[j]:=h;
+       i:=i+1;
+       j:=j+1
+     end;
+   end;
+   if l<j then  ss(l,j);
+   if r>i then  ss(i,r)
 end;
 
 begin
-read(x, y);
-write(gcd(x, y));
-for I := 1 to 10 do
-begin
-	x := x+1;
-end;
+  for i:=1 to 10 do a[i]:= ss(1,2);
+  for i:=1 to 10 do ss(1,2);
+
+  ss(1,10);
+
+  for i:=1 to 10 do ss(1,2);
 end
-
