@@ -1,42 +1,37 @@
-#include"ast.h"
+#include "symbol_table.h"
 using namespace std;
 std::string ExpressionNode::codeGenerator()
 {
-	if (ExpressionNode::children.size == 1)//Ö»ÓĞÒ»¸ö×Ó½ÚµãÊ±
+	if (ExpressionNode::children.size == 1)//åªæœ‰ä¸€ä¸ªå­èŠ‚ç‚¹æ—¶
 	{
-		string testEnd;//¼ì²âÄ©Î²ÊÇ·ñÓĞ£»
+		string testEnd;//æ£€æµ‹æœ«å°¾æ˜¯å¦æœ‰ï¼›
 		testEnd = ExpressionNode::children[0]->codeGenerator();
-		if (testEnd[testEnd.length() - 1] == ';')//Èç¹ûÄ©Î²Îª;É¾³ı
+		if (testEnd[testEnd.length() - 1] == ';')//å¦‚æœæœ«å°¾ä¸º;åˆ é™¤
 			testEnd.pop_back();
 		return "( " + ExpressionNode::operation + " "
 			+ testEnd + " )";
 	}
-	if (ExpressionNode::children.size == 2)//ÓĞÁ½¸ö×Ó½ÚµãÊ±
+	if (ExpressionNode::children.size == 2)//æœ‰ä¸¤ä¸ªå­èŠ‚ç‚¹æ—¶
 	{
-		string testEnd1, testEnd2;//¼ì²âÄ©Î²ÊÇ·ñÓĞ£»
+		string testEnd1, testEnd2;//æ£€æµ‹æœ«å°¾æ˜¯å¦æœ‰ï¼›
 		testEnd1 = ExpressionNode::children[0]->codeGenerator();
 		testEnd2 = ExpressionNode::children[1]->codeGenerator();
-		if (testEnd1[testEnd1.length() - 1] == ';')//Èç¹ûÄ©Î²Îª;É¾³ı
+		if (testEnd1[testEnd1.length() - 1] == ';')//å¦‚æœæœ«å°¾ä¸º;åˆ é™¤
 			testEnd1.pop_back();
-		if (testEnd2[testEnd2.length() - 1] == ';')//Èç¹ûÄ©Î²Îª;É¾³ı
+		if (testEnd2[testEnd2.length() - 1] == ';')//å¦‚æœæœ«å°¾ä¸º;åˆ é™¤
 			testEnd2.pop_back();
 		return "( " + testEnd1 + " "+ ExpressionNode::operation 
 			+ " " + testEnd2 +" )";
 	}
 }
 
-std::string AssignmentNode::codeGenerator()
-{
-
-}
-
 std::string VarNode::codeGenerator()
 {
-	if (VarNode::scope->lookUp(id).getType().checkRef())//ÅĞ¶ÏÊÇ·ñÎªÒıÓÃ
+	if (VarNode::scope->lookUp(id).getType().checkRef())//åˆ¤æ–­æ˜¯å¦ä¸ºå¼•ç”¨
 	{
 		return '(' +"*"+id + ')';
 	}
-	else//²»ÎªÒıÓÃÊ±
+	else//ä¸ä¸ºå¼•ç”¨æ—¶
 	{
 		return '('+id+')';
 	}
@@ -49,8 +44,8 @@ std::string ConstNode::codeGenerator()
 
 std::string VarDeclarationNode::codeGenerator()
 {
-	string stringIdList;//¶à¸öidµÄ×Ö·û´®
-	for (int i = 0; i < VarDeclarationNode::idlist.size; i++)//Éú³É¶à¸öidµÄ×Ö·û´®
+	string stringIdList;//å¤šä¸ªidçš„å­—ç¬¦ä¸²
+	for (int i = 0; i < VarDeclarationNode::idlist.size; i++)//ç”Ÿæˆå¤šä¸ªidçš„å­—ç¬¦ä¸²
 		stringIdList = stringIdList +" " + VarDeclarationNode::idlist[i];
 	return VarDeclarationNode::type.getSimpleType() + stringIdList + ";";
 }
@@ -65,10 +60,10 @@ std::string ConstDeclarationNode::codeGenerator()
 
 std::string AssignmentNode::codeGenerator()
 {
-	if (AssignmentNode::children[0]->getID())//ÅĞ¶ÏÊÇ·ñÎªreturnÖµ
-		return;
-	else
-		return
+	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId())//åˆ¤æ–­æ˜¯å¦ä¸ºreturnå€¼,æ˜¯
+		return "return "+ AssignmentNode::children[1] + ";";
+	else		//ä¸æ˜¯returnï¼Œåˆ™è¾“å‡ºèµ‹å€¼è¯­å¥
+		return AssignmentNode::children[0] + " = " + AssignmentNode::children[1] + ")";
 }
 
 std::string ForNode::codeGenerator()
@@ -92,7 +87,7 @@ std::string WhileNode::codeGenerator()
 
 std::string CompoundNode::codeGenerator()
 {
-	string statement;//CompoundNodeÄÚËùÓĞµÄÄÚÈİ
+	string statement;//CompoundNodeå†…æ‰€æœ‰çš„å†…å®¹
 	for (int i = 0; i < CompoundNode::children.size; i++)
 	{
 		statement = statement + CompoundNode::children[i]->codeGenerator()
@@ -103,20 +98,20 @@ std::string CompoundNode::codeGenerator()
 
 std::string ParameterNode::codeGenerator()
 {
-	string statement;//ParameterNodeÄÚµÄËùÓĞÄÚÈİ
-	for (int i = 0; i < ParameterNode::idlist.size-1; i++)//Éú³É³ı×îºóÒ»¸öidÍâËùÓĞParameterµÄ´úÂë
+	string statement;//ParameterNodeå†…çš„æ‰€æœ‰å†…å®¹
+	for (int i = 0; i < ParameterNode::idlist.size-1; i++)//ç”Ÿæˆé™¤æœ€åä¸€ä¸ªidå¤–æ‰€æœ‰Parameterçš„ä»£ç 
 	{
 		statement = statement + ParameterNode::simpleType + " "
 			+ ParameterNode::idlist[i] + ", ";
 	}
 	return statement+ ParameterNode::simpleType + " "
-		+ ParameterNode::idlist[ParameterNode::idlist.size - 1];//¼ÓÉÏ×îºóÒ»¸öid
+		+ ParameterNode::idlist[ParameterNode::idlist.size - 1];//åŠ ä¸Šæœ€åä¸€ä¸ªid
 }
 
 std::string FunctionCallNode::codeGenerator()
 {
-	string statement;//²ÎÊıµÄÄÚÈİ
-	for (int i = 0; i < FunctionCallNode::children.size - 1; i++)//Éú³É³ı×îºóÒ»¸öexpressionÍâËùÓĞ²ÎÊıµÄ´úÂë
+	string statement;//å‚æ•°çš„å†…å®¹
+	for (int i = 0; i < FunctionCallNode::children.size - 1; i++)//ç”Ÿæˆé™¤æœ€åä¸€ä¸ªexpressionå¤–æ‰€æœ‰å‚æ•°çš„ä»£ç 
 	{
 		statement = statement
 			+ FunctionCallNode::children[i]->codeGenerator()
@@ -124,20 +119,39 @@ std::string FunctionCallNode::codeGenerator()
 	}
 	return FunctionCallNode::id 
 		+ "( " + statement + FunctionCallNode:: children[FunctionCallNode::children.size - 1]->codeGenerator()
-		+ " );";//¼ÓÉÏ×îºóÒ»¸ö²ÎÊı
+		+ " );";//åŠ ä¸Šæœ€åä¸€ä¸ªå‚æ•°
 }
 
 std::string FunctionDeclarationNode::codeGenerator()
 {
-	string parStatement;//²ÎÊıÄÚÈİ
-	string statement;//º¯ÊıÖ÷ÌåÄÚÈİ
-	for(int i=0;i< )
+	string parStatement;//å‚æ•°å†…å®¹
+	string statement;//å‡½æ•°ä¸»ä½“å†…å®¹
+	string statement = simpleType + " " + id + "(";
+
+	int ptr=0;	//childrenæ•°ç»„çš„å½“å‰è®¿é—®æŒ‡é’ˆ
+	if (parameterNum != 0) { //åˆ¤æ–­æ˜¯å¦æœ‰å‚æ•°
+		int parametercount = 0;//è®¡æ•°å·²ç»è¾“å‡ºçš„å‚æ•°
+		while (parametercount < parameterNum) {	//ä¹‹åçš„childrenèŠ‚ç‚¹è¿˜å­˜åœ¨å‚æ•°
+			if (parametercount == 0) 
+				statement = statement + children[ptr]->codeGenerator();
+			else
+				statement = "," + statement + children[ptr]->codeGenerator();
+			parametercount += children[ptr]->getIdNum();
+			ptr++;
+		}
+	}
+	statement +=  "){";
+	for (int i = ptr; i < children.size; i++) {
+		statement += children[i]->codeGenerator();
+	}
+	statement += "}";
+	return statement;
 }
 
 std::string ProgramNode::codeGenerator()
 {
-	string statement;//ËùÓĞprogramµÄÄÚÈİ,³ıÁËint mainµÄÄÚÈİ
-	string beginStatement;//Í·ÎÄ¼ş
+	string statement;//æ‰€æœ‰programçš„å†…å®¹,é™¤äº†int mainçš„å†…å®¹
+	string beginStatement;//å¤´æ–‡ä»¶
 	beginStatement = "#include <stdio.h> \n";
 	for (int i = 0; i < ProgramNode::children.size-1; i++)
 	{
@@ -147,4 +161,14 @@ std::string ProgramNode::codeGenerator()
 	}
 	return beginStatement + statement + "int main( ) \n"
 		+ ProgramNode::children[ProgramNode::children.size - 1]->codeGenerator();
+}
+
+std::string VarpartNode::codeGenerator() {
+	string statement;
+	vector<std::pair<int, int>> peroid = scope->lookUp(id).getType().getPeroid();
+
+	for (int i = 0; i < children.size; i++) {
+		statement += "[" + children[i]->codeGenerator() + "-" + to_string(peroid[i].first()) + "]";
+	}
+	return statement;
 }
