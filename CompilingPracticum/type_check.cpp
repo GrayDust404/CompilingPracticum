@@ -31,7 +31,8 @@ bool AssignmentNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != children[1]->getType())
 	{
-		//fix me
+		printf("%d\n", children[0]->getLineNum());
+		printf(children[0]->getID().c_str());
 		flag = false;
 	}
 	for (auto i : children)
@@ -47,7 +48,8 @@ bool IfNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		//fix me
+		printf("%d\n", children[0]->getLineNum());
+		printf(children[0]->getID().c_str());
 		flag = false;
 	}
 	for (auto i : children)
@@ -64,7 +66,8 @@ bool ForNode::typeCheck()
 	TypeStruct temp = TypeStruct(std::string("integer"));
 	if (children[0]->getType() != temp || children[1]->getType() != temp)
 	{
-		//fix me
+		printf("%d\n", children[0]->getLineNum());
+		printf(children[0]->getID().c_str());
 		flag = false;
 	}
 	for (auto i : children)
@@ -80,7 +83,8 @@ bool WhileNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		//fix me
+		printf("%d\n", children[0]->getLineNum());
+		printf(children[0]->getID().c_str());
 		flag = false;
 	}
 	for (auto i : children)
@@ -99,7 +103,8 @@ bool VarpartNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			//fix me
+			printf("%d\n", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
 		}
 	}
@@ -121,7 +126,8 @@ bool ExpressionNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			//fix me
+			printf("%d\n", i->getLineNum());
+			printf(i->getID().c_str());
 			flag = false;
 		}
 	}
@@ -139,7 +145,7 @@ bool FunctionCallNode::typeCheck()
 	std::vector<TypeStruct> parameterType = scope->lookUp(id).getParameterType();
 	if (parameterType.size() != children.size())
 	{
-		//fix me
+		printf("%d\n", lineNum);
 		flag = false;
 	}
 	else
@@ -148,7 +154,8 @@ bool FunctionCallNode::typeCheck()
 		{
 			if (children[i]->getType() != parameterType[i])
 			{
-				//fix me
+				printf("%d\n", children[i]->getLineNum());
+				printf(children[i]->getID().c_str());
 				flag = false;
 			}
 		}
@@ -175,7 +182,7 @@ TypeStruct VarNode::getType()
 	}
 	else
 	{
-		//fix me
+		printf("%d\n", lineNum);
 		return TypeStruct();
 	}
 }
@@ -194,6 +201,16 @@ TypeStruct FunctionCallNode::getType()
 }
 TypeStruct ExpressionNode::getType()
 {
+	if (operation == std::string("not")
+		|| operation == std::string("and")
+		|| operation == std::string("or")
+		|| operation == std::string(">")
+		|| operation == std::string("<")
+		|| operation == std::string("=")
+		|| operation == std::string(">=")
+		|| operation == std::string("<=")
+		|| operation == std::string("<>"))
+		return TypeStruct(std::string("boolean"));
 	return children[0]->getType();
 }
 
