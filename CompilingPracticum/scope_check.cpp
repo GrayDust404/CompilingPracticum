@@ -69,7 +69,7 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	scope->insert(Symbol(std::string("for")));
 	scope = scope->initializationScope();
-	scope->insert(iterator);
+	scope->insert(Symbol(iterator, TypeStruct(std::string("integer"))));
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
