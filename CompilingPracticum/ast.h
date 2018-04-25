@@ -247,6 +247,7 @@ class ProgramNode : public ASTNode
 {
 public:
 	ProgramNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum):ASTNode(_children,_lineNum){}
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	std::string codeGenerator() override;
 private:
 

@@ -143,20 +143,23 @@ bool FunctionCallNode::typeCheck()
 {
 	bool flag = true;
 	std::vector<TypeStruct> parameterType = scope->lookUp(id).getParameterType();
-	if (parameterType.size() != children.size())
+	if (id != std::string("read") && id != std::string("write"))
 	{
-		printf("%d\n", lineNum);
-		flag = false;
-	}
-	else
-	{
-		for (int i = 0; i<parameterType.size(); i++)
+		if (parameterType.size() != children.size())
 		{
-			if (children[i]->getType() != parameterType[i])
+			printf("%d\n", lineNum);
+			flag = false;
+		}
+		else
+		{
+			for (int i = 0; i<parameterType.size(); i++)
 			{
-				printf("%d\n", children[i]->getLineNum());
-				printf(children[i]->getID().c_str());
-				flag = false;
+				if (children[i]->getType() != parameterType[i])
+				{
+					printf("%d\n", children[i]->getLineNum());
+					printf(children[i]->getID().c_str());
+					flag = false;
+				}
 			}
 		}
 	}

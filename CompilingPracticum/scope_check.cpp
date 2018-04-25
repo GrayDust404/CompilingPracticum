@@ -44,7 +44,7 @@ bool FunctionCallNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	if (scope->lookUp(id).getId().empty())
+	if (scope->lookUp(id).getId().empty() && id != std::string("read") && id != std::string("write"))
 	{
 		flag = false;
 		printf(id.c_str());
@@ -188,6 +188,28 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 			printf("4%dFunc", i->getLineNum());
 			printf(i->getID().c_str());
 			flag = false;
+		}
+	}
+	return flag;
+}
+
+bool ProgramNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
+{
+	bool flag = true;
+	scope = parentScope;
+	scope->insert(Symbol(std::string("program")));
+	std::vector<TypeStruct> randomParameter;
+	randomParameter.push_back(TypeStruct(std::string("integer")));
+	scope->insert(Symbol(std::string("random"), TypeStruct(std::string("integer")),randomParameter));
+	scope = scope->initializationScope();
+	for (auto i : children)
+	{
+		if (!(i->scopeCheck(scope)))
+		{
+			flag = false;
+			printf("%dAST", i->getLineNum());
+			printf(i->getID().c_str());
+
 		}
 	}
 	return flag;
