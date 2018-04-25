@@ -25,10 +25,10 @@ begin
 end;
 
 begin
-  for i:=1 to 10 do ss(1,2);
-  for i:=1 to 10 do ss(1,2);
+  for i:=1 to 10 do a[i]:=random(100);
+  for i:=1 to 10 do write(a[i]);
 
   ss(1,10);
 
-  for i:=1 to 10 do ss(1,2);
+  for i:=1 to 10 do read(a[i])
 end
