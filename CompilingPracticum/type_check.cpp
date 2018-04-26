@@ -32,7 +32,7 @@ bool AssignmentNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != children[1]->getType())
 	{
-		std::cout << "类型错误，Assignment错误，错位行数为：" << children[0]->getLineNum() 
+		std::cout << "第：" << children[0]->getLineNum() << "行，类型错误，Assignment错误 "
 			<< " 错误内容为" << children[0]->getID() << std::endl;
 		flag = false;
 	}
@@ -40,7 +40,7 @@ bool AssignmentNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -52,7 +52,7 @@ bool IfNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		std::cout << "类型错误，If节点的布尔值错误，错位行数为：" << children[0]->getLineNum()
+		std::cout << "第：" << children[0]->getLineNum() << "行，类型错误，If节点的布尔类型错误 "
 			<< " 错误内容为" << children[0]->getID() << std::endl;
 		flag = false;
 	}
@@ -60,7 +60,7 @@ bool IfNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -73,15 +73,14 @@ bool ForNode::typeCheck()
 	TypeStruct temp = TypeStruct(std::string("integer"));
 	if (children[0]->getType() != temp || children[1]->getType() != temp)
 	{
-		std::cout << "类型错误，For节点赋值整数错误，错位行数为：" << children[0]->getLineNum()
-			<< " 错误内容为" << children[0]->getID() << std::endl;
+		std::cout << "第：" << lineNum << "行，类型错误，If节点的判断条件不是布尔值 "<< std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，For子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -93,15 +92,14 @@ bool WhileNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		std::cout << "类型错误，While节点判断条件不是布尔值，错位行数为：" << children[0]->getLineNum()
-			<< " 错误内容为" << children[0]->getID() << std::endl;
+		std::cout << "第：" << lineNum << "行，类型错误，While节点的判断条件不是布尔值 " << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，While子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -116,8 +114,7 @@ bool VarpartNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			std::cout << "类型错误，数组中的值不是整数值，错位行数为：" << i->getLineNum()
-				<< " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第：" << lineNum << "行，类型错误，数组中的值不是整数 " << std::endl;
 			flag = false;
 		}
 	}
@@ -125,7 +122,7 @@ bool VarpartNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，Varpart子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -142,8 +139,7 @@ bool ExpressionNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			std::cout << "类型错误，表达式类型不对，错位行数为：" << i->getLineNum()
-				<< " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第：" << lineNum << "行，类型错误，表达式的类型不匹配 " << std::endl;
 			flag = false;
 		}
 	}
@@ -151,7 +147,7 @@ bool ExpressionNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，Expression子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -166,7 +162,7 @@ bool FunctionCallNode::typeCheck()
 	{
 		if (parameterType.size() != children.size())
 		{
-			std::cout << "类型错误，函数参数个数不对，错位行数为：" << lineNum << std::endl;
+			std::cout << "第：" << lineNum << "行，类型错误，函数调用的参数个数不匹配 " << std::endl;
 			flag = false;
 		}
 		else
@@ -175,8 +171,8 @@ bool FunctionCallNode::typeCheck()
 			{
 				if (children[i]->getType() != parameterType[i])
 				{
-					std::cout << "类型错误，函数数据类型不匹配，错位行数为：" << lineNum
-						<< " 错误内容为" << children[i]->getID() << std::endl;
+					std::cout << "第" << lineNum
+						<< "行，类型错误 错误内容为函数 " << id << " 的第"<< i+1 <<"个参数类型不匹配"<< std::endl;
 					flag = false;
 				}
 			}
@@ -186,7 +182,7 @@ bool FunctionCallNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "类型错误，FunctionCall子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}

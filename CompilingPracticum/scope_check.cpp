@@ -10,7 +10,7 @@ bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;	
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 		}
 	}
 	return flag;
@@ -23,14 +23,14 @@ bool VarNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty())
 	{
 		flag = false;
-		std::cout << "作用域错误,变量未定义,错误行数为:" << lineNum << "  错误项:" << id << std::endl;
+		std::cout << "第" << lineNum << "行，作用域错误 错误内容为变量" << id <<"未定义"<< std::endl;
 		//fix me
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 			
@@ -45,13 +45,13 @@ bool FunctionCallNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty() && id != std::string("read") && id != std::string("write"))
 	{
 		flag = false;
-		std::cout << "作用域错误,函数未定义,错误行数为:" << lineNum << "  错误项:" << id << std::endl;		
+		std::cout << "第" << lineNum << "行，作用域错误 错误内容为函数" << id << "未定义" << std::endl;
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 
@@ -70,7 +70,7 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -89,7 +89,7 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -116,7 +116,7 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		}
 		else
 		{
-			std::cout << "作用域错误，const 使用ID 时，ID未定义" << lineNum << value << std::endl;
+			std::cout << "第" << lineNum << "行，作用域错误 错误内容为变量" << value << "未定义" << std::endl;
 			flag = false;
 		}
 	}
@@ -128,7 +128,7 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -147,7 +147,7 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -177,7 +177,7 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "作用域错误,错误对象为函数,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -198,7 +198,7 @@ bool ProgramNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
-			std::cout << "作用域错误,错误行数为:" << i->getLineNum() << "  错误项:" << i->getID() << std::endl;
+			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 		}
 	}
 	return flag;

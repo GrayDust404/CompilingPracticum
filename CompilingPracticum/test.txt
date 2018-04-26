@@ -1,5 +1,5 @@
 program aa(input,output);
-var a :array[1..100] of integer;
+var a :array[1..1.0] of integer;
 i,j,x:integer;
 
 procedure ss(l,r:integer);
@@ -30,7 +30,7 @@ begin
   for i:=1 to 10 
   do write(a[i]);
 
-  ss(1,1.0);
+  ss(1,10);
 
   for i:=1 to 10 
   do read(a[i])
