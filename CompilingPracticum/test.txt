@@ -25,10 +25,13 @@ begin
 end;
 
 begin
-  for i:=1 to 10 do a[i]:=random(100);
-  for i:=1 to 10 do write(a[i]);
+  for i:=1 to 10 
+  do a[i]:=random(100);
+  for i:=1 to 10 
+  do write(a[i]);
 
-  ss(1,10);
+  ss(1,1.0);
 
-  for i:=1 to 10 do read(a[i])
+  for i:=1 to 10 
+  do read(a[i])
 end

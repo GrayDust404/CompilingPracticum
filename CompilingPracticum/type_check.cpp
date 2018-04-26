@@ -1,4 +1,5 @@
 #include"symbol_table.h"
+#include<iostream>
 
 bool operator==(const TypeStruct &lhs, const TypeStruct &rhs)
 {
@@ -31,14 +32,17 @@ bool AssignmentNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != children[1]->getType())
 	{
-		printf("%d\n", children[0]->getLineNum());
-		printf(children[0]->getID().c_str());
+		std::cout << "类型错误，Assignment错误，错位行数为：" << children[0]->getLineNum() 
+			<< " 错误内容为" << children[0]->getID() << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -48,14 +52,17 @@ bool IfNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		printf("%d\n", children[0]->getLineNum());
-		printf(children[0]->getID().c_str());
+		std::cout << "类型错误，If节点的布尔值错误，错位行数为：" << children[0]->getLineNum()
+			<< " 错误内容为" << children[0]->getID() << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -66,14 +73,17 @@ bool ForNode::typeCheck()
 	TypeStruct temp = TypeStruct(std::string("integer"));
 	if (children[0]->getType() != temp || children[1]->getType() != temp)
 	{
-		printf("%d\n", children[0]->getLineNum());
-		printf(children[0]->getID().c_str());
+		std::cout << "类型错误，For节点赋值整数错误，错位行数为：" << children[0]->getLineNum()
+			<< " 错误内容为" << children[0]->getID() << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，For子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -83,14 +93,17 @@ bool WhileNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		printf("%d\n", children[0]->getLineNum());
-		printf(children[0]->getID().c_str());
+		std::cout << "类型错误，While节点判断条件不是布尔值，错位行数为：" << children[0]->getLineNum()
+			<< " 错误内容为" << children[0]->getID() << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，While子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -103,15 +116,18 @@ bool VarpartNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			printf("%d\n", i->getLineNum());
-			printf(i->getID().c_str());
+			std::cout << "类型错误，数组中的值不是整数值，错位行数为：" << i->getLineNum()
+				<< " 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，Varpart子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -126,15 +142,18 @@ bool ExpressionNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			printf("%d\n", i->getLineNum());
-			printf(i->getID().c_str());
+			std::cout << "类型错误，表达式类型不对，错位行数为：" << i->getLineNum()
+				<< " 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，Expression子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }
@@ -147,7 +166,7 @@ bool FunctionCallNode::typeCheck()
 	{
 		if (parameterType.size() != children.size())
 		{
-			printf("%d\n", lineNum);
+			std::cout << "类型错误，函数参数个数不对，错位行数为：" << lineNum << std::endl;
 			flag = false;
 		}
 		else
@@ -156,8 +175,8 @@ bool FunctionCallNode::typeCheck()
 			{
 				if (children[i]->getType() != parameterType[i])
 				{
-					printf("%d\n", children[i]->getLineNum());
-					printf(children[i]->getID().c_str());
+					std::cout << "类型错误，函数数据类型不匹配，错位行数为：" << lineNum
+						<< " 错误内容为" << children[i]->getID() << std::endl;
 					flag = false;
 				}
 			}
@@ -166,7 +185,10 @@ bool FunctionCallNode::typeCheck()
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
+		{
+			std::cout << "类型错误，FunctionCall子节点错误，错位行数为：" << i->getLineNum() << " 错误内容为" << i->getID() << std::endl;
 			flag = false;
+		}
 	}
 	return flag;
 }

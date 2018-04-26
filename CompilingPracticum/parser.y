@@ -196,6 +196,33 @@ const_value : plus id{
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
+| plus num {
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{$1}));
+				   //记录指向本节点的指针
+				   $$ = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+| minus num {
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{$1}));
+				   //记录指向本节点的指针
+				   $$ = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+| num{
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{$1}));
+				   //记录指向本节点的指针
+				   $$ = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
 | letter {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{$1}));
 				   //记录指向本节点的指针
@@ -762,7 +789,16 @@ term: term multiply factor {
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 };
-factor: digits {
+factor: num{
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1}));
+				   //记录指向本节点的指针
+				   $$ = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[$1].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+|digits {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
