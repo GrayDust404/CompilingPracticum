@@ -119,9 +119,7 @@
   <ItemGroup>
     <ClCompile Include="type_check.cpp" />
     <ClCompile Include="generator.cpp" />
-    <ClCompile Include="lexer.cpp" />
     <ClCompile Include="lexer.flex.cpp" />
-    <ClCompile Include="parser.cpp" />
     <ClCompile Include="parser.tab.cpp" />
     <ClCompile Include="scope_check.cpp" />
     <ClCompile Include="transform.cpp" />

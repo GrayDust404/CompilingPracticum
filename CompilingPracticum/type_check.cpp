@@ -32,15 +32,13 @@ bool AssignmentNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != children[1]->getType())
 	{
-		std::cout << "第：" << children[0]->getLineNum() << "行，类型错误，Assignment错误 "
-			<< " 错误内容为" << children[0]->getID() << std::endl;
+		std::cout << "第" << lineNum << "行：赋值语句类型不匹配" << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -52,15 +50,13 @@ bool IfNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		std::cout << "第：" << children[0]->getLineNum() << "行，类型错误，If节点的布尔类型错误 "
-			<< " 错误内容为" << children[0]->getID() << std::endl;
+		std::cout << "第" << lineNum << "行: 条件表达式类型必须为boolean"<< std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -73,14 +69,13 @@ bool ForNode::typeCheck()
 	TypeStruct temp = TypeStruct(std::string("integer"));
 	if (children[0]->getType() != temp || children[1]->getType() != temp)
 	{
-		std::cout << "第：" << lineNum << "行，类型错误，If节点的判断条件不是布尔值 "<< std::endl;
+		std::cout << "第" << lineNum << "行: 循环变量上下界表达式类型必须为integer"<< std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -92,14 +87,13 @@ bool WhileNode::typeCheck()
 	bool flag = true;
 	if (children[0]->getType() != TypeStruct(std::string("boolean")))
 	{
-		std::cout << "第：" << lineNum << "行，类型错误，While节点的判断条件不是布尔值 " << std::endl;
+		std::cout << "第" << lineNum << "行: 类型错误，条件表达式类型必须为boolean" << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -114,7 +108,7 @@ bool VarpartNode::typeCheck()
 	{
 		if (i->getType() != temp)
 		{
-			std::cout << "第：" << lineNum << "行，类型错误，数组中的值不是整数 " << std::endl;
+			std::cout << "第" << lineNum << "行: 数组下标中的表达式类型必须为integer" << std::endl;
 			flag = false;
 		}
 	}
@@ -122,7 +116,6 @@ bool VarpartNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -132,22 +125,36 @@ bool VarpartNode::typeCheck()
 bool ExpressionNode::typeCheck()
 {
 	bool flag = true;
-	TypeStruct temp = children[0]->getType();
+	TypeStruct temp = children[0]->getType(); 
 	if (temp == TypeStruct())
 		flag = false;
-	for (auto i : children)
+	if (operation == std::string("not") || operation == std::string("and") || operation == std::string("or"))
 	{
-		if (i->getType() != temp)
+		temp = TypeStruct(std::string("boolean"));
+		for (auto i : children)
 		{
-			std::cout << "第：" << lineNum << "行，类型错误，表达式的类型不匹配 " << std::endl;
-			flag = false;
+			if (i->getType() != temp)
+			{
+				std::cout << "第" << lineNum << "行: 运算符\"" << operation << "\"两侧类型必须为boolean" << std::endl;
+				flag = false;
+			}
+		}
+	}
+	else
+	{
+		for (auto i : children)
+		{
+			if (i->getType() != temp)
+			{
+				std::cout << "第" << lineNum << "行: 运算符\"" << operation << "\"两侧类型不匹配" << std::endl;
+				flag = false;
+			}
 		}
 	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -162,7 +169,7 @@ bool FunctionCallNode::typeCheck()
 	{
 		if (parameterType.size() != children.size())
 		{
-			std::cout << "第：" << lineNum << "行，类型错误，函数调用的参数个数不匹配 " << std::endl;
+			std::cout << "第" << lineNum << "行: 函数调用的参数个数不匹配" << std::endl;
 			flag = false;
 		}
 		else
@@ -171,8 +178,7 @@ bool FunctionCallNode::typeCheck()
 			{
 				if (children[i]->getType() != parameterType[i])
 				{
-					std::cout << "第" << lineNum
-						<< "行，类型错误 错误内容为函数 " << id << " 的第"<< i+1 <<"个参数类型不匹配"<< std::endl;
+					std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第"<< i+1 <<"个参数类型不匹配"<< std::endl;
 					flag = false;
 				}
 			}
@@ -182,7 +188,6 @@ bool FunctionCallNode::typeCheck()
 	{
 		if (!(i->typeCheck()))
 		{
-			std::cout << "第" << i->getLineNum() << "行，类型错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -203,7 +208,7 @@ TypeStruct VarNode::getType()
 	}
 	else
 	{
-		printf("%d\n", lineNum);
+		std::cout << "第" << lineNum << "行: 数组变量\"" << id <<"\"引用的下标数量超过事先定义的维数" << std::endl;
 		return TypeStruct();
 	}
 }

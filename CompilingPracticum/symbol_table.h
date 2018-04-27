@@ -63,6 +63,15 @@ public:
 			return parentTable->lookUp(id);
 		return Symbol();
 	}
+	Symbol localLookUp(std::string id)
+	{
+		for (auto i : symbolList)
+		{
+			if (i.getId() == id)
+				return i;
+		}
+		return Symbol();
+	}
 	std::shared_ptr<SymbolTable> initializationScope()
 	{
 		//std::shared_ptr<SymbolTable> cTable = std::shared_ptr<SymbolTable>(new SymbolTable(this));

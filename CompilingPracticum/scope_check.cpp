@@ -10,7 +10,6 @@ bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
-			std::cout << "第" << i->getLineNum() << "行：作用域错误 错误内容为" << i->getID() << std::endl;
 		}
 	}
 	return flag;
@@ -23,14 +22,12 @@ bool VarNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty())
 	{
 		flag = false;
-		std::cout << "第" << lineNum << "行，作用域错误 错误内容为变量" << id <<"未定义"<< std::endl;
-		//fix me
+		std::cout << "��" << lineNum << "��: ����" << id <<"δ����"<< std::endl;
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 			
@@ -44,17 +41,15 @@ bool FunctionCallNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	if (scope->lookUp(id).getId().empty() && id != std::string("read") && id != std::string("write"))
 	{
+		std::cout << "��" << lineNum << "��: ����" << id << "δ����" << std::endl;
 		flag = false;
-		std::cout << "第" << lineNum << "行，作用域错误 错误内容为函数" << id << "未定义" << std::endl;
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
-
 	}
 	return  flag;
 }
@@ -70,7 +65,6 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -83,13 +77,18 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	for (auto id : idlist)
 	{
-		scope->insert(Symbol(std::string(id), type, false));
+		if(scope->localLookUp(id).getId().empty())
+			scope->insert(Symbol(std::string(id), type, false));
+		else
+		{
+			std::cout << "��" << lineNum << "��: ����" << id << "�ض���" << std::endl;
+			flag = false;
+		}
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -100,35 +99,42 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	if (value.find(std::string(".")) != std::string::npos)
+	if (scope->localLookUp(id).getId().empty())
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")),true));
-	}
-	else if (value.find(std::string("'")) != std::string::npos)
-	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("char")),true));
-	}
-	else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
-	{
-		if (!(scope->lookUp(value).getId().empty()))
+		if (value.find(std::string(".")) != std::string::npos)
 		{
-			scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType()),true));
+			scope->insert(Symbol(std::string(id), TypeStruct(std::string("real")), true));
+		}
+		else if (value.find(std::string("'")) != std::string::npos)
+		{
+			scope->insert(Symbol(std::string(id), TypeStruct(std::string("char")), true));
+		}
+		else if ((value[0]>'a'&&value[0]<'z') || (value[0]>'A'&&value[0]<'Z'))
+		{
+			if (!(scope->lookUp(value).getId().empty()))
+			{
+				scope->insert(Symbol(std::string(id), TypeStruct(scope->lookUp(value).getType()), true));
+			}
+			else
+			{
+				std::cout << "��" << lineNum << "��: ����" << value << "δ����" << std::endl;
+				flag = false;
+			}
 		}
 		else
 		{
-			std::cout << "第" << lineNum << "行，作用域错误 错误内容为变量" << value << "未定义" << std::endl;
-			flag = false;
+			scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")), true));
 		}
 	}
 	else
 	{
-		scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")),true));
+		std::cout << "��" << lineNum << "��: ����" << id << "�ض���" << std::endl;
+		flag = false;
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -139,15 +145,20 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	for (auto i : idlist)
+	for (auto id : idlist)
 	{
-		scope->insert(Symbol(std::string(i),TypeStruct(std::string(simpleType),isVar)));
+		if (scope->localLookUp(id).getId().empty())
+			scope->insert(Symbol(std::string(id),TypeStruct(std::string(simpleType),isVar)));
+		else
+		{
+			std::cout << "��" << lineNum << "��: ����" << id << "�ض���" << std::endl;
+			flag = false;
+		}
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -159,27 +170,35 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 	
 	bool flag = true;
 	scope = parentScope;
-	std::vector<TypeStruct> parameterType;
-	int count = 0;
-	for (int i = 0;; i++) 
+	if (scope->localLookUp(id).getId().empty())
 	{
-		if (count >= parameterNum) break;
-		TypeStruct tempType = children[i]->getType();
-		for (int j = 0; j < children[i]->getIdNum(); j++)
+		std::vector<TypeStruct> parameterType;
+		int count = 0;
+		for (int i = 0;; i++)
 		{
-			parameterType.push_back(tempType);
-			count++;
+			if (count >= parameterNum) break;
+			TypeStruct tempType = children[i]->getType();
+			for (int j = 0; j < children[i]->getIdNum(); j++)
+			{
+				parameterType.push_back(tempType);
+				count++;
+			}
 		}
+		scope->insert(Symbol(std::string(id), TypeStruct(simpleType), parameterType));
+		scope = scope->initializationScope();
+		for (auto i : children)
+		{
+			if (!(i->scopeCheck(scope)))
+			{
+				flag = false;
+			}
+		}
+		return flag;
 	}
-	scope->insert(Symbol(std::string(id),TypeStruct(simpleType),parameterType));
-	scope = scope->initializationScope();
-	for (auto i : children)
+	else
 	{
-		if (!(i->scopeCheck(scope)))
-		{
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
-			flag = false;
-		}
+		std::cout << "��" << lineNum << "��: ����" << id << "�ض���" << std::endl;
+		flag = false;
 	}
 	return flag;
 }
@@ -198,7 +217,6 @@ bool ProgramNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
-			std::cout << "第" << i->getLineNum() << "行，作用域错误 错误内容为" << i->getID() << std::endl;
 		}
 	}
 	return flag;

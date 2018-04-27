@@ -19,7 +19,7 @@ public:
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
-	bool isRef; //绗﹀彿琛ㄤ腑璁板綍鏄惁寮曠敤
+	bool isRef; //符号表中记录是否引用
 };
 
 class ASTNode 

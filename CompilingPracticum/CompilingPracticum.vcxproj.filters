@@ -18,12 +18,6 @@
     <ClCompile Include="generator.cpp">
       <Filter>资源文件\源文件</Filter>
     </ClCompile>
-    <ClCompile Include="lexer.cpp">
-      <Filter>资源文件\源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="parser.cpp">
-      <Filter>资源文件\源文件</Filter>
-    </ClCompile>
     <ClCompile Include="lexer.flex.cpp">
       <Filter>资源文件\源文件</Filter>
     </ClCompile>

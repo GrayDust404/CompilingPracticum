@@ -1555,13 +1555,13 @@ yyreduce:
 #line 40 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("programstruct"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1571,14 +1571,14 @@ yyreduce:
 #line 54 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 				   }
     break;
@@ -1588,13 +1588,13 @@ yyreduce:
 #line 67 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 				   }
     break;
@@ -1604,11 +1604,11 @@ yyreduce:
 #line 78 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1618,9 +1618,9 @@ yyreduce:
 #line 87 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("program_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
@@ -1633,10 +1633,10 @@ yyreduce:
 #line 98 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1646,12 +1646,12 @@ yyreduce:
 #line 106 "parser.y"
     {				   
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 				   }
     break;
@@ -1661,15 +1661,15 @@ yyreduce:
 #line 117 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1679,13 +1679,13 @@ yyreduce:
 #line 130 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1695,12 +1695,12 @@ yyreduce:
 #line 141 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1710,12 +1710,12 @@ yyreduce:
 #line 151 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
@@ -1725,11 +1725,11 @@ yyreduce:
 #line 161 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1739,12 +1739,12 @@ yyreduce:
 #line 170 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
@@ -1754,12 +1754,12 @@ yyreduce:
 #line 180 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1769,11 +1769,11 @@ yyreduce:
 #line 190 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1783,11 +1783,11 @@ yyreduce:
 #line 199 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1797,11 +1797,11 @@ yyreduce:
 #line 208 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1811,11 +1811,11 @@ yyreduce:
 #line 217 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1825,11 +1825,11 @@ yyreduce:
 #line 226 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1839,10 +1839,10 @@ yyreduce:
 #line 236 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1852,13 +1852,13 @@ yyreduce:
 #line 244 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1868,13 +1868,13 @@ yyreduce:
 #line 255 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1884,15 +1884,15 @@ yyreduce:
 #line 266 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1902,10 +1902,10 @@ yyreduce:
 #line 280 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1915,13 +1915,13 @@ yyreduce:
 #line 288 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1931,13 +1931,13 @@ yyreduce:
 #line 299 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
@@ -1947,12 +1947,12 @@ yyreduce:
 #line 310 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -1962,9 +1962,9 @@ yyreduce:
 #line 320 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
@@ -1978,10 +1978,10 @@ yyreduce:
 #line 331 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1991,13 +1991,13 @@ yyreduce:
 #line 339 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2007,13 +2007,13 @@ yyreduce:
 #line 350 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2023,11 +2023,11 @@ yyreduce:
 #line 361 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2037,11 +2037,11 @@ yyreduce:
 #line 370 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2051,11 +2051,11 @@ yyreduce:
 #line 379 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2065,12 +2065,12 @@ yyreduce:
 #line 388 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -2080,13 +2080,13 @@ yyreduce:
 #line 398 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("value_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2096,13 +2096,13 @@ yyreduce:
 #line 409 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2112,11 +2112,11 @@ yyreduce:
 #line 421 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("compound_statement"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2126,13 +2126,13 @@ yyreduce:
 #line 430 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2142,11 +2142,11 @@ yyreduce:
 #line 441 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2156,10 +2156,10 @@ yyreduce:
 #line 450 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2169,13 +2169,13 @@ yyreduce:
 #line 458 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2185,11 +2185,11 @@ yyreduce:
 #line 469 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2199,11 +2199,11 @@ yyreduce:
 #line 478 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2213,15 +2213,15 @@ yyreduce:
 #line 487 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2231,9 +2231,9 @@ yyreduce:
 #line 500 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (8)].ival),(yyvsp[(2) - (8)].ival),(yyvsp[(3) - (8)].ival),(yyvsp[(4) - (8)].ival),(yyvsp[(5) - (8)].ival),(yyvsp[(6) - (8)].ival),(yyvsp[(7) - (8)].ival),(yyvsp[(8) - (8)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (8)].ival)].setParent(parseTree.size() - 1);
@@ -2242,7 +2242,7 @@ yyreduce:
 				   parseTree[(yyvsp[(6) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(7) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(8) - (8)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2252,9 +2252,9 @@ yyreduce:
 #line 516 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
@@ -2267,10 +2267,10 @@ yyreduce:
 #line 526 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2280,12 +2280,12 @@ yyreduce:
 #line 534 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2295,11 +2295,11 @@ yyreduce:
 #line 545 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);				
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2309,14 +2309,14 @@ yyreduce:
 #line 554 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2326,12 +2326,12 @@ yyreduce:
 #line 566 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("variable"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2341,9 +2341,9 @@ yyreduce:
 #line 576 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 }
     break;
 
@@ -2352,9 +2352,9 @@ yyreduce:
 #line 582 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
@@ -2366,13 +2366,13 @@ yyreduce:
 #line 591 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2382,11 +2382,11 @@ yyreduce:
 #line 602 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2396,11 +2396,11 @@ yyreduce:
 #line 611 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2410,13 +2410,13 @@ yyreduce:
 #line 620 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
@@ -2426,13 +2426,13 @@ yyreduce:
 #line 631 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2442,13 +2442,13 @@ yyreduce:
 #line 642 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2458,13 +2458,13 @@ yyreduce:
 #line 653 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2474,13 +2474,13 @@ yyreduce:
 #line 664 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2490,13 +2490,13 @@ yyreduce:
 #line 675 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2506,13 +2506,13 @@ yyreduce:
 #line 686 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2522,13 +2522,13 @@ yyreduce:
 #line 697 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2538,13 +2538,13 @@ yyreduce:
 #line 708 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2554,11 +2554,11 @@ yyreduce:
 #line 719 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2568,13 +2568,13 @@ yyreduce:
 #line 728 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2584,13 +2584,13 @@ yyreduce:
 #line 739 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2600,13 +2600,13 @@ yyreduce:
 #line 750 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2616,13 +2616,13 @@ yyreduce:
 #line 761 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2632,13 +2632,13 @@ yyreduce:
 #line 772 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2648,11 +2648,11 @@ yyreduce:
 #line 783 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2662,11 +2662,11 @@ yyreduce:
 #line 792 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2676,11 +2676,11 @@ yyreduce:
 #line 801 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2690,11 +2690,11 @@ yyreduce:
 #line 810 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2704,14 +2704,14 @@ yyreduce:
 #line 819 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2721,13 +2721,13 @@ yyreduce:
 #line 831 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2737,12 +2737,12 @@ yyreduce:
 #line 842 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2752,12 +2752,12 @@ yyreduce:
 #line 852 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
@@ -2767,11 +2767,11 @@ yyreduce:
 #line 863 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -2781,9 +2781,9 @@ yyreduce:
 #line 872 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (6)].ival),(yyvsp[(2) - (6)].ival),(yyvsp[(3) - (6)].ival),(yyvsp[(4) - (6)].ival),(yyvsp[(5) - (6)].ival),(yyvsp[(6) - (6)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (6)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (6)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (6)].ival)].setParent(parseTree.size() - 1);
@@ -2798,9 +2798,9 @@ yyreduce:
 #line 885 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
@@ -2814,9 +2814,9 @@ yyreduce:
 #line 896 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);

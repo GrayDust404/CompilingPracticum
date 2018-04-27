@@ -2,23 +2,23 @@
 using namespace std;
 std::string ExpressionNode::codeGenerator()
 {
-	if (children.size() == 1)//åªæœ‰ä¸€ä¸ªå­èŠ‚ç‚¹æ—¶
+	if (children.size() == 1)//Ö»ÓĞÒ»¸ö×Ó½ÚµãÊ±
 	{
-		string testEnd;//æ£€æµ‹æœ«å°¾æ˜¯å¦æœ‰ï¼›
+		string testEnd;//¼ì²âÄ©Î²ÊÇ·ñÓĞ£»
 		testEnd = children[0]->codeGenerator();
-		if (testEnd[testEnd.length() - 1] == ';')//å¦‚æœæœ«å°¾ä¸º;åˆ é™¤
+		if (testEnd[testEnd.length() - 1] == ';')//Èç¹ûÄ©Î²Îª;É¾³ı
 			testEnd.pop_back();
 		return "( " + operation + " "
 			+ testEnd + " )";
 	}
-	if (children.size() == 2)//æœ‰ä¸¤ä¸ªå­èŠ‚ç‚¹æ—¶
+	if (children.size() == 2)//ÓĞÁ½¸ö×Ó½ÚµãÊ±
 	{
-		string testEnd1, testEnd2;//æ£€æµ‹æœ«å°¾æ˜¯å¦æœ‰ï¼›
+		string testEnd1, testEnd2;//¼ì²âÄ©Î²ÊÇ·ñÓĞ£»
 		testEnd1 = children[0]->codeGenerator();
 		testEnd2 = children[1]->codeGenerator();
-		if (testEnd1[testEnd1.length() - 1] == ';')//å¦‚æœæœ«å°¾ä¸º;åˆ é™¤
+		if (testEnd1[testEnd1.length() - 1] == ';')//Èç¹ûÄ©Î²Îª;É¾³ı
 			testEnd1.pop_back();
-		if (testEnd2[testEnd2.length() - 1] == ';')//å¦‚æœæœ«å°¾ä¸º;åˆ é™¤
+		if (testEnd2[testEnd2.length() - 1] == ';')//Èç¹ûÄ©Î²Îª;É¾³ı
 			testEnd2.pop_back();
 		return "( " + testEnd1 + " "+ operation 
 			+ " " + testEnd2 +" )";
@@ -30,22 +30,22 @@ std::string VarNode::codeGenerator()
 {
 	if (children.size() == 0)
 	{
-		if (scope->lookUp(id).getType().checkRef())//åˆ¤æ–­æ˜¯å¦ä¸ºå¼•ç”¨
+		if (scope->lookUp(id).getType().checkRef())//ÅĞ¶ÏÊÇ·ñÎªÒıÓÃ
 		{
 			return '(' + "*" + id + ')';
 		}
-		else//ä¸ä¸ºå¼•ç”¨æ—¶
+		else//²»ÎªÒıÓÃÊ±
 		{
 			return '(' + id + ')';
 		}
 	}
 	else
 	{
-		if (scope->lookUp(id).getType().checkRef())//åˆ¤æ–­æ˜¯å¦ä¸ºå¼•ç”¨
+		if (scope->lookUp(id).getType().checkRef())//ÅĞ¶ÏÊÇ·ñÎªÒıÓÃ
 		{
 			return '(' + "*" + id + children[0]->codeGenerator() + ')';
 		}
-		else//ä¸ä¸ºå¼•ç”¨æ—¶
+		else//²»ÎªÒıÓÃÊ±
 		{
 			return '(' + id + children[0]->codeGenerator() + ')';
 		}
@@ -59,8 +59,8 @@ std::string ConstNode::codeGenerator()
 
 std::string VarDeclarationNode::codeGenerator()
 {
-	string stringIdList;//å¤šä¸ªidçš„å­—ç¬¦ä¸²
-	for (int i = 0; i < idlist.size(); i++)//ç”Ÿæˆå¤šä¸ªidçš„å­—ç¬¦ä¸²
+	string stringIdList;//¶à¸öidµÄ×Ö·û´®
+	for (int i = 0; i < idlist.size(); i++)//Éú³É¶à¸öidµÄ×Ö·û´®
 	{
 		if(i != 0)
 			stringIdList = stringIdList + "," + idlist[i];
@@ -80,9 +80,9 @@ std::string ConstDeclarationNode::codeGenerator()
 
 std::string AssignmentNode::codeGenerator()
 {
-	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId())//åˆ¤æ–­æ˜¯å¦ä¸ºreturnå€¼,æ˜¯
+	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId())//ÅĞ¶ÏÊÇ·ñÎªreturnÖµ,ÊÇ
 		return "return "+ children[1]->codeGenerator() + ";";
-	else		//ä¸æ˜¯returnï¼Œåˆ™è¾“å‡ºèµ‹å€¼è¯­å¥
+	else		//²»ÊÇreturn£¬ÔòÊä³ö¸³ÖµÓï¾ä
 		return children[0]->codeGenerator() + " = " + children[1]->codeGenerator() + ";";
 }
 
@@ -107,7 +107,7 @@ std::string WhileNode::codeGenerator()
 
 std::string CompoundNode::codeGenerator()
 {
-	string statement;//CompoundNodeå†…æ‰€æœ‰çš„å†…å®¹
+	string statement;//CompoundNodeÄÚËùÓĞµÄÄÚÈİ
 	for (int i = 0; i < children.size(); i++)
 	{
 		statement = statement + children[i]->codeGenerator()
@@ -118,20 +118,20 @@ std::string CompoundNode::codeGenerator()
 
 std::string ParameterNode::codeGenerator()
 {
-	string statement;//ParameterNodeå†…çš„æ‰€æœ‰å†…å®¹
-	for (int i = 0; i < idlist.size()-1; i++)//ç”Ÿæˆé™¤æœ€åä¸€ä¸ªidå¤–æ‰€æœ‰Parameterçš„ä»£ç 
+	string statement;//ParameterNodeÄÚµÄËùÓĞÄÚÈİ
+	for (int i = 0; i < idlist.size()-1; i++)//Éú³É³ı×îºóÒ»¸öidÍâËùÓĞParameterµÄ´úÂë
 	{
 		statement = statement + simpleType + " "
 			+ idlist[i] + ", ";
 	}
 	return statement+ simpleType + " "
-		+ idlist[idlist.size() - 1];//åŠ ä¸Šæœ€åä¸€ä¸ªid
+		+ idlist[idlist.size() - 1];//¼ÓÉÏ×îºóÒ»¸öid
 }
 
 std::string FunctionCallNode::codeGenerator()
 {
-	string statement;//å‚æ•°çš„å†…å®¹
-	for (int i = 0; i < children.size() - 1; i++)//ç”Ÿæˆé™¤æœ€åä¸€ä¸ªexpressionå¤–æ‰€æœ‰å‚æ•°çš„ä»£ç 
+	string statement;//²ÎÊıµÄÄÚÈİ
+	for (int i = 0; i < children.size() - 1; i++)//Éú³É³ı×îºóÒ»¸öexpressionÍâËùÓĞ²ÎÊıµÄ´úÂë
 	{
 		statement = statement
 			+ children[i]->codeGenerator()
@@ -139,18 +139,18 @@ std::string FunctionCallNode::codeGenerator()
 	}
 	return id 
 		+ "( " + statement + children[children.size() - 1]->codeGenerator()
-		+ " );";//åŠ ä¸Šæœ€åä¸€ä¸ªå‚æ•°
+		+ " );";//¼ÓÉÏ×îºóÒ»¸ö²ÎÊı
 }
 
 std::string FunctionDeclarationNode::codeGenerator()
 {
-	string parStatement;//å‚æ•°å†…å®¹
-	string statement= simpleType + " " + id + "(";//å‡½æ•°ä¸»ä½“å†…å®¹
+	string parStatement;//²ÎÊıÄÚÈİ
+	string statement= simpleType + " " + id + "(";//º¯ÊıÖ÷ÌåÄÚÈİ
 
-	int ptr=0;	//childrenæ•°ç»„çš„å½“å‰è®¿é—®æŒ‡é’ˆ
-	if (parameterNum != 0) { //åˆ¤æ–­æ˜¯å¦æœ‰å‚æ•°
-		int parametercount = 0;//è®¡æ•°å·²ç»è¾“å‡ºçš„å‚æ•°
-		while (parametercount < parameterNum) {	//ä¹‹åçš„childrenèŠ‚ç‚¹è¿˜å­˜åœ¨å‚æ•°
+	int ptr=0;	//childrenÊı×éµÄµ±Ç°·ÃÎÊÖ¸Õë
+	if (parameterNum != 0) { //ÅĞ¶ÏÊÇ·ñÓĞ²ÎÊı
+		int parametercount = 0;//¼ÆÊıÒÑ¾­Êä³öµÄ²ÎÊı
+		while (parametercount < parameterNum) {	//Ö®ºóµÄchildren½Úµã»¹´æÔÚ²ÎÊı
 			if (parametercount == 0) 
 				statement = statement + children[ptr]->codeGenerator();
 			else
@@ -169,8 +169,8 @@ std::string FunctionDeclarationNode::codeGenerator()
 
 std::string ProgramNode::codeGenerator()
 {
-	string statement;//æ‰€æœ‰programçš„å†…å®¹,é™¤äº†int mainçš„å†…å®¹
-	string beginStatement;//å¤´æ–‡ä»¶
+	string statement;//ËùÓĞprogramµÄÄÚÈİ,³ıÁËint mainµÄÄÚÈİ
+	string beginStatement;//Í·ÎÄ¼ş
 	beginStatement = "#include <stdio.h> \n";
 	for (int i = 0; i < children.size()-1; i++)
 	{
