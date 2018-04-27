@@ -10,7 +10,7 @@ bool ASTNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼šä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 		}
 	}
 	return flag;
@@ -23,14 +23,14 @@ bool VarNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty())
 	{
 		flag = false;
-		std::cout << "µÚ" << lineNum << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª±äÁ¿" << id <<"Î´¶¨Òå"<< std::endl;
+		std::cout << "ç¬¬" << lineNum << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸ºå˜é‡" << id <<"æœªå®šä¹‰"<< std::endl;
 		//fix me
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 			
@@ -45,13 +45,13 @@ bool FunctionCallNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	if (scope->lookUp(id).getId().empty() && id != std::string("read") && id != std::string("write"))
 	{
 		flag = false;
-		std::cout << "µÚ" << lineNum << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎªº¯Êý" << id << "Î´¶¨Òå" << std::endl;
+		std::cout << "ç¬¬" << lineNum << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸ºå‡½æ•°" << id << "æœªå®šä¹‰" << std::endl;
 	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 
@@ -70,7 +70,7 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -89,7 +89,7 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -116,7 +116,7 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		}
 		else
 		{
-			std::cout << "µÚ" << lineNum << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª±äÁ¿" << value << "Î´¶¨Òå" << std::endl;
+			std::cout << "ç¬¬" << lineNum << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸ºå˜é‡" << value << "æœªå®šä¹‰" << std::endl;
 			flag = false;
 		}
 	}
@@ -128,7 +128,7 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -147,7 +147,7 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -177,7 +177,7 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 	{
 		if (!(i->scopeCheck(scope)))
 		{
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 			flag = false;
 		}
 	}
@@ -198,7 +198,7 @@ bool ProgramNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
-			std::cout << "µÚ" << i->getLineNum() << "ÐÐ£¬×÷ÓÃÓò´íÎó ´íÎóÄÚÈÝÎª" << i->getID() << std::endl;
+			std::cout << "ç¬¬" << i->getLineNum() << "è¡Œï¼Œä½œç”¨åŸŸé”™è¯¯ é”™è¯¯å†…å®¹ä¸º" << i->getID() << std::endl;
 		}
 	}
 	return flag;
