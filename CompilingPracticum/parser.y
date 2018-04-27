@@ -4,19 +4,21 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
+#include<string>
 #include"parser.h"
 #include"transform.h"
 
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
+extern int yylineno;
 
 void yyerror(const char* s);
 std::vector<ParseTreeNode> parseTree;
+void ParseError(std::string msg,int line);
 int parseTreeRoot;
 %}
 
-%error-verbose //
 
 %union{
 	int ival;
@@ -47,7 +49,14 @@ programstruct: program_head semicolon program_body{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-};
+					}
+| program_head error semicolon program_body{
+					ParseError("**********hahahahahahahA****************",parseTree[parseTree.size()-1].getLineNum());
+					}
+| error semicolon program_body{
+					ParseError("**********hahahahahahah****************",parseTree[parseTree.size()-1].getLineNum());
+					}
+;
 
 
 program_head: program id leftB idlist rightB	
@@ -63,6 +72,18 @@ program_head: program id leftB idlist rightB
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 				   }
+| program id error idlist rightB{
+					ParseError("Lack of left parenthesis",parseTree[parseTree.size()-1].getLineNum());
+					}
+| program id leftB idlist error{
+					ParseError("Lack of right parenthesis",parseTree[parseTree.size()-1].getLineNum());
+					}
+| error id leftB idlist rightB{
+					ParseError("Lack of program",yylineno);
+					}
+| program error leftB idlist rightB{
+					ParseError("Lack of the name of the main function",parseTree[parseTree.size()-1].getLineNum());
+					}
 ;
 idlist: idlist comma id	{
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{$1,$2,$3}));
@@ -83,7 +104,14 @@ idlist: idlist comma id	{
 				   parseTree[$1].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-};
+}
+| idlist comma	error	{
+					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
+					}
+| idlist error id{
+					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
+					}
+;
 program_body: const_declarations var_declarations subprogram_declarations compound_statement{
 				   parseTree.push_back(ParseTreeNode(std::string("program_body"),std::string(""),std::vector<int>{$1,$2,$3,$4}));
 				   //记录指向本节点的指针
@@ -446,7 +474,14 @@ statement_list:  statement_list semicolon statement {
 				   parseTree[$1].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-};
+}
+| statement_list error statement{
+					ParseError("************sssss**************",yylineno-2);
+				}
+| error semicolon statement{
+					ParseError("**************************",parseTree[parseTree.size()-1].getLineNum());
+				}
+;
 statement: {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -905,16 +940,32 @@ period : period comma digits _range digits{
 
 
 %%
+void ParseError(std::string msg,int line)
+{
+	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< line <<std::endl;
+}
 
 int main(int argc, char* argv[]) 
 {
 	yyin = fopen("test.txt","r");
+	yydebug = 1;
 	yyparse();
 	test();
 	return 0;
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Parse error: %s\n", s);
-	exit(1);
+	fprintf(stderr, "Parse error: %s in line %d\n", s,yylineno);
+	//exit(1);
+}
+
+void warning()
+{
+	int yyerrstatus = 1;
+	if(YYRECOVERING())
+	{
+		printf("aaaaaaaaaaaaaa");
+		return;
+	}
+		
 }
