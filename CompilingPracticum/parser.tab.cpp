@@ -69,19 +69,22 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
+#include<string>
 #include"parser.h"
 #include"transform.h"
 
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
+extern int yylineno;
 
 void yyerror(const char* s);
 std::vector<ParseTreeNode> parseTree;
+void ParseError(std::string msg,int line);
 int parseTreeRoot;
 
 /* Line 371 of yacc.c  */
-#line 85 "parser.tab.cpp"
+#line 88 "parser.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -171,13 +174,13 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 19 "parser.y"
+#line 22 "parser.y"
 
 	int ival;
 
 
 /* Line 387 of yacc.c  */
-#line 181 "parser.tab.cpp"
+#line 184 "parser.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -205,7 +208,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 209 "parser.tab.cpp"
+#line 212 "parser.tab.cpp"
 
 #ifdef short
 # undef short
@@ -423,18 +426,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  5
+#define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   160
+#define YYLAST   195
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  49
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  33
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  81
+#define YYNRULES  90
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  173
+#define YYNSTATES  197
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -484,62 +487,69 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint16 yyprhs[] =
 {
-       0,     0,     3,     7,    13,    17,    19,    24,    25,    28,
-      34,    38,    41,    44,    46,    49,    52,    54,    56,    57,
-      61,    65,    71,    72,    76,    80,    84,    90,    91,    95,
-      99,   101,   103,   105,   108,   112,   116,   120,   124,   126,
-     127,   131,   133,   135,   141,   150,   155,   156,   159,   161,
-     166,   169,   170,   174,   178,   180,   182,   186,   190,   194,
-     198,   202,   206,   210,   214,   218,   220,   224,   228,   232,
-     236,   240,   242,   244,   246,   251,   255,   258,   261,   263,
-     270,   276
+       0,     0,     3,     7,    12,    16,    22,    28,    34,    40,
+      46,    50,    52,    56,    61,    62,    65,    71,    75,    78,
+      81,    83,    86,    89,    91,    93,    94,    98,   102,   108,
+     109,   113,   117,   121,   127,   128,   132,   136,   138,   140,
+     142,   145,   149,   153,   157,   161,   163,   167,   171,   172,
+     176,   178,   180,   186,   195,   200,   201,   204,   206,   211,
+     214,   215,   219,   223,   225,   227,   231,   235,   239,   243,
+     247,   251,   255,   259,   263,   265,   269,   273,   277,   281,
+     285,   287,   289,   291,   296,   300,   303,   306,   308,   315,
+     321
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      50,     0,    -1,    51,     4,    53,    -1,    46,     3,    42,
-      52,    43,    -1,    52,     5,     3,    -1,     3,    -1,    54,
-      57,    59,    68,    -1,    -1,     6,    55,    -1,    55,     4,
-       3,    12,    56,    -1,     3,    12,    56,    -1,    14,     3,
-      -1,    15,     3,    -1,     3,    -1,    14,    11,    -1,    15,
-      11,    -1,    11,    -1,    16,    -1,    -1,     7,    58,     4,
-      -1,    52,     8,    80,    -1,    58,     4,    52,     8,    80,
-      -1,    -1,    59,    60,     4,    -1,    61,     4,    67,    -1,
-      17,     3,    62,    -1,    18,     3,    62,     8,     9,    -1,
-      -1,    42,    63,    43,    -1,    63,     4,    64,    -1,    64,
-      -1,    65,    -1,    66,    -1,     7,    66,    -1,    52,     8,
-       9,    -1,    54,    57,    68,    -1,    47,    69,    48,    -1,
-      69,     4,    70,    -1,    70,    -1,    -1,    73,    10,    76,
-      -1,    72,    -1,    68,    -1,    27,    76,    28,    70,    71,
-      -1,    29,     3,    10,    76,    31,    76,    32,    70,    -1,
-      36,    76,    32,    70,    -1,    -1,    30,    70,    -1,     3,
-      -1,     3,    42,    75,    43,    -1,     3,    74,    -1,    -1,
-      44,    75,    45,    -1,    75,     5,    76,    -1,    76,    -1,
-      77,    -1,    77,    12,    77,    -1,    77,    37,    77,    -1,
-      77,    38,    77,    -1,    77,    39,    77,    -1,    77,    40,
-      77,    -1,    77,    41,    77,    -1,    77,    14,    78,    -1,
-      77,    15,    78,    -1,    77,    33,    78,    -1,    78,    -1,
-      78,    21,    79,    -1,    78,    22,    79,    -1,    78,    23,
-      79,    -1,    78,    24,    79,    -1,    78,    25,    79,    -1,
-      79,    -1,    11,    -1,    73,    -1,     3,    42,    75,    43,
-      -1,    42,    76,    43,    -1,    26,    79,    -1,    15,    79,
-      -1,     9,    -1,    20,    44,    81,    45,    34,     9,    -1,
-      81,     5,    11,    35,    11,    -1,    11,    35,    11,    -1
+      50,     0,    -1,    51,     4,    53,    -1,    51,     1,     4,
+      53,    -1,     1,     4,    53,    -1,    46,     3,    42,    52,
+      43,    -1,    46,     3,     1,    52,    43,    -1,    46,     3,
+      42,    52,     1,    -1,     1,     3,    42,    52,    43,    -1,
+      46,     1,    42,    52,    43,    -1,    52,     5,     3,    -1,
+       3,    -1,    52,     5,     1,    -1,    54,    57,    59,    68,
+      -1,    -1,     6,    55,    -1,    55,     4,     3,    12,    56,
+      -1,     3,    12,    56,    -1,    14,     3,    -1,    15,     3,
+      -1,     3,    -1,    14,    11,    -1,    15,    11,    -1,    11,
+      -1,    16,    -1,    -1,     7,    58,     4,    -1,    52,     8,
+      80,    -1,    58,     4,    52,     8,    80,    -1,    -1,    59,
+      60,     4,    -1,    61,     4,    67,    -1,    17,     3,    62,
+      -1,    18,     3,    62,     8,     9,    -1,    -1,    42,    63,
+      43,    -1,    63,     4,    64,    -1,    64,    -1,    65,    -1,
+      66,    -1,     7,    66,    -1,    52,     8,     9,    -1,    54,
+      57,    68,    -1,    47,    69,    48,    -1,    69,     4,    70,
+      -1,    70,    -1,    69,     1,    70,    -1,     1,     4,    70,
+      -1,    -1,    73,    10,    76,    -1,    72,    -1,    68,    -1,
+      27,    76,    28,    70,    71,    -1,    29,     3,    10,    76,
+      31,    76,    32,    70,    -1,    36,    76,    32,    70,    -1,
+      -1,    30,    70,    -1,     3,    -1,     3,    42,    75,    43,
+      -1,     3,    74,    -1,    -1,    44,    75,    45,    -1,    75,
+       5,    76,    -1,    76,    -1,    77,    -1,    77,    12,    77,
+      -1,    77,    37,    77,    -1,    77,    38,    77,    -1,    77,
+      39,    77,    -1,    77,    40,    77,    -1,    77,    41,    77,
+      -1,    77,    14,    78,    -1,    77,    15,    78,    -1,    77,
+      33,    78,    -1,    78,    -1,    78,    21,    79,    -1,    78,
+      22,    79,    -1,    78,    23,    79,    -1,    78,    24,    79,
+      -1,    78,    25,    79,    -1,    79,    -1,    11,    -1,    73,
+      -1,     3,    42,    75,    43,    -1,    42,    76,    43,    -1,
+      26,    79,    -1,    15,    79,    -1,     9,    -1,    20,    44,
+      81,    45,    34,     9,    -1,    81,     5,    11,    35,    11,
+      -1,    11,    35,    11,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    38,    38,    51,    65,    76,    85,    96,   104,   115,
-     128,   139,   149,   159,   168,   178,   188,   197,   207,   215,
-     226,   237,   251,   259,   270,   281,   291,   302,   310,   321,
-     332,   341,   350,   359,   369,   380,   392,   401,   412,   421,
-     429,   440,   449,   458,   471,   487,   497,   505,   516,   525,
-     537,   547,   553,   562,   573,   582,   591,   602,   613,   624,
-     635,   646,   657,   668,   679,   690,   699,   710,   721,   732,
-     743,   754,   763,   772,   781,   793,   804,   814,   825,   834,
-     847,   858
+       0,    41,    41,    52,    55,    61,    74,    77,    80,    83,
+      87,    98,   107,   111,   122,   130,   141,   154,   165,   175,
+     185,   194,   204,   214,   223,   233,   241,   252,   263,   277,
+     285,   296,   307,   317,   328,   336,   347,   358,   367,   376,
+     385,   395,   406,   418,   427,   438,   447,   450,   454,   462,
+     473,   482,   491,   504,   520,   530,   538,   549,   558,   570,
+     580,   586,   595,   606,   615,   624,   635,   646,   657,   668,
+     679,   690,   701,   712,   723,   732,   743,   754,   765,   776,
+     787,   796,   805,   814,   826,   837,   847,   858,   867,   880,
+     891
 };
 #endif
 
@@ -582,29 +592,31 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    49,    50,    51,    52,    52,    53,    54,    54,    55,
-      55,    56,    56,    56,    56,    56,    56,    56,    57,    57,
-      58,    58,    59,    59,    60,    61,    61,    62,    62,    63,
-      63,    64,    64,    65,    66,    67,    68,    69,    69,    70,
-      70,    70,    70,    70,    70,    70,    71,    71,    72,    72,
-      73,    74,    74,    75,    75,    76,    76,    76,    76,    76,
-      76,    76,    77,    77,    77,    77,    78,    78,    78,    78,
-      78,    78,    79,    79,    79,    79,    79,    79,    80,    80,
-      81,    81
+       0,    49,    50,    50,    50,    51,    51,    51,    51,    51,
+      52,    52,    52,    53,    54,    54,    55,    55,    56,    56,
+      56,    56,    56,    56,    56,    57,    57,    58,    58,    59,
+      59,    60,    61,    61,    62,    62,    63,    63,    64,    64,
+      65,    66,    67,    68,    69,    69,    69,    69,    70,    70,
+      70,    70,    70,    70,    70,    71,    71,    72,    72,    73,
+      74,    74,    75,    75,    76,    76,    76,    76,    76,    76,
+      76,    77,    77,    77,    77,    78,    78,    78,    78,    78,
+      78,    79,    79,    79,    79,    79,    79,    80,    80,    81,
+      81
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     3,     5,     3,     1,     4,     0,     2,     5,
-       3,     2,     2,     1,     2,     2,     1,     1,     0,     3,
-       3,     5,     0,     3,     3,     3,     5,     0,     3,     3,
-       1,     1,     1,     2,     3,     3,     3,     3,     1,     0,
-       3,     1,     1,     5,     8,     4,     0,     2,     1,     4,
-       2,     0,     3,     3,     1,     1,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     1,     3,     3,     3,     3,
-       3,     1,     1,     1,     4,     3,     2,     2,     1,     6,
-       5,     3
+       0,     2,     3,     4,     3,     5,     5,     5,     5,     5,
+       3,     1,     3,     4,     0,     2,     5,     3,     2,     2,
+       1,     2,     2,     1,     1,     0,     3,     3,     5,     0,
+       3,     3,     3,     5,     0,     3,     3,     1,     1,     1,
+       2,     3,     3,     3,     3,     1,     3,     3,     0,     3,
+       1,     1,     5,     8,     4,     0,     2,     1,     4,     2,
+       0,     3,     3,     1,     1,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     1,     3,     3,     3,     3,     3,
+       1,     1,     1,     4,     3,     2,     2,     1,     6,     5,
+       3
 };
 
 /* YYDEFACT[STATE-NAME] -- Default reduction number in state STATE-NUM.
@@ -612,143 +624,155 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     0,     1,     7,     0,     0,     2,
-      18,     5,     0,     0,     8,     0,    22,     0,     3,     0,
-       0,     0,     0,     0,     4,    13,    16,     0,     0,    17,
-      10,     0,     0,    19,     0,     0,    39,     0,     0,     6,
-      11,    14,    12,    15,     0,    78,     0,    20,     0,    27,
-      27,    48,     0,     0,     0,    42,     0,    38,    41,     0,
-      23,     7,     9,     0,     0,     0,    25,     0,     0,     0,
-      50,    51,    72,     0,     0,     0,    73,     0,    55,    65,
-      71,     0,     0,    39,    36,     0,    18,    24,     0,     0,
-      21,     0,     0,     0,    30,    31,    32,     0,     0,    54,
-       0,     0,    77,    76,     0,    39,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,    14,     0,     0,     1,
+       0,    14,     0,     0,     4,    25,     0,     0,     0,    14,
+       2,    11,     0,     0,    15,     0,    29,     0,     0,     0,
+       3,     0,     8,     0,     0,     0,     0,     0,     9,     6,
+       7,     5,    12,    10,    20,    23,     0,     0,    24,    17,
+       0,     0,    26,     0,     0,     0,     0,     0,    13,    18,
+      21,    19,    22,     0,    87,     0,    27,     0,    34,    34,
+       0,    57,     0,     0,     0,    51,     0,    45,    50,     0,
+      30,    14,    16,     0,     0,     0,    32,     0,    48,     0,
+       0,    59,    60,    81,     0,     0,     0,    82,     0,    64,
+      74,    80,     0,     0,    48,    48,    43,     0,    25,    31,
+       0,     0,    28,     0,     0,     0,    37,    38,    39,     0,
+      47,     0,    63,     0,     0,    86,    85,     0,    48,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    39,    37,    40,     0,     0,     0,     0,    33,     0,
-       0,    28,    26,     0,    49,    52,     0,    75,    46,    56,
-      62,    63,    64,    57,    58,    59,    60,    61,    66,    67,
-      68,    69,    70,     0,    45,    35,    81,     0,     0,    34,
-      29,    53,    74,    39,    43,     0,     0,    79,    47,     0,
-      80,    39,    44
+       0,     0,     0,     0,    48,    46,    44,    49,     0,     0,
+       0,     0,    40,     0,     0,    35,    33,     0,    58,    61,
+       0,    84,    55,    65,    71,    72,    73,    66,    67,    68,
+      69,    70,    75,    76,    77,    78,    79,     0,    54,    42,
+      90,     0,     0,    41,    36,    62,    83,    48,    52,     0,
+       0,    88,    56,     0,    89,    48,    53
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     2,     3,    92,     9,    10,    14,    30,    16,    22,
-      23,    37,    38,    66,    93,    94,    95,    96,    87,    55,
-      56,    57,   164,    58,    76,    70,    98,    99,    78,    79,
-      80,    47,    89
+      -1,     3,     4,   114,    14,    15,    24,    49,    26,    36,
+      37,    56,    57,    86,   115,   116,   117,   118,   109,    75,
+      76,    77,   188,    78,    97,    91,   121,   122,    99,   100,
+     101,    66,   111
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
    STATE-NUM.  */
-#define YYPACT_NINF -78
+#define YYPACT_NINF -88
 static const yytype_int16 yypact[] =
 {
-     -35,    24,    40,    58,   -19,   -78,    62,    77,    79,   -78,
-      82,   -78,    14,    91,   100,    77,   -78,    92,   -78,    61,
-     116,    73,   117,    20,   -78,   -78,   -78,    28,    76,   -78,
-     -78,   108,     4,    77,   119,   120,     7,   121,   122,   -78,
-     -78,   -78,   -78,   -78,    61,   -78,    80,   -78,    83,    86,
-      86,    19,     6,   126,     6,   -78,     8,   -78,   -78,   123,
-     -78,    62,   -78,   125,     4,    23,   -78,   124,     6,     6,
-     -78,   -26,   -78,     6,     6,     6,   -78,   102,    59,    89,
-     -78,   127,    99,     7,   -78,     6,    82,   -78,   103,     0,
-     -78,    77,    85,    -1,   -78,   -78,   -78,   130,    15,   -78,
-      10,     6,   -78,   -78,    97,     7,     6,     6,     6,     6,
-       6,     6,     6,     6,     6,     6,     6,     6,     6,     6,
-       6,     7,   -78,   -78,    87,   131,   132,   107,   -78,   135,
-      23,   -78,   -78,     6,   -78,   -78,    17,   -78,   115,    51,
-      89,    89,    89,    51,    51,    51,    51,    51,   -78,   -78,
-     -78,   -78,   -78,   118,   -78,   -78,   -78,   111,   138,   -78,
-     -78,   -78,   -78,     7,   -78,     6,   137,   -78,   -78,   128,
-     -78,     7,   -78
+      15,    96,    14,    34,    39,   -20,    41,    42,    17,   -88,
+      84,    41,   104,   112,   -88,   109,   104,   104,   104,    41,
+     -88,   -88,    23,   110,   130,   104,   -88,    24,    25,     5,
+     -88,   141,   -88,   122,   123,    89,   131,    73,   -88,   -88,
+     -88,   -88,   -88,   -88,   -88,   -88,    16,    21,   -88,   -88,
+     127,    78,   104,   140,   152,    10,   156,   158,   -88,   -88,
+     -88,   -88,   -88,   122,   -88,   119,   -88,   101,   124,   124,
+     160,    75,    66,   162,    66,   -88,     8,   -88,   -88,   157,
+     -88,    41,   -88,   159,    78,    28,   -88,   161,    35,    66,
+      66,   -88,   117,   -88,    66,    66,    66,   -88,   143,    90,
+     129,   -88,   163,   136,    35,    35,   -88,    66,   109,   -88,
+     137,     0,   -88,   104,   116,    22,   -88,   -88,   -88,   165,
+     -88,    36,   -88,    18,    66,   -88,   -88,   132,    35,    66,
+      66,    66,    66,    66,    66,    66,    66,    66,    66,    66,
+      66,    66,    66,    66,    35,   -88,   -88,   -88,   133,   166,
+     167,   142,   -88,   170,    28,   -88,   -88,    66,   -88,   -88,
+      37,   -88,   151,    81,   129,   129,   129,    81,    81,    81,
+      81,    81,   -88,   -88,   -88,   -88,   -88,   153,   -88,   -88,
+     -88,   147,   174,   -88,   -88,   -88,   -88,    35,   -88,    66,
+     175,   -88,   -88,   155,   -88,    35,   -88
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -78,   -78,   -78,    26,   -78,    90,   -78,   106,    66,   -78,
-     -78,   -78,   -78,   104,   -78,    25,   -78,    65,   -78,   -22,
-     -78,   -77,   -78,   -78,   -36,   -78,   -55,   -50,    -5,     9,
-     -66,    93,   -78
+     -88,   -88,   -88,    58,    82,   107,   -88,   126,    77,   -88,
+     -88,   -88,   -88,   121,   -88,    38,   -88,    80,   -88,   -35,
+     -88,   -84,   -88,   -88,   -55,   -88,   -12,   -71,    12,    26,
+     -87,   111,   -88
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -52
+#define YYTABLE_NINF -61
 static const yytype_int16 yytable[] =
 {
-      59,    39,    77,   130,    82,   126,   122,   102,   103,    71,
-      51,     1,    83,    45,   100,   133,   101,    72,    69,    17,
-     133,    73,   133,     7,    46,   104,    11,     4,   138,   -51,
-      91,    40,    74,    12,    52,   123,    53,    34,    35,    41,
-       5,    21,   131,    54,   154,   127,   136,    59,    75,   148,
-     149,   150,   151,   152,    36,   135,    84,    18,   134,    48,
-     162,    68,     6,    69,    25,   107,   108,    36,     8,    59,
-     153,   106,    26,   107,   108,    27,    28,    29,    17,    42,
-      11,    32,    13,   161,   109,    59,   168,    43,    17,    15,
-      17,    64,   109,   129,   172,    24,   110,   111,   112,   113,
-     114,   139,   155,    19,    20,   143,   144,   145,   146,   147,
-     115,   116,   117,   118,   119,   169,   140,   141,   142,    31,
-      44,    33,    49,    50,    63,    60,    61,    59,    65,    81,
-     105,   121,    97,    85,    36,    59,    88,   120,   125,   132,
-     137,   158,   156,   157,   159,   163,   166,   167,   170,   165,
-      62,    86,   124,     0,    67,   160,   128,    90,     0,     0,
-     171
+      79,    98,    58,   103,   120,   150,    40,   125,   126,   104,
+      31,    70,   105,    71,   -48,     7,     1,     8,    17,    59,
+     145,   146,    12,   157,    61,   127,   154,    60,    31,    31,
+      31,    21,    62,    79,     9,   113,   147,    72,    71,    73,
+      10,   157,   157,    11,   162,   151,    74,    13,    41,    79,
+      79,   172,   173,   174,   175,   176,   106,    55,   -48,    18,
+     178,     2,    72,   159,    73,   155,    32,    38,    39,    92,
+      22,    74,   177,    79,    27,    28,    29,    93,   123,   158,
+     186,    94,    55,    35,    16,   -60,   185,    64,    19,    79,
+      53,    54,    95,    20,    31,   130,   131,    51,    65,     5,
+       6,    30,   129,   192,   130,   131,    31,    21,    96,    84,
+      67,   196,   160,   179,   132,    23,    25,    89,   193,    90,
+      55,    31,    33,   132,   153,    44,    50,   133,   134,   135,
+     136,   137,    79,    45,    34,    52,    46,    47,    48,    63,
+      79,   163,    42,    68,    43,   167,   168,   169,   170,   171,
+     138,   139,   140,   141,   142,    69,   164,   165,   166,   124,
+      80,    90,    81,    83,    88,   102,    85,   107,   144,   119,
+     110,   128,   149,   143,   156,   161,   182,   180,   181,   183,
+      55,   187,   190,   191,   189,   148,   194,   195,   108,    82,
+      87,     0,   184,   152,     0,   112
 };
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-78)))
+  (!!((Yystate) == (-88)))
 
 #define yytable_value_is_error(Yytable_value) \
   YYID (0)
 
 static const yytype_int16 yycheck[] =
 {
-      36,    23,    52,     4,    54,     5,    83,    73,    74,     3,
-       3,    46,     4,     9,    69,     5,    42,    11,    44,     5,
-       5,    15,     5,    42,    20,    75,     3,     3,   105,    10,
-       7,     3,    26,     7,    27,    85,    29,    17,    18,    11,
-       0,    15,    43,    36,   121,    45,   101,    83,    42,   115,
-     116,   117,   118,   119,    47,    45,    48,    43,    43,    33,
-      43,    42,     4,    44,     3,    14,    15,    47,     6,   105,
-     120,    12,    11,    14,    15,    14,    15,    16,     5,     3,
-       3,     8,     3,   133,    33,   121,   163,    11,     5,     7,
-       5,     8,    33,     8,   171,     3,    37,    38,    39,    40,
-      41,   106,   124,    12,     4,   110,   111,   112,   113,   114,
-      21,    22,    23,    24,    25,   165,   107,   108,   109,     3,
-      12,     4,     3,     3,    44,     4,     4,   163,    42,     3,
-      28,    32,     8,    10,    47,   171,    11,    10,    35,     9,
-      43,    34,    11,    11,     9,    30,    35,     9,    11,    31,
-      44,    61,    86,    -1,    50,   130,    91,    64,    -1,    -1,
-      32
+      55,    72,    37,    74,    88,     5,     1,    94,    95,     1,
+       5,     1,     4,     3,     4,     1,     1,     3,     1,     3,
+     104,   105,    42,     5,     3,    96,     4,    11,     5,     5,
+       5,     3,    11,    88,     0,     7,   107,    27,     3,    29,
+       1,     5,     5,     4,   128,    45,    36,     6,    43,   104,
+     105,   138,   139,   140,   141,   142,    48,    47,    48,    42,
+     144,    46,    27,    45,    29,    43,    43,    43,    43,     3,
+      12,    36,   143,   128,    16,    17,    18,    11,    90,    43,
+      43,    15,    47,    25,    42,    10,   157,     9,     4,   144,
+      17,    18,    26,    11,     5,    14,    15,     8,    20,     3,
+       4,    19,    12,   187,    14,    15,     5,     3,    42,     8,
+      52,   195,   124,   148,    33,     3,     7,    42,   189,    44,
+      47,     5,    12,    33,     8,     3,     3,    37,    38,    39,
+      40,    41,   187,    11,     4,     4,    14,    15,    16,    12,
+     195,   129,     1,     3,     3,   133,   134,   135,   136,   137,
+      21,    22,    23,    24,    25,     3,   130,   131,   132,    42,
+       4,    44,     4,    44,     4,     3,    42,    10,    32,     8,
+      11,    28,    35,    10,     9,    43,    34,    11,    11,     9,
+      47,    30,    35,     9,    31,   108,    11,    32,    81,    63,
+      69,    -1,   154,   113,    -1,    84
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    46,    50,    51,     3,     0,     4,    42,     6,    53,
-      54,     3,    52,     3,    55,     7,    57,     5,    43,    12,
-       4,    52,    58,    59,     3,     3,    11,    14,    15,    16,
-      56,     3,     8,     4,    17,    18,    47,    60,    61,    68,
-       3,    11,     3,    11,    12,     9,    20,    80,    52,     3,
-       3,     3,    27,    29,    36,    68,    69,    70,    72,    73,
-       4,     4,    56,    44,     8,    42,    62,    62,    42,    44,
-      74,     3,    11,    15,    26,    42,    73,    76,    77,    78,
-      79,     3,    76,     4,    48,    10,    54,    67,    11,    81,
-      80,     7,    52,    63,    64,    65,    66,     8,    75,    76,
-      75,    42,    79,    79,    76,    28,    12,    14,    15,    33,
-      37,    38,    39,    40,    41,    21,    22,    23,    24,    25,
-      10,    32,    70,    76,    57,    35,     5,    45,    66,     8,
-       4,    43,     9,     5,    43,    45,    75,    43,    70,    77,
-      78,    78,    78,    77,    77,    77,    77,    77,    79,    79,
-      79,    79,    79,    76,    70,    68,    11,    11,    34,     9,
-      64,    76,    43,    30,    71,    31,    35,     9,    70,    76,
-      11,    32,    70
+       0,     1,    46,    50,    51,     3,     4,     1,     3,     0,
+       1,     4,    42,     6,    53,    54,    42,     1,    42,     4,
+      53,     3,    52,     3,    55,     7,    57,    52,    52,    52,
+      53,     5,    43,    12,     4,    52,    58,    59,    43,    43,
+       1,    43,     1,     3,     3,    11,    14,    15,    16,    56,
+       3,     8,     4,    17,    18,    47,    60,    61,    68,     3,
+      11,     3,    11,    12,     9,    20,    80,    52,     3,     3,
+       1,     3,    27,    29,    36,    68,    69,    70,    72,    73,
+       4,     4,    56,    44,     8,    42,    62,    62,     4,    42,
+      44,    74,     3,    11,    15,    26,    42,    73,    76,    77,
+      78,    79,     3,    76,     1,     4,    48,    10,    54,    67,
+      11,    81,    80,     7,    52,    63,    64,    65,    66,     8,
+      70,    75,    76,    75,    42,    79,    79,    76,    28,    12,
+      14,    15,    33,    37,    38,    39,    40,    41,    21,    22,
+      23,    24,    25,    10,    32,    70,    70,    76,    57,    35,
+       5,    45,    66,     8,     4,    43,     9,     5,    43,    45,
+      75,    43,    70,    77,    78,    78,    78,    77,    77,    77,
+      77,    77,    79,    79,    79,    79,    79,    76,    70,    68,
+      11,    11,    34,     9,    64,    76,    43,    30,    71,    31,
+      35,     9,    70,    76,    11,    32,    70
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1550,16 +1574,16 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 38 "parser.y"
+#line 41 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("programstruct"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
@@ -1568,57 +1592,113 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 52 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-				   }
+					ParseError("**********hahahahahahahA****************",parseTree[parseTree.size()-1].getLineNum());
+					}
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 65 "parser.y"
+#line 55 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-				   }
+					ParseError("**********hahahahahahah****************",parseTree[parseTree.size()-1].getLineNum());
+					}
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 76 "parser.y"
+#line 62 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë  
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+				   }
     break;
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 85 "parser.y"
+#line 74 "parser.y"
+    {
+					ParseError("Lack of left parenthesis",parseTree[parseTree.size()-1].getLineNum());
+					}
+    break;
+
+  case 7:
+/* Line 1792 of yacc.c  */
+#line 77 "parser.y"
+    {
+					ParseError("Lack of right parenthesis",parseTree[parseTree.size()-1].getLineNum());
+					}
+    break;
+
+  case 8:
+/* Line 1792 of yacc.c  */
+#line 80 "parser.y"
+    {
+					ParseError("Lack of program",yylineno);
+					}
+    break;
+
+  case 9:
+/* Line 1792 of yacc.c  */
+#line 83 "parser.y"
+    {
+					ParseError("Lack of the name of the main function",parseTree[parseTree.size()-1].getLineNum());
+					}
+    break;
+
+  case 10:
+/* Line 1792 of yacc.c  */
+#line 87 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+				   }
+    break;
+
+  case 11:
+/* Line 1792 of yacc.c  */
+#line 98 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+					}
+    break;
+
+  case 12:
+/* Line 1792 of yacc.c  */
+#line 107 "parser.y"
+    {
+					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
+					}
+    break;
+
+  case 13:
+/* Line 1792 of yacc.c  */
+#line 111 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("program_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
@@ -1626,570 +1706,586 @@ yyreduce:
 }
     break;
 
-  case 7:
-/* Line 1792 of yacc.c  */
-#line 96 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 8:
-/* Line 1792 of yacc.c  */
-#line 104 "parser.y"
-    {				   
-				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-				   }
-    break;
-
-  case 9:
-/* Line 1792 of yacc.c  */
-#line 115 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 10:
-/* Line 1792 of yacc.c  */
-#line 128 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
-}
-    break;
-
-  case 11:
-/* Line 1792 of yacc.c  */
-#line 139 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
-}
-    break;
-
-  case 12:
-/* Line 1792 of yacc.c  */
-#line 149 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;		
-}
-    break;
-
-  case 13:
-/* Line 1792 of yacc.c  */
-#line 159 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
-}
-    break;
-
   case 14:
 /* Line 1792 of yacc.c  */
-#line 168 "parser.y"
+#line 122 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;		
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 178 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+#line 130 "parser.y"
+    {				   
+				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
-}
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+				   }
     break;
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 188 "parser.y"
+#line 141 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 197 "parser.y"
+#line 154 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 207 "parser.y"
+#line 165 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 215 "parser.y"
+#line 175 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 226 "parser.y"
+#line 185 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 237 "parser.y"
+#line 194 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 251 "parser.y"
+#line 204 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 259 "parser.y"
+#line 214 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 270 "parser.y"
+#line 223 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("subprogram"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;		
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 281 "parser.y"
+#line 233 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 291 "parser.y"
+#line 241 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 302 "parser.y"
+#line 252 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 310 "parser.y"
+#line 263 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 321 "parser.y"
+#line 277 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 332 "parser.y"
+#line 285 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 341 "parser.y"
+#line 296 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 350 "parser.y"
+#line 307 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 359 "parser.y"
+#line 317 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("var_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
 }
     break;
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 369 "parser.y"
+#line 328 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("value_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 380 "parser.y"
+#line 336 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("subprogram_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 392 "parser.y"
+#line 347 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("compound_statement"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 401 "parser.y"
+#line 358 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 38:
 /* Line 1792 of yacc.c  */
-#line 412 "parser.y"
+#line 367 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 39:
 /* Line 1792 of yacc.c  */
-#line 421 "parser.y"
+#line 376 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 429 "parser.y"
+#line 385 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("var_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 41:
 /* Line 1792 of yacc.c  */
-#line 440 "parser.y"
+#line 395 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("value_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 449 "parser.y"
+#line 406 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 43:
 /* Line 1792 of yacc.c  */
-#line 458 "parser.y"
+#line 418 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("compound_statement"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 471 "parser.y"
+#line 427 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 45:
+/* Line 1792 of yacc.c  */
+#line 438 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 46:
+/* Line 1792 of yacc.c  */
+#line 447 "parser.y"
+    {
+					ParseError("************sssss**************",yylineno-2);
+				}
+    break;
+
+  case 47:
+/* Line 1792 of yacc.c  */
+#line 450 "parser.y"
+    {
+					ParseError("**************************",parseTree[parseTree.size()-1].getLineNum());
+				}
+    break;
+
+  case 48:
+/* Line 1792 of yacc.c  */
+#line 454 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 49:
+/* Line 1792 of yacc.c  */
+#line 462 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 50:
+/* Line 1792 of yacc.c  */
+#line 473 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 51:
+/* Line 1792 of yacc.c  */
+#line 482 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 52:
+/* Line 1792 of yacc.c  */
+#line 491 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (5)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(5) - (5)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 53:
+/* Line 1792 of yacc.c  */
+#line 504 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (8)].ival),(yyvsp[(2) - (8)].ival),(yyvsp[(3) - (8)].ival),(yyvsp[(4) - (8)].ival),(yyvsp[(5) - (8)].ival),(yyvsp[(6) - (8)].ival),(yyvsp[(7) - (8)].ival),(yyvsp[(8) - (8)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (8)].ival)].setParent(parseTree.size() - 1);
@@ -2198,534 +2294,534 @@ yyreduce:
 				   parseTree[(yyvsp[(6) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(7) - (8)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(8) - (8)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 45:
-/* Line 1792 of yacc.c  */
-#line 487 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
-}
-    break;
-
-  case 46:
-/* Line 1792 of yacc.c  */
-#line 497 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 47:
-/* Line 1792 of yacc.c  */
-#line 505 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 48:
-/* Line 1792 of yacc.c  */
-#line 516 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);				
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 49:
-/* Line 1792 of yacc.c  */
-#line 525 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 50:
-/* Line 1792 of yacc.c  */
-#line 537 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("variable"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 51:
-/* Line 1792 of yacc.c  */
-#line 547 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-}
-    break;
-
-  case 52:
-/* Line 1792 of yacc.c  */
-#line 553 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-}
-    break;
-
-  case 53:
-/* Line 1792 of yacc.c  */
-#line 562 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
-				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 573 "parser.y"
+#line 520 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
 }
     break;
 
   case 55:
 /* Line 1792 of yacc.c  */
-#line 582 "parser.y"
+#line 530 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 56:
 /* Line 1792 of yacc.c  */
-#line 591 "parser.y"
+#line 538 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;		
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 57:
 /* Line 1792 of yacc.c  */
-#line 602 "parser.y"
+#line 549 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);				
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 58:
 /* Line 1792 of yacc.c  */
-#line 613 "parser.y"
+#line 558 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 59:
 /* Line 1792 of yacc.c  */
-#line 624 "parser.y"
+#line 570 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("variable"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 60:
 /* Line 1792 of yacc.c  */
-#line 635 "parser.y"
+#line 580 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 }
     break;
 
   case 61:
 /* Line 1792 of yacc.c  */
-#line 646 "parser.y"
+#line 586 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 62:
 /* Line 1792 of yacc.c  */
-#line 657 "parser.y"
+#line 595 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 63:
 /* Line 1792 of yacc.c  */
-#line 668 "parser.y"
+#line 606 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 64:
 /* Line 1792 of yacc.c  */
-#line 679 "parser.y"
+#line 615 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 65:
 /* Line 1792 of yacc.c  */
-#line 690 "parser.y"
+#line 624 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
 
   case 66:
 /* Line 1792 of yacc.c  */
-#line 699 "parser.y"
+#line 635 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 67:
 /* Line 1792 of yacc.c  */
-#line 710 "parser.y"
+#line 646 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 68:
 /* Line 1792 of yacc.c  */
-#line 721 "parser.y"
+#line 657 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 69:
 /* Line 1792 of yacc.c  */
-#line 732 "parser.y"
+#line 668 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 70:
 /* Line 1792 of yacc.c  */
-#line 743 "parser.y"
+#line 679 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 71:
 /* Line 1792 of yacc.c  */
-#line 754 "parser.y"
+#line 690 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 72:
 /* Line 1792 of yacc.c  */
-#line 763 "parser.y"
+#line 701 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 73:
 /* Line 1792 of yacc.c  */
-#line 772 "parser.y"
+#line 712 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 74:
 /* Line 1792 of yacc.c  */
-#line 781 "parser.y"
+#line 723 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 75:
 /* Line 1792 of yacc.c  */
-#line 793 "parser.y"
+#line 732 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 76:
 /* Line 1792 of yacc.c  */
-#line 804 "parser.y"
+#line 743 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 77:
 /* Line 1792 of yacc.c  */
-#line 814 "parser.y"
+#line 754 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
-				   parseTreeRoot = parseTree.size() - 1;	
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 78:
 /* Line 1792 of yacc.c  */
-#line 825 "parser.y"
+#line 765 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //è®¾ç½®æ ¹èŠ‚ç‚¹ï¼Œä»…æœ€ä¸Šå±‚è§„åˆ™éœ€è¦ 
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
 				   parseTreeRoot = parseTree.size() - 1;
 }
     break;
 
   case 79:
 /* Line 1792 of yacc.c  */
-#line 834 "parser.y"
+#line 776 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 80:
+/* Line 1792 of yacc.c  */
+#line 787 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 81:
+/* Line 1792 of yacc.c  */
+#line 796 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 82:
+/* Line 1792 of yacc.c  */
+#line 805 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 83:
+/* Line 1792 of yacc.c  */
+#line 814 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (4)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(4) - (4)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 84:
+/* Line 1792 of yacc.c  */
+#line 826 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 85:
+/* Line 1792 of yacc.c  */
+#line 837 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 86:
+/* Line 1792 of yacc.c  */
+#line 847 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;	
+}
+    break;
+
+  case 87:
+/* Line 1792 of yacc.c  */
+#line 858 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
+				   (yyval.ival) = parseTree.size() - 1;
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //ÉèÖÃ¸ù½Úµã£¬½ö×îÉÏ²ã¹æÔòĞèÒª 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 88:
+/* Line 1792 of yacc.c  */
+#line 867 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (6)].ival),(yyvsp[(2) - (6)].ival),(yyvsp[(3) - (6)].ival),(yyvsp[(4) - (6)].ival),(yyvsp[(5) - (6)].ival),(yyvsp[(6) - (6)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (6)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (6)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (6)].ival)].setParent(parseTree.size() - 1);
@@ -2735,14 +2831,14 @@ yyreduce:
 }
     break;
 
-  case 80:
+  case 89:
 /* Line 1792 of yacc.c  */
-#line 847 "parser.y"
+#line 880 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (5)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (5)].ival)].setParent(parseTree.size() - 1);
@@ -2751,14 +2847,14 @@ yyreduce:
 }
     break;
 
-  case 81:
+  case 90:
 /* Line 1792 of yacc.c  */
-#line 858 "parser.y"
+#line 891 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //è®°å½•æŒ‡å‘æœ¬èŠ‚ç‚¹çš„æŒ‡é’ˆ
+				   //¼ÇÂ¼Ö¸Ïò±¾½ÚµãµÄÖ¸Õë
 				   (yyval.ival) = parseTree.size() - 1;
-				   //ä¸ºå­èŠ‚ç‚¹è®¾ç½®çˆ¶èŠ‚ç‚¹æŒ‡é’ˆ
+				   //Îª×Ó½ÚµãÉèÖÃ¸¸½ÚµãÖ¸Õë
 				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
@@ -2767,7 +2863,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 2771 "parser.tab.cpp"
+#line 2867 "parser.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2999,18 +3095,35 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 869 "parser.y"
+#line 902 "parser.y"
 
+
+void ParseError(std::string msg,int line)
+{
+	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< line <<std::endl;
+}
 
 int main(int argc, char* argv[]) 
 {
 	yyin = fopen("test.txt","r");
+	yydebug = 1;
 	yyparse();
 	test();
 	return 0;
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Parse error: %s\n", s);
-	exit(1);
+	fprintf(stderr, "Parse error: %s in line %d\n", s,yylineno);
+	//exit(1);
+}
+
+void warning()
+{
+	int yyerrstatus = 1;
+	if(YYRECOVERING())
+	{
+		printf("aaaaaaaaaaaaaa");
+		return;
+	}
+		
 }
