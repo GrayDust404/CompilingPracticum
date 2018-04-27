@@ -680,14 +680,10 @@ void test()
 	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
 	std::shared_ptr<SymbolTable> symbolTable = std::shared_ptr<SymbolTable>(new SymbolTable(nullptr));
 	if (tree->scopeCheck(symbolTable))
-		std::cout << "True";
-	else
-		std::cout << "False";
-	if (tree->typeCheck())
-		std::cout << "True";
-	else
-		std::cout << "False";
-	std::cout << tree->codeGenerator();
+	{
+		if (tree->typeCheck())
+			std::cout << tree->codeGenerator();
+	}
 	system("pause");
 	return;
 }

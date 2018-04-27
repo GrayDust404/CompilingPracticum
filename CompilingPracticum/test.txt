@@ -1,5 +1,6 @@
 program aa(input,output);
-var a :array[1..1.0] of integer;
+const a = 1;
+var a :array[1..10] of integer;
 i,j,x:integer;
 
 procedure ss(l,r:integer);
