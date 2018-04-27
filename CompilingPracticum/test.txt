@@ -1,5 +1,6 @@
 program aa(input,output);
-var a :array[1..100] of integer;
+const a = 1;
+var a :array[1..10] of integer;
 i,j,x:integer;
 
 procedure ss(l,r:integer);
@@ -25,10 +26,13 @@ begin
 end;
 
 begin
-  for i:=1 to 10 do a[i]:=random(100);
-  for i:=1 to 10 do write(a[i]);
+  for i:=1 to 10 
+  do a[i]:=random(100);
+  for i:=1 to 10 
+  do write(a[i]);
 
   ss(1,10);
 
-  for i:=1 to 10 do hggjgj(a[i])
+  for i:=1 to 10 
+  do read(a[i])
 end

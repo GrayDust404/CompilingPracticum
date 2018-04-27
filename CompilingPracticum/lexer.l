@@ -4,14 +4,13 @@
 %{
 #include<stdio.h>
 #include<iostream>
-#include<string>
 #include"parser.h"
 
 #define YY_DECL int yylex()
 
 #include "parser.tab.h"
 extern std::vector<ParseTreeNode> parseTree;
-void lexerError(std::string msg,std::string s,int line);
+void lexerError(char* msg,char* s,int line);
 %}
 
 
@@ -122,28 +121,12 @@ void lexerError(std::string msg,std::string s,int line);
 "begin"					{ return BEGINTOK;}
 "end"					{ return ENDTOK;}
 \'[a-zA-Z]\'			{ return letter;}
-\'[a-zA-Z]             {
-						lexerError("Lack of single quotes",yytext,yylineno);
-						return letter;
-						}
-\'[a-zA-Z][a-zA-Z]+\'	{
-						lexerError("Do not support string",yytext,yylineno);
-						
-						}
-\'[a-zA-Z][a-zA-Z]+		{
-						lexerError("Illegal alphabet format",yytext,yylineno);
-						
-						}
-\'[ ]*\'				{
-						lexerError("Empty alphabet format",yytext,yylineno);
-						
-						}
 [a-zA-Z][0-9a-zA-Z]* 	{
 						parseTree.push_back(ParseTreeNode(std::string("id"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return id;
 						}
-[0-9]+'\.'[0-9]+			{
+[0-9]+\.[0-9]+		{
 						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return num;
@@ -168,7 +151,7 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return comma;
 						}
-"\.\."					{
+\.\.					{
 						parseTree.push_back(ParseTreeNode(std::string("range"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return _range;						
@@ -251,11 +234,7 @@ void lexerError(std::string msg,std::string s,int line);
 						}
 \n						{}
 [ \t]					{}
-[^\s]                  {
-						lexerError("Illegal characters",yytext,yylineno);
-						}
 %%
-
-void lexerError(std::string msg,std::string s,int line) {
-	std::cout << "Lexical errors ("<<msg<<") : "<< s << " in line "<< line <<"\n";
+void lexerError(char* msg,char* s,int line) {
+	fprintf(stderr,"Lexical errors (%s) :%s in line %d\n",msg,s,line);
 }

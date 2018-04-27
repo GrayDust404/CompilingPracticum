@@ -6,7 +6,7 @@ std::shared_ptr<ASTNode> transformTerm(int root);
 std::shared_ptr<ASTNode> transformSimpleExpression(int root);
 std::shared_ptr<ASTNode> transformExpression(int root);
 std::vector<std::shared_ptr<ASTNode>> transformExpressionList(int root);
-std::shared_ptr<ASTNode> transformVarPart(int root);
+std::shared_ptr<ASTNode> transformVarPart(int root, std::string id);
 std::shared_ptr<ASTNode> transformVariable(int root);
 std::shared_ptr<ASTNode> transformFunctionCall(int root);
 std::shared_ptr<ASTNode> transformElsePart(int root);

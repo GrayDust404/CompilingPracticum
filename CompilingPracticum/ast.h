@@ -8,16 +8,19 @@ class SymbolTable;
 
 class TypeStruct {
 public:
-	TypeStruct() = default;
+	TypeStruct() :simpleType(std::string()), period(std::vector<std::pair<int, int>>()), isRef(false){}
 	TypeStruct(std::string _simpleType, bool _isRef = false) :simpleType(_simpleType), isRef(_isRef), period(std::vector<std::pair<int, int>>()) {}
 	TypeStruct(std::string _simpleType, std::vector<std::pair<int, int>> _peroid) :simpleType(_simpleType), isRef(false), period(_peroid) {}
 	std::string getSimpleType() { return simpleType; }
+	std::string getCType();
 	std::vector<std::pair<int, int>> getPeroid() { return period; }
 	bool checkRef() { return isRef; }
+	friend bool operator==(const TypeStruct &lhs, const TypeStruct &rhs);
+	friend bool operator!=(const TypeStruct &lhs, const TypeStruct &rhs);
 private:
 	std::string simpleType;
 	std::vector<std::pair<int, int>> period;
-	bool isRef; //Á¨¶Âè∑Ë°®‰∏≠ËÆ∞ÂΩïÊòØÂê¶ÂºïÁî®
+	bool isRef; //∑˚∫≈±Ì÷–º«¬º «∑Ò“˝”√
 };
 
 class ASTNode 
@@ -34,7 +37,7 @@ public:
 	}
 	virtual std::string codeGenerator() = 0;
 	virtual bool scopeCheck(std::shared_ptr<SymbolTable> parentScope);
-	virtual bool typeCheck() = 0;
+	virtual bool typeCheck();
 	virtual std::string getID() { return std::string(); }
 	virtual TypeStruct getType() { return TypeStruct(); }
 	virtual int getIdNum() { return -1; }
@@ -49,11 +52,10 @@ class VarNode : public ASTNode
 {
 public:
 	VarNode(std::string _id, std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) { id = _id; }
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
-	std::string getID() override { return std::string(); }
-	TypeStruct getType() override { return TypeStruct(); }
+	std::string getID() override { return id; }
+	TypeStruct getType() override;
 private:
 	std::string id;
 };
@@ -61,13 +63,14 @@ private:
 class VarpartNode : public ASTNode
 {
 public:
-	VarpartNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) {}
-	std::string codeGenerator() override { return std::string(); }
-	bool typeCheck() override { return false; }
-	std::string getID() override { return std::string(); }
-	TypeStruct getType() override { return TypeStruct(); }
+	VarpartNode(std::string _id,std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) 
+	{
+		id = _id;
+	}
+	std::string codeGenerator() override;
+	bool typeCheck() override;
 private:
-
+	std::string id;
 };
 
 class ConstNode : public ASTNode
@@ -77,9 +80,8 @@ public:
 	{
 		value = _value;
 	}
-	std::string codeGenerator() override { return std::string(); }
-	bool typeCheck() override { return false; }
-	TypeStruct getType() override { return TypeStruct();}
+	std::string codeGenerator() override;
+	TypeStruct getType() override;
 private:
 	std::string value;
 };
@@ -91,11 +93,11 @@ public:
 	{
 		id = _id;
 	}
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
-	std::string getID() override { return std::string(); }
-	TypeStruct getType() override { return TypeStruct(); }
+	bool typeCheck() override;
+	std::string getID() override { return id; }
+	TypeStruct getType() override;
 private:
 	std::string id;
 };
@@ -107,19 +109,20 @@ public:
 	{
 		operation = _operation;
 	}
-	std::string codeGenerator() override { return std::string();}
-	bool typeCheck() override { return false; }
-	TypeStruct getType() override { return TypeStruct(); }
+	std::string codeGenerator() override;
+	bool typeCheck() override;
+	TypeStruct getType() override;
 private:
 	std::string operation;
+	std::string getCTypeOperation();
 };
 
 class AssignmentNode : public ASTNode
 {
 public:
 	AssignmentNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children,_lineNum) {}
-	std::string codeGenerator() override { return std::string(); }
-	bool typeCheck() override { return false; }
+	std::string codeGenerator() override;
+	bool typeCheck() override;
 private:
 
 };
@@ -128,8 +131,8 @@ class IfNode : public ASTNode
 {
 public:
 	IfNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children, _lineNum) {}
-	std::string codeGenerator() override { return std::string(); }
-	bool typeCheck() override { return false; }
+	std::string codeGenerator() override;
+	bool typeCheck() override;
 private:
 
 };
@@ -141,9 +144,9 @@ public:
 	{
 		iterator = _iterator;
 	}
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
+	bool typeCheck() override;
 private:
 	std::string iterator;
 };
@@ -152,8 +155,8 @@ class WhileNode : public ASTNode
 {
 public:
 	WhileNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children, _lineNum) {}
-	std::string codeGenerator() override { return std::string();}
-	bool typeCheck() override { return false; }
+	std::string codeGenerator() override;
+	bool typeCheck() override;
 private:
 
 };
@@ -162,8 +165,7 @@ class CompoundNode : public ASTNode
 {
 public:
 	CompoundNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum) :ASTNode(_children, _lineNum) {}
-	std::string codeGenerator() override { return std::string(); }
-	bool typeCheck() override { return false; }
+	std::string codeGenerator() override;
 private:
 
 };
@@ -176,9 +178,8 @@ public:
 		idlist = _idlist;
 		type = _type;
 	}
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
 private:
 	std::vector<std::string> idlist;
 	TypeStruct type;
@@ -192,9 +193,8 @@ public:
 		id = _id;
 		value = _value;
 	}
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
 private:
 	std::string id;
 	std::string value;
@@ -210,10 +210,9 @@ public:
 		simpleType = _simpleType;
 		isVar = false;
 	}
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
-	TypeStruct getType() override { return TypeStruct(); }
+	TypeStruct getType() override { return TypeStruct(simpleType); }
 	int getIdNum() override { return idlist.size(); }
 	void setIsVar() { isVar = true; }
 private:
@@ -238,9 +237,8 @@ public:
 		parameterNum = num;
 		lineNum = _lineNum;
 	}
-	std::string codeGenerator() override { return std::string(); }
+	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	bool typeCheck() override { return false; }
 private:
 	std::string id;
 	std::string simpleType;
@@ -251,8 +249,8 @@ class ProgramNode : public ASTNode
 {
 public:
 	ProgramNode(std::vector<std::shared_ptr<ASTNode>> _children, int _lineNum):ASTNode(_children,_lineNum){}
-	std::string codeGenerator() override { return std::string();}
-	bool typeCheck() override { return false; }
+	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
+	std::string codeGenerator() override;
 private:
 
 };
