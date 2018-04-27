@@ -12,6 +12,7 @@ public:
 	TypeStruct(std::string _simpleType, bool _isRef = false) :simpleType(_simpleType), isRef(_isRef), period(std::vector<std::pair<int, int>>()) {}
 	TypeStruct(std::string _simpleType, std::vector<std::pair<int, int>> _peroid) :simpleType(_simpleType), isRef(false), period(_peroid) {}
 	std::string getSimpleType() { return simpleType; }
+	std::string getCType();
 	std::vector<std::pair<int, int>> getPeroid() { return period; }
 	bool checkRef() { return isRef; }
 	friend bool operator==(const TypeStruct &lhs, const TypeStruct &rhs);
@@ -113,6 +114,7 @@ public:
 	TypeStruct getType() override;
 private:
 	std::string operation;
+	std::string getCTypeOperation();
 };
 
 class AssignmentNode : public ASTNode
