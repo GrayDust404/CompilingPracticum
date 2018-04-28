@@ -74,7 +74,8 @@ std::string ConstDeclarationNode::codeGenerator()
 {
 	return "const " +
 		scope->lookUp(id).getType().getSimpleType()
-		+ " " + id + " = "
+		+ " " + id + " = " 
+		+ operation
 		+ value + ";";
 }
 

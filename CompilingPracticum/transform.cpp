@@ -587,6 +587,17 @@ std::vector<std::shared_ptr<ASTNode>> transformVarDeclarationS(int root)
 	return std::vector<std::shared_ptr<ASTNode>>();
 }
 
+std::vector<std::string> transformConstValue(int root)
+{
+	std::vector<int> children = parseTree[root].getChildren();
+	std::vector<std::string> result;
+	for (auto i : children)
+	{
+		result.push_back(parseTree[i].getValue());
+	}
+	return result;
+}
+
 std::vector<std::shared_ptr<ASTNode>> transformConstDeclaration(int root)
 {
 	std::vector<int> children = parseTree[root].getChildren();
@@ -596,7 +607,7 @@ std::vector<std::shared_ptr<ASTNode>> transformConstDeclaration(int root)
 		std::string token = parseTree[children[i]].getToken();
 		if (token == std::string("id"))
 		{
-			result.push_back(std::shared_ptr<ASTNode>(new ConstDeclarationNode(parseTree[children[i]].getValue(), parseTree[children[i+2]].getValue(), parseTree[children[i]].getLineNum())));
+			result.push_back(std::shared_ptr<ASTNode>(new ConstDeclarationNode(parseTree[children[i]].getValue(), transformConstValue(children[i+2]), parseTree[children[i]].getLineNum())));
 			return result;
 		}
 		else if (token == std::string("const_declaration"))
