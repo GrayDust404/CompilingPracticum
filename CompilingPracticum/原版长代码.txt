@@ -1,0 +1,128 @@
+program main(input,output);
+const
+ maxn=2000;
+ maxv=200;
+var
+ data,data1,dataq:array [0..maxn] of integer;
+ f:array [0..maxn,0..maxv] of integer;
+ sum,k,t,i,j,n,m,p,ii:integer;
+ q:array [0..maxv] of integer;
+
+procedure siftup(x:integer);
+var
+ i,j:integer;
+begin
+ i:=x;
+ j:=x / 2;
+ while j<>0 do
+ begin
+  if dataq[i]>dataq[j] then
+  begin
+   dataq[0]:=dataq[i];
+   dataq[i]:=dataq[j];
+   dataq[j]:=dataq[0];
+  end else break;
+  i:=j;
+  j:=j / 2;
+ end;
+end;
+
+procedure qsort(l,r:longint);
+var
+ i,j,mid:integer;
+begin
+ i:=l; j:=r;
+ mid:=data[(l+r) / 2];
+ while i<j do
+ begin
+  while data[i]<mid do i:=i+1;
+  while data[j]>mid do j:=j-1;
+  if i<=j then
+  begin
+   data[0]:=data[i];
+   data[i]:=data[j];
+   data[j]:=data[0];
+   i:=i+1; j:=j-1;
+  end;
+ end;
+ if i<r then qsort(i,r);
+ if l<j then qsort(l,j);
+end;
+
+procedure siftdown(x:longint);
+var
+ i,j:longint;
+begin
+ i:=x;
+ j:=x*2;
+ while j<=m do
+ begin
+  if (j+1<=m) and (dataq[j]<dataq[j+1]) then j:=j+1;
+  if dataq[j]>dataq[i] then
+  begin
+   dataq[0]:=dataq[i];
+   dataq[i]:=dataq[j];
+   dataq[j]:=dataq[0];
+  end else break;
+  i:=j;
+  j:=j*2;
+ end;
+end;
+
+begin
+ read(t);
+ for k:=1 to t do
+ begin
+  for i:=0 to 10 do
+    for j:=0 to 10 do
+        f[i,j]:=0;
+  sum:=0;
+  read(n,m);
+  for i:=1 to m do
+   read(data[i]);
+  read();
+  for j:=1 to m-1 do
+    for ii:=j+1 to m do
+     if data[j]>data[ii] then
+     begin
+      data[0]:=data[j];
+      data[j]:=data[ii];
+      data[ii]:=data[0];
+     end;
+  for i:=1 to n-1 do
+  begin
+   for j:=1 to m do
+    read(data1[j]);
+   read());
+
+   for j:=1 to m-1 do
+    for ii:=j+1 to m do
+     if data1[j]>data1[ii] then
+     begin
+      data1[0]:=data1[j];
+      data1[j]:=data1[ii];
+      data1[ii]:=data1[0];
+     end;
+
+   for j:=1 to m do
+   begin
+    dataq[j]:=data[j]+data1[1];
+    siftup(j);
+   end;
+   for j:=2 to m do
+    for ii:=1 to m do
+     if data1[j]+data[ii]<dataq[1] then
+     begin
+      dataq[1]:=data1[j]+data[ii];
+      siftdown(1);
+     end else break;
+   data:=dataq;
+   qsort(1,m);
+   for i:=0 to maxn do
+    dataq[i]:=0;
+  end;
+  for i:=1 to m do
+   write(data[i],' ');
+  write();
+ end;
+end.

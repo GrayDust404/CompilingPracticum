@@ -123,7 +123,7 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		}
 		else
 		{
-			scope->insert(Symbol(std::string(id), TypeStruct(std::string("digits")), true));
+			scope->insert(Symbol(std::string(id), TypeStruct(std::string("int")), true));
 		}
 	}
 	else

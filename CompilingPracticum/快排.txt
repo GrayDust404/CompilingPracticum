@@ -1,0 +1,38 @@
+program aa(input,output);
+const a = 1;
+var a :array[1..10] of integer;
+i,j,x:integer;
+
+procedure ss(l,r:integer);
+var y,i,j,k,h:integer;
+begin
+   i:=l;
+   j:=r;
+   k:=a[(l+r)/ 2];
+   while i< j do begin
+     while (a[i]<k)and(i<r)do i:=i+1;
+     while (a[j]>k)and(j>l)do j:=j+1;
+     if i<=j then
+     begin
+       h:=a[i];
+       a[i]:=a[j];
+       a[j]:=h;
+       i:=i+1;
+       j:=j+1
+     end;
+   end;
+   if l<j then  ss(l,j);
+   if r>i then  ss(i,r)
+end;
+
+begin
+  for i:=1 to 10 
+  do a[i]:=random(100);
+  for i:=1 to 10 
+  do write(a[i]);
+
+  ss(1,10);
+
+  for i:=1 to 10 
+  do read(a[i])
+end
