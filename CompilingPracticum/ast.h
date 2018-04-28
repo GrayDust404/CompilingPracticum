@@ -42,6 +42,7 @@ public:
 	virtual TypeStruct getType() { return TypeStruct(); }
 	virtual int getIdNum() { return -1; }
 	int getLineNum() { return lineNum; }
+	int getChildrenNum() { return children.size(); }
 protected:
 	std::vector<std::shared_ptr<ASTNode>> children;
 	int lineNum;

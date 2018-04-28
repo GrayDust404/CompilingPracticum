@@ -33,6 +33,8 @@ bool AssignmentNode::typeCheck()
 	if (children[0]->getType() != children[1]->getType())
 	{
 		std::cout << "第" << lineNum << "行：赋值语句类型不匹配" << std::endl;
+		auto temp1 = children[1]->getType();
+		auto temp0 = children[0]->getType();
 		flag = false;
 	}
 	for (auto i : children)
@@ -198,18 +200,23 @@ TypeStruct VarNode::getType()
 {
 	TypeStruct originType = scope->lookUp(id).getType();
 	std::vector<std::pair<int, int>> peroid = originType.getPeroid();
-	if (children.size() <= peroid.size())
-	{
-		for (int i = children.size(); i > 0; i--)
-		{
-			peroid.erase(peroid.begin());
-		}
-		return TypeStruct(originType.getSimpleType(), peroid);
-	}
+	if (children.size() == 0)
+		return originType;
 	else
 	{
-		std::cout << "第" << lineNum << "行: 数组变量\"" << id <<"\"引用的下标数量超过事先定义的维数" << std::endl;
-		return TypeStruct();
+		if (children[0]->getChildrenNum() <= peroid.size())
+		{
+			for (int i = children[0]->getChildrenNum(); i > 0; i--)
+			{
+				peroid.erase(peroid.begin());
+			}
+			return TypeStruct(originType.getSimpleType(), peroid);
+		}
+		else
+		{
+			std::cout << "第" << lineNum << "行: 数组变量\"" << id <<"\"引用的下标数量超过事先定义的维数" << std::endl;
+			return TypeStruct();
+		}
 	}
 }
 TypeStruct ConstNode::getType()

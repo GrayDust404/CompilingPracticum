@@ -1,9 +1,0 @@
-program example(input);
-var x,y:integer;
-begin
-for y := 1 to 10 do
-begin
-	x := x+1;
-end;
-end
-
