@@ -476,7 +476,7 @@ statement_list:  statement_list semicolon statement {
 				   parseTreeRoot = parseTree.size() - 1;
 }
 | statement_list error statement{
-					ParseError("************sssss**************",yylineno-2);
+					ParseError("************sssss**************",parseTree[parseTree.size()-1].getLineNum());
 				}
 | error semicolon statement{
 					ParseError("**************************",parseTree[parseTree.size()-1].getLineNum());
@@ -948,7 +948,7 @@ void ParseError(std::string msg,int line)
 int main(int argc, char* argv[]) 
 {
 	yyin = fopen("test.txt","r");
-	yydebug = 1;
+	yydebug = 0;
 	yyparse();
 	test();
 	return 0;
