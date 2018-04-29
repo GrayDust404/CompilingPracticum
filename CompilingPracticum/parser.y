@@ -1,4 +1,4 @@
-
+%locations
 %{
 
 #include<stdio.h>
@@ -8,14 +8,17 @@
 #include"parser.h"
 #include"transform.h"
 
+
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 extern int yylineno;
 
+
 void yyerror(const char* s);
 std::vector<ParseTreeNode> parseTree;
 void ParseError(std::string msg,int line);
+void lParseError(std::string msg,YYLTYPE t);
 int parseTreeRoot;
 %}
 
@@ -28,8 +31,8 @@ int parseTreeRoot;
 %token<ival> multiply divide _div _mod _and _not
 %token<ival> _if _then _for _else _to _do _or _of _range _while
 %token<ival> noequal GE GT LE LT leftB rightB leftSB rightSB
-%token program BEGINTOK ENDTOK 
-%type<ival> programstruct program_head program_body idlist type variable const_value
+%token  program BEGINTOK ENDTOK 
+%type<ival> programstruct program_head program_body idlist type variable const_value 
 %type<ival> const_declarations var_declarations const_declaration var_declaration subprogram_declarations subprogram
 %type<ival> subprogram_head subprogram_body formal_parameter parameter_list parameter var_parameter value_parameter
 %type<ival> compound_statement statement_list statement expression expression_list simple_expression term factor
@@ -50,18 +53,18 @@ programstruct: program_head semicolon program_body{
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 					}
-| program_head error semicolon program_body{
-					ParseError("**********hahahahahahahA****************",parseTree[parseTree.size()-1].getLineNum());
-					}
 | error semicolon program_body{
-					ParseError("**********hahahahahahah****************",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of program head",parseTree[$2].getLineNum());
+					}
+| program_head semicolon {
+					ParseError("Lack of program body",parseTree[$2].getLineNum());
 					}
 ;
 
 
 program_head: program id leftB idlist rightB	
 				   {
-				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{$2,$3,$4,$5}));
+				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{$2,$3,$4,$5},parseTree[$2].getLineNum()));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -73,7 +76,7 @@ program_head: program id leftB idlist rightB
 				   parseTreeRoot = parseTree.size() - 1;
 				   }
 | program id error idlist rightB{
-					ParseError("Lack of left parenthesis",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of left parenthesis",parseTree[$2].getLineNum());
 					}
 | program id leftB idlist error{
 					ParseError("Lack of right parenthesis",parseTree[parseTree.size()-1].getLineNum());
@@ -82,7 +85,10 @@ program_head: program id leftB idlist rightB
 					ParseError("Lack of program",yylineno);
 					}
 | program error leftB idlist rightB{
-					ParseError("Lack of the name of the main function",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of the name of the main function",parseTree[$3].getLineNum());
+					}
+| program id leftB error rightB{
+					ParseError("Lack of incoming parameters",parseTree[$3].getLineNum());
 					}
 ;
 idlist: idlist comma id	{
@@ -106,10 +112,7 @@ idlist: idlist comma id	{
 				   parseTreeRoot = parseTree.size() - 1;
 }
 | idlist comma	error	{
-					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
-					}
-| idlist error id{
-					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Afferent null value",parseTree[$2].getLineNum());
 					}
 ;
 program_body: const_declarations var_declarations subprogram_declarations compound_statement{
@@ -121,7 +124,11 @@ program_body: const_declarations var_declarations subprogram_declarations compou
 				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   parseTree[$4].setParent(parseTree.size() - 1);
-};
+}
+| program_body: const_declarations var_declarations subprogram_declarations {
+					ParseError("Lack of function body statement",parseTree[$2].getLineNum());
+					}
+;
 
 const_declarations: {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{}));
@@ -141,6 +148,11 @@ const_declarations: {
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 				   } 
+| error const_declaration semicolon
+					{
+					ParseError("Lack of 'const'",parseTree[$2].getLineNum());
+					lParseError("Lack of semicolons",@2);
+					}
 ;
 const_declaration: const_declaration semicolon id assign const_value{
 				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{$1,$2,$3,$4,$5}));
@@ -456,7 +468,7 @@ compound_statement: BEGINTOK statement_list ENDTOK{
 				   parseTreeRoot = parseTree.size() - 1;
 };
 statement_list:  statement_list semicolon statement {
-				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{$1,$2,$3}));
+				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{$1,$2,$3},parseTree[$3].getLineNum()));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -476,7 +488,9 @@ statement_list:  statement_list semicolon statement {
 				   parseTreeRoot = parseTree.size() - 1;
 }
 | statement_list error statement{
-					ParseError("************sssss**************",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of semicolons",parseTree[$$].getLineNum());
+					ParseError("Lack of semicolons",@1.last_line);
+					parseTree[$$].setLineNum(parseTree[$3].getLineNum());
 				}
 | error semicolon statement{
 					ParseError("**************************",parseTree[parseTree.size()-1].getLineNum());
@@ -945,27 +959,18 @@ void ParseError(std::string msg,int line)
 	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< line <<std::endl;
 }
 
+
+
 int main(int argc, char* argv[]) 
 {
-	yyin = fopen("test.txt","r");
+	yyin = fopen("test1.txt","r");
 	yydebug = 0;
 	yyparse();
-	test();
+	//test();
 	return 0;
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Parse error: %s in line %d\n", s,yylineno);
+	//fprintf(stderr, "Parse error: %s in line %d\n", s,yylloc.first_line);
 	//exit(1);
-}
-
-void warning()
-{
-	int yyerrstatus = 1;
-	if(YYRECOVERING())
-	{
-		printf("aaaaaaaaaaaaaa");
-		return;
-	}
-		
 }

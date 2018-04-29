@@ -73,18 +73,21 @@
 #include"parser.h"
 #include"transform.h"
 
+
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 extern int yylineno;
 
+
 void yyerror(const char* s);
 std::vector<ParseTreeNode> parseTree;
 void ParseError(std::string msg,int line);
+void lParseError(std::string msg,YYLTYPE t);
 int parseTreeRoot;
 
 /* Line 371 of yacc.c  */
-#line 88 "parser.tab.cpp"
+#line 91 "parser.tab.cpp"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -174,21 +177,34 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 23 "parser.y"
+#line 26 "parser.y"
 
 	int ival;
 
 
 /* Line 387 of yacc.c  */
-#line 184 "parser.tab.cpp"
+#line 187 "parser.tab.cpp"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
-extern YYSTYPE yylval;
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+} YYLTYPE;
+# define yyltype YYLTYPE /* obsolescent; will be withdrawn */
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
 
+extern YYSTYPE yylval;
+extern YYLTYPE yylloc;
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
 int yyparse (void *YYPARSE_PARAM);
@@ -208,7 +224,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 212 "parser.tab.cpp"
+#line 228 "parser.tab.cpp"
 
 #ifdef short
 # undef short
@@ -367,13 +383,15 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+	 || (defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL \
+	     && defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
   yytype_int16 yyss_alloc;
   YYSTYPE yyvs_alloc;
+  YYLTYPE yyls_alloc;
 };
 
 /* The size of the maximum gap between one aligned stack and the next.  */
@@ -382,8 +400,8 @@ union yyalloc
 /* The size of an array large to enough to hold all stacks, each with
    N elements.  */
 # define YYSTACK_BYTES(N) \
-     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE)) \
-      + YYSTACK_GAP_MAXIMUM)
+     ((N) * (sizeof (yytype_int16) + sizeof (YYSTYPE) + sizeof (YYLTYPE)) \
+      + 2 * YYSTACK_GAP_MAXIMUM)
 
 # define YYCOPY_NEEDED 1
 
@@ -428,14 +446,14 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  9
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   205
+#define YYLAST   221
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  49
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  33
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  95
+#define YYNRULES  98
 /* YYNRULES -- Number of states.  */
 #define YYNSTATES  203
 
@@ -487,70 +505,71 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint16 yyprhs[] =
 {
-       0,     0,     3,     7,    12,    16,    22,    28,    34,    40,
-      46,    50,    52,    56,    60,    65,    66,    70,    76,    80,
-      83,    86,    88,    91,    94,    96,    99,   102,   104,   106,
-     107,   111,   115,   121,   122,   126,   130,   134,   140,   141,
-     145,   149,   151,   153,   155,   158,   162,   166,   170,   174,
-     176,   180,   184,   185,   189,   191,   193,   199,   208,   213,
-     214,   217,   219,   224,   227,   228,   232,   236,   238,   240,
-     244,   248,   252,   256,   260,   264,   268,   272,   276,   278,
-     282,   286,   290,   294,   298,   300,   302,   304,   306,   311,
-     315,   318,   321,   323,   330,   336
+       0,     0,     3,     7,    11,    14,    20,    26,    32,    38,
+      44,    50,    54,    56,    60,    65,    66,    70,    71,    75,
+      79,    85,    89,    92,    95,    97,   100,   103,   105,   108,
+     111,   113,   115,   116,   120,   124,   130,   131,   135,   139,
+     143,   149,   150,   154,   158,   160,   162,   164,   167,   171,
+     175,   179,   183,   185,   189,   193,   194,   198,   200,   202,
+     208,   217,   222,   223,   226,   228,   233,   236,   237,   241,
+     245,   247,   249,   253,   257,   261,   265,   269,   273,   277,
+     281,   285,   287,   291,   295,   299,   303,   307,   309,   311,
+     313,   315,   320,   324,   327,   330,   332,   339,   345
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      50,     0,    -1,    51,     4,    53,    -1,    51,     1,     4,
-      53,    -1,     1,     4,    53,    -1,    46,     3,    42,    52,
-      43,    -1,    46,     3,     1,    52,    43,    -1,    46,     3,
-      42,    52,     1,    -1,     1,     3,    42,    52,    43,    -1,
-      46,     1,    42,    52,    43,    -1,    52,     5,     3,    -1,
-       3,    -1,    52,     5,     1,    -1,    52,     1,     3,    -1,
-      54,    57,    59,    68,    -1,    -1,     6,    55,     4,    -1,
-      55,     4,     3,    12,    56,    -1,     3,    12,    56,    -1,
-      14,     3,    -1,    15,     3,    -1,     3,    -1,    14,    11,
-      -1,    15,    11,    -1,    11,    -1,    14,    19,    -1,    15,
-      19,    -1,    19,    -1,    16,    -1,    -1,     7,    58,     4,
-      -1,    52,     8,    80,    -1,    58,     4,    52,     8,    80,
-      -1,    -1,    59,    60,     4,    -1,    61,     4,    67,    -1,
-      17,     3,    62,    -1,    18,     3,    62,     8,     9,    -1,
-      -1,    42,    63,    43,    -1,    63,     4,    64,    -1,    64,
-      -1,    65,    -1,    66,    -1,     7,    66,    -1,    52,     8,
-       9,    -1,    54,    57,    68,    -1,    47,    69,    48,    -1,
-      69,     4,    70,    -1,    70,    -1,    69,     1,    70,    -1,
-       1,     4,    70,    -1,    -1,    73,    10,    76,    -1,    72,
-      -1,    68,    -1,    27,    76,    28,    70,    71,    -1,    29,
-       3,    10,    76,    31,    76,    32,    70,    -1,    36,    76,
-      32,    70,    -1,    -1,    30,    70,    -1,     3,    -1,     3,
-      42,    75,    43,    -1,     3,    74,    -1,    -1,    44,    75,
-      45,    -1,    75,     5,    76,    -1,    76,    -1,    77,    -1,
-      77,    12,    77,    -1,    77,    37,    77,    -1,    77,    38,
-      77,    -1,    77,    39,    77,    -1,    77,    40,    77,    -1,
-      77,    41,    77,    -1,    77,    14,    78,    -1,    77,    15,
-      78,    -1,    77,    33,    78,    -1,    78,    -1,    78,    21,
-      79,    -1,    78,    22,    79,    -1,    78,    23,    79,    -1,
-      78,    24,    79,    -1,    78,    25,    79,    -1,    79,    -1,
-      19,    -1,    11,    -1,    73,    -1,     3,    42,    75,    43,
-      -1,    42,    76,    43,    -1,    26,    79,    -1,    15,    79,
-      -1,     9,    -1,    20,    44,    81,    45,    34,     9,    -1,
-      81,     5,    11,    35,    11,    -1,    11,    35,    11,    -1
+      50,     0,    -1,    51,     4,    53,    -1,     1,     4,    53,
+      -1,    51,     4,    -1,    46,     3,    42,    52,    43,    -1,
+      46,     3,     1,    52,    43,    -1,    46,     3,    42,    52,
+       1,    -1,     1,     3,    42,    52,    43,    -1,    46,     1,
+      42,    52,    43,    -1,    46,     3,    42,     1,    43,    -1,
+      52,     5,     3,    -1,     3,    -1,    52,     5,     1,    -1,
+      54,    57,    59,    68,    -1,    -1,    54,    57,    59,    -1,
+      -1,     6,    55,     4,    -1,     1,    55,     4,    -1,    55,
+       4,     3,    12,    56,    -1,     3,    12,    56,    -1,    14,
+       3,    -1,    15,     3,    -1,     3,    -1,    14,    11,    -1,
+      15,    11,    -1,    11,    -1,    14,    19,    -1,    15,    19,
+      -1,    19,    -1,    16,    -1,    -1,     7,    58,     4,    -1,
+      52,     8,    80,    -1,    58,     4,    52,     8,    80,    -1,
+      -1,    59,    60,     4,    -1,    61,     4,    67,    -1,    17,
+       3,    62,    -1,    18,     3,    62,     8,     9,    -1,    -1,
+      42,    63,    43,    -1,    63,     4,    64,    -1,    64,    -1,
+      65,    -1,    66,    -1,     7,    66,    -1,    52,     8,     9,
+      -1,    54,    57,    68,    -1,    47,    69,    48,    -1,    69,
+       4,    70,    -1,    70,    -1,    69,     1,    70,    -1,     1,
+       4,    70,    -1,    -1,    73,    10,    76,    -1,    72,    -1,
+      68,    -1,    27,    76,    28,    70,    71,    -1,    29,     3,
+      10,    76,    31,    76,    32,    70,    -1,    36,    76,    32,
+      70,    -1,    -1,    30,    70,    -1,     3,    -1,     3,    42,
+      75,    43,    -1,     3,    74,    -1,    -1,    44,    75,    45,
+      -1,    75,     5,    76,    -1,    76,    -1,    77,    -1,    77,
+      12,    77,    -1,    77,    37,    77,    -1,    77,    38,    77,
+      -1,    77,    39,    77,    -1,    77,    40,    77,    -1,    77,
+      41,    77,    -1,    77,    14,    78,    -1,    77,    15,    78,
+      -1,    77,    33,    78,    -1,    78,    -1,    78,    21,    79,
+      -1,    78,    22,    79,    -1,    78,    23,    79,    -1,    78,
+      24,    79,    -1,    78,    25,    79,    -1,    79,    -1,    19,
+      -1,    11,    -1,    73,    -1,     3,    42,    75,    43,    -1,
+      42,    76,    43,    -1,    26,    79,    -1,    15,    79,    -1,
+       9,    -1,    20,    44,    81,    45,    34,     9,    -1,    81,
+       5,    11,    35,    11,    -1,    11,    35,    11,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    42,    42,    53,    56,    62,    75,    78,    81,    84,
-      88,    99,   108,   111,   115,   126,   134,   145,   158,   169,
-     179,   189,   198,   208,   218,   227,   236,   245,   254,   264,
-     272,   283,   294,   308,   316,   327,   338,   348,   359,   367,
-     378,   389,   398,   407,   416,   426,   437,   449,   458,   469,
-     478,   481,   485,   493,   504,   513,   522,   535,   551,   561,
-     569,   580,   589,   601,   611,   617,   626,   637,   646,   655,
-     666,   677,   688,   699,   710,   721,   732,   743,   754,   763,
-     774,   785,   796,   807,   818,   827,   836,   845,   854,   866,
-     877,   887,   898,   907,   920,   931
+       0,    45,    45,    56,    59,    65,    78,    81,    84,    87,
+      90,    94,   105,   114,   118,   128,   128,   133,   141,   151,
+     157,   170,   181,   191,   201,   210,   220,   230,   239,   248,
+     257,   266,   276,   284,   295,   306,   320,   328,   339,   350,
+     360,   371,   379,   390,   401,   410,   419,   428,   438,   449,
+     461,   470,   481,   490,   495,   499,   507,   518,   527,   536,
+     549,   565,   575,   583,   594,   603,   615,   625,   631,   640,
+     651,   660,   669,   680,   691,   702,   713,   724,   735,   746,
+     757,   768,   777,   788,   799,   810,   821,   832,   841,   850,
+     859,   868,   880,   891,   901,   912,   921,   934,   945
 };
 #endif
 
@@ -594,30 +613,30 @@ static const yytype_uint16 yytoknum[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    49,    50,    50,    50,    51,    51,    51,    51,    51,
-      52,    52,    52,    52,    53,    54,    54,    55,    55,    56,
-      56,    56,    56,    56,    56,    56,    56,    56,    56,    57,
-      57,    58,    58,    59,    59,    60,    61,    61,    62,    62,
-      63,    63,    64,    64,    65,    66,    67,    68,    69,    69,
-      69,    69,    70,    70,    70,    70,    70,    70,    70,    71,
-      71,    72,    72,    73,    74,    74,    75,    75,    76,    76,
-      76,    76,    76,    76,    76,    77,    77,    77,    77,    78,
-      78,    78,    78,    78,    78,    79,    79,    79,    79,    79,
-      79,    79,    80,    80,    81,    81
+      51,    52,    52,    52,    53,    53,    53,    54,    54,    54,
+      55,    55,    56,    56,    56,    56,    56,    56,    56,    56,
+      56,    56,    57,    57,    58,    58,    59,    59,    60,    61,
+      61,    62,    62,    63,    63,    64,    64,    65,    66,    67,
+      68,    69,    69,    69,    69,    70,    70,    70,    70,    70,
+      70,    70,    71,    71,    72,    72,    73,    74,    74,    75,
+      75,    76,    76,    76,    76,    76,    76,    76,    77,    77,
+      77,    77,    78,    78,    78,    78,    78,    78,    79,    79,
+      79,    79,    79,    79,    79,    80,    80,    81,    81
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     3,     4,     3,     5,     5,     5,     5,     5,
-       3,     1,     3,     3,     4,     0,     3,     5,     3,     2,
-       2,     1,     2,     2,     1,     2,     2,     1,     1,     0,
-       3,     3,     5,     0,     3,     3,     3,     5,     0,     3,
-       3,     1,     1,     1,     2,     3,     3,     3,     3,     1,
-       3,     3,     0,     3,     1,     1,     5,     8,     4,     0,
-       2,     1,     4,     2,     0,     3,     3,     1,     1,     3,
-       3,     3,     3,     3,     3,     3,     3,     3,     1,     3,
-       3,     3,     3,     3,     1,     1,     1,     1,     4,     3,
-       2,     2,     1,     6,     5,     3
+       0,     2,     3,     3,     2,     5,     5,     5,     5,     5,
+       5,     3,     1,     3,     4,     0,     3,     0,     3,     3,
+       5,     3,     2,     2,     1,     2,     2,     1,     2,     2,
+       1,     1,     0,     3,     3,     5,     0,     3,     3,     3,
+       5,     0,     3,     3,     1,     1,     1,     2,     3,     3,
+       3,     3,     1,     3,     3,     0,     3,     1,     1,     5,
+       8,     4,     0,     2,     1,     4,     2,     0,     3,     3,
+       1,     1,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     1,     3,     3,     3,     3,     3,     1,     1,     1,
+       1,     4,     3,     2,     2,     1,     6,     5,     3
 };
 
 /* YYDEFACT[STATE-NAME] -- Default reduction number in state STATE-NUM.
@@ -625,33 +644,33 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     0,     0,    15,     0,     0,     1,
-       0,    15,     0,     0,     4,    29,     0,     0,     0,    15,
-       2,    11,     0,     0,     0,     0,    33,     0,     0,     0,
-       3,     0,     0,     8,     0,    16,     0,     0,     0,     9,
-       6,     7,     5,    13,    12,    10,    21,    24,     0,     0,
-      28,    27,    18,     0,     0,    30,     0,     0,     0,     0,
-       0,    14,    19,    22,    25,    20,    23,    26,     0,    92,
-       0,    31,     0,    38,    38,     0,    61,     0,     0,     0,
-      55,     0,    49,    54,     0,    34,    15,    17,     0,     0,
-       0,    36,     0,    52,     0,     0,    63,    64,    86,     0,
-      85,     0,     0,    87,     0,    68,    78,    84,     0,     0,
-      52,    52,    47,     0,    29,    35,     0,     0,    32,     0,
-       0,     0,    41,    42,    43,     0,    51,     0,    67,     0,
-       0,    91,    90,     0,    52,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     1,
+       0,     0,     0,     0,     3,    32,     0,     0,     0,     2,
+      12,     0,     0,     0,     0,     0,    36,     0,     0,     0,
+       0,     0,     8,     0,    19,    18,     0,     0,    16,     9,
+       6,    10,     7,     5,    13,    11,    24,    27,     0,     0,
+      31,    30,    21,     0,     0,    33,     0,     0,     0,     0,
+       0,    14,    22,    25,    28,    23,    26,    29,     0,    95,
+       0,    34,     0,    41,    41,     0,    64,     0,     0,     0,
+      58,     0,    52,    57,     0,    37,     0,    20,     0,     0,
+       0,    39,     0,    55,     0,     0,    66,    67,    89,     0,
+      88,     0,     0,    90,     0,    71,    81,    87,     0,     0,
+      55,    55,    50,     0,    32,    38,     0,     0,    35,     0,
+       0,     0,    44,    45,    46,     0,    54,     0,    70,     0,
+       0,    94,    93,     0,    55,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      52,    50,    48,    53,     0,     0,     0,     0,    44,     0,
-       0,    39,    37,     0,    62,    65,     0,    89,    59,    69,
-      75,    76,    77,    70,    71,    72,    73,    74,    79,    80,
-      81,    82,    83,     0,    58,    46,    95,     0,     0,    45,
-      40,    66,    88,    52,    56,     0,     0,    93,    60,     0,
-      94,    52,    57
+      55,    53,    51,    56,     0,     0,     0,     0,    47,     0,
+       0,    42,    40,     0,    65,    68,     0,    92,    62,    72,
+      78,    79,    80,    73,    74,    75,    76,    77,    82,    83,
+      84,    85,    86,     0,    61,    49,    98,     0,     0,    48,
+      43,    69,    91,    55,    59,     0,     0,    96,    63,     0,
+      97,    55,    60
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,     3,     4,   120,    14,    15,    24,    52,    26,    37,
+      -1,     3,     4,   120,    14,    15,    23,    52,    26,    37,
       38,    59,    60,    91,   121,   122,   123,   124,   115,    80,
       81,    82,   194,    83,   103,    96,   127,   128,   105,   106,
      107,    71,   117
@@ -662,65 +681,67 @@ static const yytype_int16 yydefgoto[] =
 #define YYPACT_NINF -91
 static const yytype_int16 yypact[] =
 {
-       4,   163,    95,    19,     6,   -30,    68,    -9,     7,   -91,
-      86,    68,   108,   128,   -91,    94,   108,   108,   108,    68,
-     -91,   -91,    29,   122,   133,   108,   -91,    42,    62,    64,
-     -91,   147,   107,   -91,   130,   159,    83,   164,    77,   -91,
-     -91,   147,   -91,   -91,   -91,   -91,   -91,   -91,    21,   119,
-     -91,   -91,   -91,   157,     5,   108,   167,   168,    12,   169,
-     170,   -91,   -91,   -91,   -91,   -91,   -91,   -91,   130,   -91,
-     132,   -91,   115,   135,   135,   171,    73,    67,   175,    67,
-     -91,    16,   -91,   -91,   162,   -91,    68,   -91,   172,     5,
-     144,   -91,   173,    15,    67,    67,   -91,    98,   -91,    67,
-     -91,    67,    67,   -91,   151,    88,   136,   -91,   174,   148,
-      15,    15,   -91,    67,    94,   -91,   150,     1,   -91,   108,
-     131,    34,   -91,   -91,   -91,   177,   -91,    63,   -91,    26,
-      67,   -91,   -91,   139,    15,    67,    67,    67,    67,    67,
-      67,    67,    67,    67,    67,    67,    67,    67,    67,    67,
-      15,   -91,   -91,   -91,   140,   178,   179,   154,   -91,   182,
-     144,   -91,   -91,    67,   -91,   -91,    70,   -91,   165,    66,
-     136,   136,   136,    66,    66,    66,    66,    66,   -91,   -91,
-     -91,   -91,   -91,   161,   -91,   -91,   -91,   158,   185,   -91,
-     -91,   -91,   -91,    15,   -91,    67,   186,   -91,   -91,   166,
-     -91,    15,   -91
+       4,   176,   157,    17,     8,   -15,    62,   -12,     5,   -91,
+      64,    28,    90,    90,   -91,    31,    28,    28,   174,   -91,
+     -91,    67,    32,   118,   121,    28,   -91,    80,    89,    99,
+      35,   175,   -91,   130,   135,   135,    24,   146,    84,   -91,
+     -91,   -91,   -91,   -91,   -91,   -91,   -91,   -91,    97,   137,
+     -91,   -91,   -91,   147,    -1,    28,   168,   178,    12,   179,
+     180,   -91,   -91,   -91,   -91,   -91,   -91,   -91,   130,   -91,
+     138,   -91,   112,   143,   143,   182,    95,    88,   184,    88,
+     -91,    19,   -91,   -91,   181,   -91,    27,   -91,   177,    -1,
+      11,   -91,   185,    48,    88,    88,   -91,    71,   -91,    88,
+     -91,    88,    88,   -91,   161,   114,   145,   -91,   186,   158,
+      48,    48,   -91,    88,    31,   -91,   159,    41,   -91,    28,
+     116,     6,   -91,   -91,   -91,   183,   -91,    91,   -91,    61,
+      88,   -91,   -91,   152,    48,    88,    88,    88,    88,    88,
+      88,    88,    88,    88,    88,    88,    88,    88,    88,    88,
+      48,   -91,   -91,   -91,   150,   187,   188,   166,   -91,   192,
+      11,   -91,   -91,    88,   -91,   -91,    93,   -91,   172,    10,
+     145,   145,   145,    10,    10,    10,    10,    10,   -91,   -91,
+     -91,   -91,   -91,   173,   -91,   -91,   -91,   170,   194,   -91,
+     -91,   -91,   -91,    48,   -91,    88,   195,   -91,   -91,   189,
+     -91,    48,   -91
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-     -91,   -91,   -91,    11,    78,   110,   -91,   134,    85,   -91,
-     -91,   -91,   -91,   126,   -91,    41,   -91,    84,   -91,   -36,
-     -91,   -89,   -91,   -91,   -58,   -91,   -16,   -76,    13,    27,
-     -90,   116,   -91
+     -91,   -91,   -91,    72,   197,   122,   196,   142,    98,   -91,
+     -91,   -91,   -91,   139,   -91,    51,   -91,    96,   -91,   -36,
+     -91,   -89,   -91,   -91,   -58,   -91,   -88,   -76,    22,    36,
+     -90,   125,   -91
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule which
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-#define YYTABLE_NINF -65
+#define YYTABLE_NINF -68
 static const yytype_int16 yytable[] =
 {
-      84,   104,    61,   109,   126,     1,   156,    10,    17,   131,
-      11,   132,    12,    75,    69,    76,   -52,   110,    76,     9,
-     111,   151,   152,    22,    62,    70,   133,    27,    28,    29,
-      31,   163,    63,    16,    32,    84,    36,   153,   160,    77,
-      64,    78,    77,    31,    78,   168,   157,    32,    79,    18,
-       2,    79,    84,    84,   178,   179,   180,   181,   182,    58,
-     -52,   184,    58,    31,   112,    41,    72,    32,   163,    32,
-      97,   165,    33,   183,    13,   163,    84,   161,    98,   129,
-     136,   137,    99,   -64,    31,    39,   100,   191,    32,    20,
-      19,    54,    84,   101,    56,    57,     7,    30,     8,   138,
-     135,    25,   136,   137,   198,    40,   164,    42,    44,   102,
-      45,    21,   202,   192,   166,    94,    31,    95,   185,   199,
-      32,   138,    65,    89,    58,   139,   140,   141,   142,   143,
-      66,    23,    31,    46,    34,    84,    32,    35,    67,   159,
-     130,    47,    95,    84,    48,    49,    50,    21,   169,    51,
-      43,   119,   173,   174,   175,   176,   177,   144,   145,   146,
-     147,   148,    53,   170,   171,   172,     5,     6,    55,    68,
-      73,    74,   113,    85,    86,    93,    88,    90,   108,   134,
-     150,   125,   167,   116,   149,   155,   162,    58,   188,   186,
-     187,   189,   195,   196,   197,   193,   114,   200,   201,   154,
-      92,   190,    87,   158,     0,   118
+      84,   104,    61,   109,   126,     1,    17,   129,    69,   131,
+     160,   132,    10,    75,    20,    76,   -55,     9,   119,    70,
+     110,   151,   152,   111,   136,   137,   133,    11,    12,    31,
+      16,    20,    54,    13,   -17,    84,    42,   153,    25,    77,
+      31,    78,   166,   138,    33,   168,   156,    18,    79,   161,
+       2,    76,    84,    84,   178,   179,   180,   181,   182,    58,
+     -55,   184,   -15,    12,    -4,    12,   163,   112,    13,   -17,
+      13,   -17,    31,   183,   -17,    77,    84,    78,    43,   -17,
+     -17,   -17,   -17,    21,    79,    31,   157,   191,    27,    28,
+      30,    97,    84,    22,    31,    58,   163,    36,   163,    98,
+      62,    56,    57,    99,   198,   -67,   165,   100,    63,   -17,
+      32,   -17,   202,   130,   101,    95,    64,    31,   185,   199,
+      89,    31,    34,    39,   159,    35,   135,    72,   136,   137,
+     102,    58,    40,    46,   164,    84,   192,    94,    53,    95,
+      65,    47,    41,    84,    48,    49,    50,   138,    66,    51,
+      55,   139,   140,   141,   142,   143,    67,   169,     7,    68,
+       8,   173,   174,   175,   176,   177,   144,   145,   146,   147,
+     148,    73,   170,   171,   172,    29,    44,    20,    45,     5,
+       6,    74,    88,    85,    86,    90,    93,   108,   116,   134,
+     150,   113,   162,   125,   155,   167,   149,    58,   186,   187,
+     188,   189,   193,   197,   195,   196,   200,    19,   114,    24,
+      87,   190,   154,    92,   118,   158,     0,     0,     0,     0,
+       0,   201
 };
 
 #define yypact_value_is_default(Yystate) \
@@ -731,27 +752,29 @@ static const yytype_int16 yytable[] =
 
 static const yytype_int16 yycheck[] =
 {
-      58,    77,    38,    79,    93,     1,     5,     1,     1,    99,
-       4,   101,    42,     1,     9,     3,     4,     1,     3,     0,
-       4,   110,   111,    12,     3,    20,   102,    16,    17,    18,
-       1,     5,    11,    42,     5,    93,    25,   113,     4,    27,
-      19,    29,    27,     1,    29,   134,    45,     5,    36,    42,
-      46,    36,   110,   111,   144,   145,   146,   147,   148,    47,
-      48,   150,    47,     1,    48,     1,    55,     5,     5,     5,
-       3,    45,    43,   149,     6,     5,   134,    43,    11,    95,
-      14,    15,    15,    10,     1,    43,    19,   163,     5,    11,
-       4,     8,   150,    26,    17,    18,     1,    19,     3,    33,
-      12,     7,    14,    15,   193,    43,    43,    43,     1,    42,
-       3,     3,   201,    43,   130,    42,     1,    44,   154,   195,
-       5,    33,     3,     8,    47,    37,    38,    39,    40,    41,
-      11,     3,     1,     3,    12,   193,     5,     4,    19,     8,
-      42,    11,    44,   201,    14,    15,    16,     3,   135,    19,
-       3,     7,   139,   140,   141,   142,   143,    21,    22,    23,
-      24,    25,     3,   136,   137,   138,     3,     4,     4,    12,
-       3,     3,    10,     4,     4,     4,    44,    42,     3,    28,
-      32,     8,    43,    11,    10,    35,     9,    47,    34,    11,
-      11,     9,    31,    35,     9,    30,    86,    11,    32,   114,
-      74,   160,    68,   119,    -1,    89
+      58,    77,    38,    79,    93,     1,     1,    95,     9,    99,
+       4,   101,     4,     1,     3,     3,     4,     0,     7,    20,
+       1,   110,   111,     4,    14,    15,   102,    42,     1,     5,
+      42,     3,     8,     6,     7,    93,     1,   113,     7,    27,
+       5,    29,   130,    33,    12,   134,     5,    42,    36,    43,
+      46,     3,   110,   111,   144,   145,   146,   147,   148,    47,
+      48,   150,     0,     1,     0,     1,     5,    48,     6,     7,
+       6,     7,     5,   149,    47,    27,   134,    29,    43,    17,
+      18,    17,    18,    11,    36,     5,    45,   163,    16,    17,
+      18,     3,   150,     3,     5,    47,     5,    25,     5,    11,
+       3,    17,    18,    15,   193,    10,    45,    19,    11,    47,
+      43,    47,   201,    42,    26,    44,    19,     5,   154,   195,
+       8,     5,     4,    43,     8,     4,    12,    55,    14,    15,
+      42,    47,    43,     3,    43,   193,    43,    42,     3,    44,
+       3,    11,    43,   201,    14,    15,    16,    33,    11,    19,
+       4,    37,    38,    39,    40,    41,    19,   135,     1,    12,
+       3,   139,   140,   141,   142,   143,    21,    22,    23,    24,
+      25,     3,   136,   137,   138,     1,     1,     3,     3,     3,
+       4,     3,    44,     4,     4,    42,     4,     3,    11,    28,
+      32,    10,     9,     8,    35,    43,    10,    47,    11,    11,
+      34,     9,    30,     9,    31,    35,    11,    10,    86,    13,
+      68,   160,   114,    74,    89,   119,    -1,    -1,    -1,    -1,
+      -1,    32
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -759,10 +782,10 @@ static const yytype_int16 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     1,    46,    50,    51,     3,     4,     1,     3,     0,
-       1,     4,    42,     6,    53,    54,    42,     1,    42,     4,
-      53,     3,    52,     3,    55,     7,    57,    52,    52,    52,
-      53,     1,     5,    43,    12,     4,    52,    58,    59,    43,
-      43,     1,    43,     3,     1,     3,     3,    11,    14,    15,
+       4,    42,     1,     6,    53,    54,    42,     1,    42,    53,
+       3,    52,     3,    55,    55,     7,    57,    52,    52,     1,
+      52,     5,    43,    12,     4,     4,    52,    58,    59,    43,
+      43,    43,     1,    43,     1,     3,     3,    11,    14,    15,
       16,    19,    56,     3,     8,     4,    17,    18,    47,    60,
       61,    68,     3,    11,    19,     3,    11,    19,    12,     9,
       20,    80,    52,     3,     3,     1,     3,    27,    29,    36,
@@ -830,9 +853,90 @@ while (YYID (0))
 #define YYERRCODE	256
 
 
-/* This macro is provided for backward compatibility. */
+/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
+   If N is 0, then set CURRENT to the empty location which ends
+   the previous symbol: RHS[0] (always defined).  */
+
+#ifndef YYLLOC_DEFAULT
+# define YYLLOC_DEFAULT(Current, Rhs, N)                                \
+    do                                                                  \
+      if (YYID (N))                                                     \
+        {                                                               \
+          (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;        \
+          (Current).first_column = YYRHSLOC (Rhs, 1).first_column;      \
+          (Current).last_line    = YYRHSLOC (Rhs, N).last_line;         \
+          (Current).last_column  = YYRHSLOC (Rhs, N).last_column;       \
+        }                                                               \
+      else                                                              \
+        {                                                               \
+          (Current).first_line   = (Current).last_line   =              \
+            YYRHSLOC (Rhs, 0).last_line;                                \
+          (Current).first_column = (Current).last_column =              \
+            YYRHSLOC (Rhs, 0).last_column;                              \
+        }                                                               \
+    while (YYID (0))
+#endif
+
+#define YYRHSLOC(Rhs, K) ((Rhs)[K])
+
+
+/* YY_LOCATION_PRINT -- Print the location on the stream.
+   This macro was not mandated originally: define only if we know
+   we won't break user code: when these are the locations we know.  */
+
+#ifndef __attribute__
+/* This feature is available in gcc versions 2.5 and later.  */
+# if (! defined __GNUC__ || __GNUC__ < 2 \
+      || (__GNUC__ == 2 && __GNUC_MINOR__ < 5))
+#  define __attribute__(Spec) /* empty */
+# endif
+#endif
+
 #ifndef YY_LOCATION_PRINT
-# define YY_LOCATION_PRINT(File, Loc) ((void) 0)
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
+
+/* Print *YYLOCP on YYO.  Private, do not rely on its existence. */
+
+__attribute__((__unused__))
+#if (defined __STDC__ || defined __C99__FUNC__ \
+     || defined __cplusplus || defined _MSC_VER)
+static unsigned
+yy_location_print_ (FILE *yyo, YYLTYPE const * const yylocp)
+#else
+static unsigned
+yy_location_print_ (yyo, yylocp)
+    FILE *yyo;
+    YYLTYPE const * const yylocp;
+#endif
+{
+  unsigned res = 0;
+  int end_col = 0 != yylocp->last_column ? yylocp->last_column - 1 : 0;
+  if (0 <= yylocp->first_line)
+    {
+      res += fprintf (yyo, "%d", yylocp->first_line);
+      if (0 <= yylocp->first_column)
+        res += fprintf (yyo, ".%d", yylocp->first_column);
+    }
+  if (0 <= yylocp->last_line)
+    {
+      if (yylocp->first_line < yylocp->last_line)
+        {
+          res += fprintf (yyo, "-%d", yylocp->last_line);
+          if (0 <= end_col)
+            res += fprintf (yyo, ".%d", end_col);
+        }
+      else if (0 <= end_col && yylocp->first_column < end_col)
+        res += fprintf (yyo, "-%d", end_col);
+    }
+  return res;
+ }
+
+#  define YY_LOCATION_PRINT(File, Loc)          \
+  yy_location_print_ (File, &(Loc))
+
+# else
+#  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
+# endif
 #endif
 
 
@@ -863,7 +967,7 @@ do {									  \
     {									  \
       YYFPRINTF (stderr, "%s ", Title);					  \
       yy_symbol_print (stderr,						  \
-		  Type, Value); \
+		  Type, Value, Location); \
       YYFPRINTF (stderr, "\n");						  \
     }									  \
 } while (YYID (0))
@@ -877,19 +981,21 @@ do {									  \
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_value_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp)
 #else
 static void
-yy_symbol_value_print (yyoutput, yytype, yyvaluep)
+yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
+    YYLTYPE const * const yylocationp;
 #endif
 {
   FILE *yyo = yyoutput;
   YYUSE (yyo);
   if (!yyvaluep)
     return;
+  YYUSE (yylocationp);
 # ifdef YYPRINT
   if (yytype < YYNTOKENS)
     YYPRINT (yyoutput, yytoknum[yytype], *yyvaluep);
@@ -911,13 +1017,14 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep)
+yy_symbol_print (FILE *yyoutput, int yytype, YYSTYPE const * const yyvaluep, YYLTYPE const * const yylocationp)
 #else
 static void
-yy_symbol_print (yyoutput, yytype, yyvaluep)
+yy_symbol_print (yyoutput, yytype, yyvaluep, yylocationp)
     FILE *yyoutput;
     int yytype;
     YYSTYPE const * const yyvaluep;
+    YYLTYPE const * const yylocationp;
 #endif
 {
   if (yytype < YYNTOKENS)
@@ -925,7 +1032,9 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
   else
     YYFPRINTF (yyoutput, "nterm %s (", yytname[yytype]);
 
-  yy_symbol_value_print (yyoutput, yytype, yyvaluep);
+  YY_LOCATION_PRINT (yyoutput, *yylocationp);
+  YYFPRINTF (yyoutput, ": ");
+  yy_symbol_value_print (yyoutput, yytype, yyvaluep, yylocationp);
   YYFPRINTF (yyoutput, ")");
 }
 
@@ -968,11 +1077,12 @@ do {								\
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_reduce_print (YYSTYPE *yyvsp, int yyrule)
+yy_reduce_print (YYSTYPE *yyvsp, YYLTYPE *yylsp, int yyrule)
 #else
 static void
-yy_reduce_print (yyvsp, yyrule)
+yy_reduce_print (yyvsp, yylsp, yyrule)
     YYSTYPE *yyvsp;
+    YYLTYPE *yylsp;
     int yyrule;
 #endif
 {
@@ -987,7 +1097,7 @@ yy_reduce_print (yyvsp, yyrule)
       YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
 		       &(yyvsp[(yyi + 1) - (yynrhs)])
-		       		       );
+		       , &(yylsp[(yyi + 1) - (yynrhs)])		       );
       YYFPRINTF (stderr, "\n");
     }
 }
@@ -995,7 +1105,7 @@ yy_reduce_print (yyvsp, yyrule)
 # define YY_REDUCE_PRINT(Rule)		\
 do {					\
   if (yydebug)				\
-    yy_reduce_print (yyvsp, Rule); \
+    yy_reduce_print (yyvsp, yylsp, Rule); \
 } while (YYID (0))
 
 /* Nonzero means print parse trace.  It is left uninitialized so that
@@ -1275,16 +1385,18 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep)
+yydestruct (const char *yymsg, int yytype, YYSTYPE *yyvaluep, YYLTYPE *yylocationp)
 #else
 static void
-yydestruct (yymsg, yytype, yyvaluep)
+yydestruct (yymsg, yytype, yyvaluep, yylocationp)
     const char *yymsg;
     int yytype;
     YYSTYPE *yyvaluep;
+    YYLTYPE *yylocationp;
 #endif
 {
   YYUSE (yyvaluep);
+  YYUSE (yylocationp);
 
   if (!yymsg)
     yymsg = "Deleting";
@@ -1315,6 +1427,14 @@ int yychar;
 
 /* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval YY_INITIAL_VALUE(yyval_default);
+
+/* Location data for the lookahead symbol.  */
+YYLTYPE yylloc
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
+  = { 1, 1, 1, 1 }
+# endif
+;
+
 
 /* Number of syntax errors so far.  */
 int yynerrs;
@@ -1353,6 +1473,7 @@ yyparse ()
     /* The stacks and their tools:
        `yyss': related to states.
        `yyvs': related to semantic values.
+       `yyls': related to locations.
 
        Refer to the stacks through separate pointers, to allow yyoverflow
        to reallocate them elsewhere.  */
@@ -1367,6 +1488,14 @@ yyparse ()
     YYSTYPE *yyvs;
     YYSTYPE *yyvsp;
 
+    /* The location stack.  */
+    YYLTYPE yylsa[YYINITDEPTH];
+    YYLTYPE *yyls;
+    YYLTYPE *yylsp;
+
+    /* The locations where the error started and ended.  */
+    YYLTYPE yyerror_range[3];
+
     YYSIZE_T yystacksize;
 
   int yyn;
@@ -1376,6 +1505,7 @@ yyparse ()
   /* The variables used to return semantic value and location from the
      action routines.  */
   YYSTYPE yyval;
+  YYLTYPE yyloc;
 
 #if YYERROR_VERBOSE
   /* Buffer for error messages, and its allocated size.  */
@@ -1384,7 +1514,7 @@ yyparse ()
   YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
 #endif
 
-#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
+#define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N), yylsp -= (N))
 
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
@@ -1392,6 +1522,7 @@ yyparse ()
 
   yyssp = yyss = yyssa;
   yyvsp = yyvs = yyvsa;
+  yylsp = yyls = yylsa;
   yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
@@ -1400,6 +1531,7 @@ yyparse ()
   yyerrstatus = 0;
   yynerrs = 0;
   yychar = YYEMPTY; /* Cause a token to be read.  */
+  yylsp[0] = yylloc;
   goto yysetstate;
 
 /*------------------------------------------------------------.
@@ -1425,6 +1557,7 @@ yyparse ()
 	   memory.  */
 	YYSTYPE *yyvs1 = yyvs;
 	yytype_int16 *yyss1 = yyss;
+	YYLTYPE *yyls1 = yyls;
 
 	/* Each stack pointer address is followed by the size of the
 	   data in use in that stack, in bytes.  This used to be a
@@ -1433,8 +1566,10 @@ yyparse ()
 	yyoverflow (YY_("memory exhausted"),
 		    &yyss1, yysize * sizeof (*yyssp),
 		    &yyvs1, yysize * sizeof (*yyvsp),
+		    &yyls1, yysize * sizeof (*yylsp),
 		    &yystacksize);
 
+	yyls = yyls1;
 	yyss = yyss1;
 	yyvs = yyvs1;
       }
@@ -1457,6 +1592,7 @@ yyparse ()
 	  goto yyexhaustedlab;
 	YYSTACK_RELOCATE (yyss_alloc, yyss);
 	YYSTACK_RELOCATE (yyvs_alloc, yyvs);
+	YYSTACK_RELOCATE (yyls_alloc, yyls);
 #  undef YYSTACK_RELOCATE
 	if (yyss1 != yyssa)
 	  YYSTACK_FREE (yyss1);
@@ -1466,6 +1602,7 @@ yyparse ()
 
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
+      yylsp = yyls + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
 		  (unsigned long int) yystacksize));
@@ -1543,7 +1680,7 @@ yybackup:
   YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
-
+  *++yylsp = yylloc;
   goto yynewstate;
 
 
@@ -1574,13 +1711,14 @@ yyreduce:
      GCC warning that YYVAL may be used uninitialized.  */
   yyval = yyvsp[1-yylen];
 
-
+  /* Default location.  */
+  YYLLOC_DEFAULT (yyloc, (yylsp - yylen), yylen);
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 42 "parser.y"
+#line 45 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("programstruct"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -1596,25 +1734,25 @@ yyreduce:
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 53 "parser.y"
+#line 56 "parser.y"
     {
-					ParseError("**********hahahahahahahA****************",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of program head",parseTree[(yyvsp[(2) - (3)].ival)].getLineNum());
 					}
     break;
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 56 "parser.y"
+#line 59 "parser.y"
     {
-					ParseError("**********hahahahahahah****************",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of program body",parseTree[(yyvsp[(2) - (2)].ival)].getLineNum());
 					}
     break;
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 63 "parser.y"
+#line 66 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("program_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)},parseTree[(yyvsp[(2) - (5)].ival)].getLineNum()));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -1629,15 +1767,15 @@ yyreduce:
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 75 "parser.y"
+#line 78 "parser.y"
     {
-					ParseError("Lack of left parenthesis",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of left parenthesis",parseTree[(yyvsp[(2) - (5)].ival)].getLineNum());
 					}
     break;
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 78 "parser.y"
+#line 81 "parser.y"
     {
 					ParseError("Lack of right parenthesis",parseTree[parseTree.size()-1].getLineNum());
 					}
@@ -1645,7 +1783,7 @@ yyreduce:
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 81 "parser.y"
+#line 84 "parser.y"
     {
 					ParseError("Lack of program",yylineno);
 					}
@@ -1653,15 +1791,23 @@ yyreduce:
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 84 "parser.y"
+#line 87 "parser.y"
     {
-					ParseError("Lack of the name of the main function",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of the name of the main function",parseTree[(yyvsp[(3) - (5)].ival)].getLineNum());
 					}
     break;
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 88 "parser.y"
+#line 90 "parser.y"
+    {
+					ParseError("Lack of incoming parameters",parseTree[(yyvsp[(3) - (5)].ival)].getLineNum());
+					}
+    break;
+
+  case 11:
+/* Line 1792 of yacc.c  */
+#line 94 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -1675,9 +1821,9 @@ yyreduce:
 				   }
     break;
 
-  case 11:
+  case 12:
 /* Line 1792 of yacc.c  */
-#line 99 "parser.y"
+#line 105 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("idlist"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -1689,25 +1835,17 @@ yyreduce:
 }
     break;
 
-  case 12:
-/* Line 1792 of yacc.c  */
-#line 108 "parser.y"
-    {
-					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
-					}
-    break;
-
   case 13:
 /* Line 1792 of yacc.c  */
-#line 111 "parser.y"
+#line 114 "parser.y"
     {
-					ParseError("Afferent null value",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Afferent null value",parseTree[(yyvsp[(2) - (3)].ival)].getLineNum());
 					}
     break;
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 115 "parser.y"
+#line 118 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("program_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -1720,9 +1858,17 @@ yyreduce:
 }
     break;
 
-  case 15:
+  case 16:
 /* Line 1792 of yacc.c  */
-#line 126 "parser.y"
+#line 128 "parser.y"
+    {
+					ParseError("Lack of function body statement",parseTree[(yyvsp[(2) - (3)].ival)].getLineNum());
+					}
+    break;
+
+  case 17:
+/* Line 1792 of yacc.c  */
+#line 133 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -1733,9 +1879,9 @@ yyreduce:
 }
     break;
 
-  case 16:
+  case 18:
 /* Line 1792 of yacc.c  */
-#line 134 "parser.y"
+#line 141 "parser.y"
     {				   
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -1748,9 +1894,18 @@ yyreduce:
 				   }
     break;
 
-  case 17:
+  case 19:
 /* Line 1792 of yacc.c  */
-#line 145 "parser.y"
+#line 152 "parser.y"
+    {
+					ParseError("Lack of 'const'",parseTree[(yyvsp[(2) - (3)].ival)].getLineNum());
+					lParseError("Lack of semicolons",(yylsp[(2) - (3)]));
+					}
+    break;
+
+  case 20:
+/* Line 1792 of yacc.c  */
+#line 157 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
 				   //记录指向本节点的指针
@@ -1766,9 +1921,9 @@ yyreduce:
 }
     break;
 
-  case 18:
+  case 21:
 /* Line 1792 of yacc.c  */
-#line 158 "parser.y"
+#line 170 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -1782,53 +1937,9 @@ yyreduce:
 }
     break;
 
-  case 19:
-/* Line 1792 of yacc.c  */
-#line 169 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;	
-}
-    break;
-
-  case 20:
-/* Line 1792 of yacc.c  */
-#line 179 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;		
-}
-    break;
-
-  case 21:
-/* Line 1792 of yacc.c  */
-#line 189 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;	
-}
-    break;
-
   case 22:
 /* Line 1792 of yacc.c  */
-#line 198 "parser.y"
+#line 181 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -1837,13 +1948,13 @@ yyreduce:
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;		
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 208 "parser.y"
+#line 191 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -1852,13 +1963,13 @@ yyreduce:
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
 				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;	
+				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 218 "parser.y"
+#line 201 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -1872,49 +1983,37 @@ yyreduce:
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 227 "parser.y"
+#line 210 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
+				   parseTreeRoot = parseTree.size() - 1;		
 }
     break;
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 236 "parser.y"
+#line 220 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
 				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (2)].ival)].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
+				   parseTreeRoot = parseTree.size() - 1;	
 }
     break;
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 245 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 28:
-/* Line 1792 of yacc.c  */
-#line 254 "parser.y"
+#line 230 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -1926,9 +2025,65 @@ yyreduce:
 }
     break;
 
+  case 28:
+/* Line 1792 of yacc.c  */
+#line 239 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
   case 29:
 /* Line 1792 of yacc.c  */
-#line 264 "parser.y"
+#line 248 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (2)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 30:
+/* Line 1792 of yacc.c  */
+#line 257 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 31:
+/* Line 1792 of yacc.c  */
+#line 266 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("const_value"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;	
+}
+    break;
+
+  case 32:
+/* Line 1792 of yacc.c  */
+#line 276 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -1939,9 +2094,9 @@ yyreduce:
 }
     break;
 
-  case 30:
+  case 33:
 /* Line 1792 of yacc.c  */
-#line 272 "parser.y"
+#line 284 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -1955,9 +2110,9 @@ yyreduce:
 }
     break;
 
-  case 31:
+  case 34:
 /* Line 1792 of yacc.c  */
-#line 283 "parser.y"
+#line 295 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -1971,9 +2126,9 @@ yyreduce:
 }
     break;
 
-  case 32:
+  case 35:
 /* Line 1792 of yacc.c  */
-#line 294 "parser.y"
+#line 306 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_declaration"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
 				   //记录指向本节点的指针
@@ -1989,9 +2144,9 @@ yyreduce:
 }
     break;
 
-  case 33:
+  case 36:
 /* Line 1792 of yacc.c  */
-#line 308 "parser.y"
+#line 320 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2002,9 +2157,9 @@ yyreduce:
 }
     break;
 
-  case 34:
+  case 37:
 /* Line 1792 of yacc.c  */
-#line 316 "parser.y"
+#line 328 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_declarations"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2018,9 +2173,9 @@ yyreduce:
 }
     break;
 
-  case 35:
+  case 38:
 /* Line 1792 of yacc.c  */
-#line 327 "parser.y"
+#line 339 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2034,9 +2189,9 @@ yyreduce:
 }
     break;
 
-  case 36:
+  case 39:
 /* Line 1792 of yacc.c  */
-#line 338 "parser.y"
+#line 350 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2049,9 +2204,9 @@ yyreduce:
 }
     break;
 
-  case 37:
+  case 40:
 /* Line 1792 of yacc.c  */
-#line 348 "parser.y"
+#line 360 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
 				   //记录指向本节点的指针
@@ -2065,9 +2220,9 @@ yyreduce:
 }
     break;
 
-  case 38:
+  case 41:
 /* Line 1792 of yacc.c  */
-#line 359 "parser.y"
+#line 371 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2078,9 +2233,9 @@ yyreduce:
 }
     break;
 
-  case 39:
+  case 42:
 /* Line 1792 of yacc.c  */
-#line 367 "parser.y"
+#line 379 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("formal_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2094,9 +2249,9 @@ yyreduce:
 }
     break;
 
-  case 40:
+  case 43:
 /* Line 1792 of yacc.c  */
-#line 378 "parser.y"
+#line 390 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2110,9 +2265,9 @@ yyreduce:
 }
     break;
 
-  case 41:
+  case 44:
 /* Line 1792 of yacc.c  */
-#line 389 "parser.y"
+#line 401 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2124,9 +2279,9 @@ yyreduce:
 }
     break;
 
-  case 42:
+  case 45:
 /* Line 1792 of yacc.c  */
-#line 398 "parser.y"
+#line 410 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2138,9 +2293,9 @@ yyreduce:
 }
     break;
 
-  case 43:
+  case 46:
 /* Line 1792 of yacc.c  */
-#line 407 "parser.y"
+#line 419 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2152,9 +2307,9 @@ yyreduce:
 }
     break;
 
-  case 44:
+  case 47:
 /* Line 1792 of yacc.c  */
-#line 416 "parser.y"
+#line 428 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("var_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2167,9 +2322,9 @@ yyreduce:
 }
     break;
 
-  case 45:
+  case 48:
 /* Line 1792 of yacc.c  */
-#line 426 "parser.y"
+#line 438 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("value_parameter"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2183,9 +2338,9 @@ yyreduce:
 }
     break;
 
-  case 46:
+  case 49:
 /* Line 1792 of yacc.c  */
-#line 437 "parser.y"
+#line 449 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("subprogram_body"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2199,9 +2354,9 @@ yyreduce:
 }
     break;
 
-  case 47:
+  case 50:
 /* Line 1792 of yacc.c  */
-#line 449 "parser.y"
+#line 461 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("compound_statement"),std::string(""),std::vector<int>{(yyvsp[(2) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2213,11 +2368,11 @@ yyreduce:
 }
     break;
 
-  case 48:
+  case 51:
 /* Line 1792 of yacc.c  */
-#line 458 "parser.y"
+#line 470 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)},parseTree[(yyvsp[(3) - (3)].ival)].getLineNum()));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -2229,9 +2384,9 @@ yyreduce:
 }
     break;
 
-  case 49:
+  case 52:
 /* Line 1792 of yacc.c  */
-#line 469 "parser.y"
+#line 481 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2243,25 +2398,27 @@ yyreduce:
 }
     break;
 
-  case 50:
+  case 53:
 /* Line 1792 of yacc.c  */
-#line 478 "parser.y"
+#line 490 "parser.y"
     {
-					ParseError("************sssss**************",parseTree[parseTree.size()-1].getLineNum());
+					ParseError("Lack of semicolons",parseTree[(yyval.ival)].getLineNum());
+					ParseError("Lack of semicolons",(yylsp[(1) - (3)]).last_line);
+					parseTree[(yyval.ival)].setLineNum(parseTree[(yyvsp[(3) - (3)].ival)].getLineNum());
 				}
     break;
 
-  case 51:
+  case 54:
 /* Line 1792 of yacc.c  */
-#line 481 "parser.y"
+#line 495 "parser.y"
     {
 					ParseError("**************************",parseTree[parseTree.size()-1].getLineNum());
 				}
     break;
 
-  case 52:
+  case 55:
 /* Line 1792 of yacc.c  */
-#line 485 "parser.y"
+#line 499 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2272,9 +2429,9 @@ yyreduce:
 }
     break;
 
-  case 53:
+  case 56:
 /* Line 1792 of yacc.c  */
-#line 493 "parser.y"
+#line 507 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2288,9 +2445,9 @@ yyreduce:
 }
     break;
 
-  case 54:
+  case 57:
 /* Line 1792 of yacc.c  */
-#line 504 "parser.y"
+#line 518 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2302,9 +2459,9 @@ yyreduce:
 }
     break;
 
-  case 55:
+  case 58:
 /* Line 1792 of yacc.c  */
-#line 513 "parser.y"
+#line 527 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2316,9 +2473,9 @@ yyreduce:
 }
     break;
 
-  case 56:
+  case 59:
 /* Line 1792 of yacc.c  */
-#line 522 "parser.y"
+#line 536 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
 				   //记录指向本节点的指针
@@ -2334,9 +2491,9 @@ yyreduce:
 }
     break;
 
-  case 57:
+  case 60:
 /* Line 1792 of yacc.c  */
-#line 535 "parser.y"
+#line 549 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (8)].ival),(yyvsp[(2) - (8)].ival),(yyvsp[(3) - (8)].ival),(yyvsp[(4) - (8)].ival),(yyvsp[(5) - (8)].ival),(yyvsp[(6) - (8)].ival),(yyvsp[(7) - (8)].ival),(yyvsp[(8) - (8)].ival)}));
 				   //记录指向本节点的指针
@@ -2355,9 +2512,9 @@ yyreduce:
 }
     break;
 
-  case 58:
+  case 61:
 /* Line 1792 of yacc.c  */
-#line 551 "parser.y"
+#line 565 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -2370,9 +2527,9 @@ yyreduce:
 }
     break;
 
-  case 59:
+  case 62:
 /* Line 1792 of yacc.c  */
-#line 561 "parser.y"
+#line 575 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2383,9 +2540,9 @@ yyreduce:
 }
     break;
 
-  case 60:
+  case 63:
 /* Line 1792 of yacc.c  */
-#line 569 "parser.y"
+#line 583 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("else_part"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2398,9 +2555,9 @@ yyreduce:
 }
     break;
 
-  case 61:
+  case 64:
 /* Line 1792 of yacc.c  */
-#line 580 "parser.y"
+#line 594 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2412,9 +2569,9 @@ yyreduce:
 }
     break;
 
-  case 62:
+  case 65:
 /* Line 1792 of yacc.c  */
-#line 589 "parser.y"
+#line 603 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("procedure_call"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -2429,9 +2586,9 @@ yyreduce:
 }
     break;
 
-  case 63:
+  case 66:
 /* Line 1792 of yacc.c  */
-#line 601 "parser.y"
+#line 615 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("variable"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2444,9 +2601,9 @@ yyreduce:
 }
     break;
 
-  case 64:
+  case 67:
 /* Line 1792 of yacc.c  */
-#line 611 "parser.y"
+#line 625 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{}));
 				   //记录指向本节点的指针
@@ -2455,9 +2612,9 @@ yyreduce:
 }
     break;
 
-  case 65:
+  case 68:
 /* Line 1792 of yacc.c  */
-#line 617 "parser.y"
+#line 631 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("id_varpart"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2469,9 +2626,9 @@ yyreduce:
 }
     break;
 
-  case 66:
+  case 69:
 /* Line 1792 of yacc.c  */
-#line 626 "parser.y"
+#line 640 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2485,9 +2642,9 @@ yyreduce:
 }
     break;
 
-  case 67:
+  case 70:
 /* Line 1792 of yacc.c  */
-#line 637 "parser.y"
+#line 651 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression_list"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2499,9 +2656,9 @@ yyreduce:
 }
     break;
 
-  case 68:
+  case 71:
 /* Line 1792 of yacc.c  */
-#line 646 "parser.y"
+#line 660 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2513,9 +2670,9 @@ yyreduce:
 }
     break;
 
-  case 69:
+  case 72:
 /* Line 1792 of yacc.c  */
-#line 655 "parser.y"
+#line 669 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2529,57 +2686,9 @@ yyreduce:
 }
     break;
 
-  case 70:
-/* Line 1792 of yacc.c  */
-#line 666 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 71:
-/* Line 1792 of yacc.c  */
-#line 677 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 72:
-/* Line 1792 of yacc.c  */
-#line 688 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
   case 73:
 /* Line 1792 of yacc.c  */
-#line 699 "parser.y"
+#line 680 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2595,7 +2704,7 @@ yyreduce:
 
   case 74:
 /* Line 1792 of yacc.c  */
-#line 710 "parser.y"
+#line 691 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2611,9 +2720,9 @@ yyreduce:
 
   case 75:
 /* Line 1792 of yacc.c  */
-#line 721 "parser.y"
+#line 702 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -2627,9 +2736,9 @@ yyreduce:
 
   case 76:
 /* Line 1792 of yacc.c  */
-#line 732 "parser.y"
+#line 713 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -2643,9 +2752,9 @@ yyreduce:
 
   case 77:
 /* Line 1792 of yacc.c  */
-#line 743 "parser.y"
+#line 724 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -2659,13 +2768,15 @@ yyreduce:
 
   case 78:
 /* Line 1792 of yacc.c  */
-#line 754 "parser.y"
+#line 735 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 }
@@ -2673,9 +2784,9 @@ yyreduce:
 
   case 79:
 /* Line 1792 of yacc.c  */
-#line 763 "parser.y"
+#line 746 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -2689,9 +2800,9 @@ yyreduce:
 
   case 80:
 /* Line 1792 of yacc.c  */
-#line 774 "parser.y"
+#line 757 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -2705,15 +2816,13 @@ yyreduce:
 
   case 81:
 /* Line 1792 of yacc.c  */
-#line 785 "parser.y"
+#line 768 "parser.y"
     {
-				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
 				   (yyval.ival) = parseTree.size() - 1;
 				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
-				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 }
@@ -2721,7 +2830,7 @@ yyreduce:
 
   case 82:
 /* Line 1792 of yacc.c  */
-#line 796 "parser.y"
+#line 777 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2737,7 +2846,7 @@ yyreduce:
 
   case 83:
 /* Line 1792 of yacc.c  */
-#line 807 "parser.y"
+#line 788 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2753,7 +2862,55 @@ yyreduce:
 
   case 84:
 /* Line 1792 of yacc.c  */
-#line 818 "parser.y"
+#line 799 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 85:
+/* Line 1792 of yacc.c  */
+#line 810 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 86:
+/* Line 1792 of yacc.c  */
+#line 821 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(2) - (3)].ival)].setParent(parseTree.size() - 1);
+				   parseTree[(yyvsp[(3) - (3)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 87:
+/* Line 1792 of yacc.c  */
+#line 832 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2765,51 +2922,51 @@ yyreduce:
 }
     break;
 
-  case 85:
-/* Line 1792 of yacc.c  */
-#line 827 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 86:
-/* Line 1792 of yacc.c  */
-#line 836 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
-  case 87:
-/* Line 1792 of yacc.c  */
-#line 845 "parser.y"
-    {
-				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
-				   //记录指向本节点的指针
-				   (yyval.ival) = parseTree.size() - 1;
-				   //为子节点设置父节点指针
-				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
-				   //设置根节点，仅最上层规则需要 
-				   parseTreeRoot = parseTree.size() - 1;
-}
-    break;
-
   case 88:
 /* Line 1792 of yacc.c  */
-#line 854 "parser.y"
+#line 841 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 89:
+/* Line 1792 of yacc.c  */
+#line 850 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 90:
+/* Line 1792 of yacc.c  */
+#line 859 "parser.y"
+    {
+				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
+				   //记录指向本节点的指针
+				   (yyval.ival) = parseTree.size() - 1;
+				   //为子节点设置父节点指针
+				   parseTree[(yyvsp[(1) - (1)].ival)].setParent(parseTree.size() - 1);
+				   //设置根节点，仅最上层规则需要 
+				   parseTreeRoot = parseTree.size() - 1;
+}
+    break;
+
+  case 91:
+/* Line 1792 of yacc.c  */
+#line 868 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (4)].ival),(yyvsp[(2) - (4)].ival),(yyvsp[(3) - (4)].ival),(yyvsp[(4) - (4)].ival)}));
 				   //记录指向本节点的指针
@@ -2824,9 +2981,9 @@ yyreduce:
 }
     break;
 
-  case 89:
+  case 92:
 /* Line 1792 of yacc.c  */
-#line 866 "parser.y"
+#line 880 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2840,9 +2997,9 @@ yyreduce:
 }
     break;
 
-  case 90:
+  case 93:
 /* Line 1792 of yacc.c  */
-#line 877 "parser.y"
+#line 891 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2855,9 +3012,9 @@ yyreduce:
 }
     break;
 
-  case 91:
+  case 94:
 /* Line 1792 of yacc.c  */
-#line 887 "parser.y"
+#line 901 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{(yyvsp[(1) - (2)].ival),(yyvsp[(2) - (2)].ival)}));
 				   //记录指向本节点的指针
@@ -2870,9 +3027,9 @@ yyreduce:
 }
     break;
 
-  case 92:
+  case 95:
 /* Line 1792 of yacc.c  */
-#line 898 "parser.y"
+#line 912 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (1)].ival)}));
 				   //记录指向本节点的指针
@@ -2884,9 +3041,9 @@ yyreduce:
 }
     break;
 
-  case 93:
+  case 96:
 /* Line 1792 of yacc.c  */
-#line 907 "parser.y"
+#line 921 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{(yyvsp[(1) - (6)].ival),(yyvsp[(2) - (6)].ival),(yyvsp[(3) - (6)].ival),(yyvsp[(4) - (6)].ival),(yyvsp[(5) - (6)].ival),(yyvsp[(6) - (6)].ival)}));
 				   //记录指向本节点的指针
@@ -2901,9 +3058,9 @@ yyreduce:
 }
     break;
 
-  case 94:
+  case 97:
 /* Line 1792 of yacc.c  */
-#line 920 "parser.y"
+#line 934 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (5)].ival),(yyvsp[(2) - (5)].ival),(yyvsp[(3) - (5)].ival),(yyvsp[(4) - (5)].ival),(yyvsp[(5) - (5)].ival)}));
 				   //记录指向本节点的指针
@@ -2917,9 +3074,9 @@ yyreduce:
 }
     break;
 
-  case 95:
+  case 98:
 /* Line 1792 of yacc.c  */
-#line 931 "parser.y"
+#line 945 "parser.y"
     {
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{(yyvsp[(1) - (3)].ival),(yyvsp[(2) - (3)].ival),(yyvsp[(3) - (3)].ival)}));
 				   //记录指向本节点的指针
@@ -2933,7 +3090,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 2937 "parser.tab.cpp"
+#line 3094 "parser.tab.cpp"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2954,6 +3111,7 @@ yyreduce:
   YY_STACK_PRINT (yyss, yyssp);
 
   *++yyvsp = yyval;
+  *++yylsp = yyloc;
 
   /* Now `shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
@@ -3018,7 +3176,7 @@ yyerrlab:
 #endif
     }
 
-
+  yyerror_range[1] = yylloc;
 
   if (yyerrstatus == 3)
     {
@@ -3034,7 +3192,7 @@ yyerrlab:
       else
 	{
 	  yydestruct ("Error: discarding",
-		      yytoken, &yylval);
+		      yytoken, &yylval, &yylloc);
 	  yychar = YYEMPTY;
 	}
     }
@@ -3055,6 +3213,7 @@ yyerrorlab:
   if (/*CONSTCOND*/ 0)
      goto yyerrorlab;
 
+  yyerror_range[1] = yylsp[1-yylen];
   /* Do not reclaim the symbols of the rule which action triggered
      this YYERROR.  */
   YYPOPSTACK (yylen);
@@ -3088,9 +3247,9 @@ yyerrlab1:
       if (yyssp == yyss)
 	YYABORT;
 
-
+      yyerror_range[1] = *yylsp;
       yydestruct ("Error: popping",
-		  yystos[yystate], yyvsp);
+		  yystos[yystate], yyvsp, yylsp);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
@@ -3100,6 +3259,11 @@ yyerrlab1:
   *++yyvsp = yylval;
   YY_IGNORE_MAYBE_UNINITIALIZED_END
 
+  yyerror_range[2] = yylloc;
+  /* Using YYLLOC is tempting, but would change the location of
+     the lookahead.  YYLOC is available though.  */
+  YYLLOC_DEFAULT (yyloc, yyerror_range, 2);
+  *++yylsp = yyloc;
 
   /* Shift the error token.  */
   YY_SYMBOL_PRINT ("Shifting", yystos[yyn], yyvsp, yylsp);
@@ -3139,7 +3303,7 @@ yyreturn:
          user semantic actions for why this is necessary.  */
       yytoken = YYTRANSLATE (yychar);
       yydestruct ("Cleanup: discarding lookahead",
-                  yytoken, &yylval);
+                  yytoken, &yylval, &yylloc);
     }
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
@@ -3148,7 +3312,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-		  yystos[*yyssp], yyvsp);
+		  yystos[*yyssp], yyvsp, yylsp);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -3165,34 +3329,25 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 942 "parser.y"
+#line 956 "parser.y"
 
 void ParseError(std::string msg,int line)
 {
 	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< line <<std::endl;
 }
 
+
+
 int main(int argc, char* argv[]) 
 {
-	yyin = fopen("test.txt","r");
+	yyin = fopen("test1.txt","r");
 	yydebug = 0;
 	yyparse();
-	test();
+	//test();
 	return 0;
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Parse error: %s in line %d\n", s,yylineno);
+	//fprintf(stderr, "Parse error: %s in line %d\n", s,yylloc.first_line);
 	//exit(1);
-}
-
-void warning()
-{
-	int yyerrstatus = 1;
-	if(YYRECOVERING())
-	{
-		printf("aaaaaaaaaaaaaa");
-		return;
-	}
-		
 }
