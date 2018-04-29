@@ -8,17 +8,15 @@
 #include"parser.h"
 #include"transform.h"
 
-
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 extern int yylineno;
 
-
 void yyerror(const char* s);
 std::vector<ParseTreeNode> parseTree;
 void ParseError(std::string msg,int line);
-void lParseError(std::string msg,YYLTYPE t);
+void lParseError(std::string msg, YYLTYPE t);
 int parseTreeRoot;
 %}
 
@@ -959,7 +957,10 @@ void ParseError(std::string msg,int line)
 	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< line <<std::endl;
 }
 
-
+void lParseError(std::string msg,YYLTYPE t)
+{
+	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< t.first_line <<std::endl;
+}
 
 int main(int argc, char* argv[]) 
 {
