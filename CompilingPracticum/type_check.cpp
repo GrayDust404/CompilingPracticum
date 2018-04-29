@@ -188,6 +188,27 @@ bool FunctionCallNode::typeCheck()
 					std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第"<< i+1 <<"个参数类型不匹配"<< std::endl;
 					flag = false;
 				}
+				if (!children[i]->isVarNode() && parameterType[i].checkRef())
+				{
+					std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第" << i + 1 << "个参数为引用，不允许使用非变量的参数" << std::endl;
+					flag = false;
+				}
+			}
+		}
+	}
+	else
+	{
+		for (auto i : children)
+		{
+			if (!i->getType().getPeroid().empty())
+			{
+				std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的参数不能为数组" << std::endl;
+				flag = false;
+			}
+			if (i->getType().getSimpleType() == std::string("boolean"))
+			{
+				std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的参数不能为boolean" << std::endl;
+				flag = false;
 			}
 		}
 	}

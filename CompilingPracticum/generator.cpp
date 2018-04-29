@@ -152,9 +152,6 @@ std::string FunctionCallNode::codeGenerator()
 			else if (children[i]->getType().getSimpleType() == std::string("real")) {
 				statement = statement + "%f";
 			}
-			else if (children[i]->getType().getSimpleType() == std::string("boolean")) {
-				statement = statement + "%d";
-			}
 			else if (children[i]->getType().getSimpleType() == std::string("char")) {
 				statement = statement + "%c";
 			}
