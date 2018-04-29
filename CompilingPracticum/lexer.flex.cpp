@@ -653,8 +653,8 @@ char *yytext;
 #define YY_DECL int yylex()
 int yycolumn = 1;
 #define YY_USER_ACTION yylloc.first_line = yylloc.last_line = yylineno;\
-	yylloc.first_column = yycolumn;yylloc.last_column = yycolumn+yyleng-1;\
-	yycolumn += yyleng;
+	yylloc.first_column = yycolumn;yylloc.last_column = yycolumn+yyleng-1;
+	
 #include "parser.tab.h"
 extern std::vector<ParseTreeNode> parseTree;
 void lexerError(std::string msg,std::string s,int line);

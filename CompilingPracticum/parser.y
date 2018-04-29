@@ -7,6 +7,7 @@
 #include<string>
 #include"parser.h"
 #include"transform.h"
+#include"parser.tab.h"
 
 extern int yylex();
 extern int yyparse();
@@ -123,9 +124,9 @@ program_body: const_declarations var_declarations subprogram_declarations compou
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   parseTree[$4].setParent(parseTree.size() - 1);
 }
-| program_body: const_declarations var_declarations subprogram_declarations {
+/*| program_body: const_declarations var_declarations subprogram_declarations {
 					ParseError("Lack of function body statement",parseTree[$2].getLineNum());
-					}
+					}*/
 ;
 
 const_declarations: {
@@ -136,7 +137,7 @@ const_declarations: {
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 } 
-|_const const_declaration semicolon {				   
+| _const const_declaration semicolon {				   
 				   parseTree.push_back(ParseTreeNode(std::string("const_declarations"),std::string(""),std::vector<int>{$1,$2}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
@@ -149,11 +150,14 @@ const_declarations: {
 | error const_declaration semicolon
 					{
 					ParseError("Lack of 'const'",parseTree[$2].getLineNum());
-					lParseError("Lack of semicolons",@2);
+					lParseError("Lack of 'const'in front of statement",@2);
+					}
+| _const const_declaration error{
+					lParseError("Error in Constant declaration",@1);
 					}
 ;
 const_declaration: const_declaration semicolon id assign const_value{
-				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{$1,$2,$3,$4,$5}));
+				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{$1,$2,$3,$4,$5},parseTree[$3].getLineNum()));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
 				   //为子节点设置父节点指针
@@ -165,6 +169,11 @@ const_declaration: const_declaration semicolon id assign const_value{
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 }
+| const_declaration error id assign const_value{
+					ParseError("Lack of semicolons",parseTree[$$].getLineNum());
+					lParseError("Lack of semicolons",@1);
+					parseTree[$$].setLineNum(parseTree[$3].getLineNum());
+					}
 | id assign const_value{
 				   parseTree.push_back(ParseTreeNode(std::string("const_declaration"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -487,7 +496,7 @@ statement_list:  statement_list semicolon statement {
 }
 | statement_list error statement{
 					ParseError("Lack of semicolons",parseTree[$$].getLineNum());
-					ParseError("Lack of semicolons",@1.last_line);
+					lParseError("Lack of semicolons",@1);
 					parseTree[$$].setLineNum(parseTree[$3].getLineNum());
 				}
 | error semicolon statement{
@@ -959,12 +968,13 @@ void ParseError(std::string msg,int line)
 
 void lParseError(std::string msg,YYLTYPE t)
 {
-	std::cout<< "Parse errors ("<<msg<<") : "<< " in line "<< t.first_line <<std::endl;
+	std::cout<< "Parse errors ("<<msg<<") : "<< " in line"<< t.first_line <<" - line"<<t.last_line;
+	std::cout<< " and column"<<t.first_column<<" -column"<<t.last_column<<std::endl;
 }
 
 int main(int argc, char* argv[]) 
 {
-	yyin = fopen("test1.txt","r");
+	yyin = fopen("test.txt","r");
 	yydebug = 0;
 	yyparse();
 	//test();
