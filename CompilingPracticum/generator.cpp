@@ -210,7 +210,16 @@ std::string FunctionCallNode::codeGenerator()
 std::string FunctionDeclarationNode::codeGenerator()
 {
 	string parStatement;//参数内容
-	string statement = getType().getCType() + " " + id + "(";//函数主体内容
+	
+	string statement = std::string();
+	if (getType().getCType().empty()) 
+	{
+		statement =  "void " + id + "(";//函数主体内容
+	}
+	else
+	{
+		statement = getType().getCType() + " " + id + "(";//函数主体内容
+	}
 
 	int ptr = 0;	//children数组的当前访问指针
 	if (parameterNum != 0) { //判断是否有参数
