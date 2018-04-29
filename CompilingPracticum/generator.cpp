@@ -32,22 +32,22 @@ std::string VarNode::codeGenerator()
 	{
 		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
 		{
-			return '(' + "*" + id + ')';
+			return "(" + std::string("*") + id + ")";
 		}
 		else//不为引用时
 		{
-			return '(' + id + ')';
+			return "(" + id + ")";
 		}
 	}
 	else
 	{
 		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
 		{
-			return '(' + "*" + id + children[0]->codeGenerator() + ')';
+			return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
 		}
 		else//不为引用时
 		{
-			return '(' + id + children[0]->codeGenerator() + ')';
+			return "(" + id + children[0]->codeGenerator() + ")";
 		}
 	}
 }
