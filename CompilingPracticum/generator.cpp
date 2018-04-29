@@ -89,9 +89,9 @@ std::string AssignmentNode::codeGenerator()
 
 std::string ForNode::codeGenerator()
 {
-	return "for(int i = " + children[0]->codeGenerator()
-		+ "; i<= " + children[1]->codeGenerator()
-		+ "; i++ ) " + children[2]->codeGenerator();
+	return "for("+ iterator + " = " + children[0]->codeGenerator()
+		+ "; " + iterator + " <= " + children[1]->codeGenerator()
+		+ "; " + iterator + "++ ) " + children[2]->codeGenerator();
 }
 
 std::string IfNode::codeGenerator()

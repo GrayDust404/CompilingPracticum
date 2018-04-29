@@ -41,6 +41,7 @@ public:
 	virtual std::string getID() { return std::string(); }
 	virtual TypeStruct getType() { return TypeStruct(); }
 	virtual int getIdNum() { return -1; }
+	virtual bool isVarNode() { return false; }
 	int getLineNum() { return lineNum; }
 	int getChildrenNum() { return children.size(); }
 protected:
@@ -57,6 +58,7 @@ public:
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	std::string getID() override { return id; }
 	TypeStruct getType() override;
+	bool isVarNode() override { return true; }
 private:
 	std::string id;
 };

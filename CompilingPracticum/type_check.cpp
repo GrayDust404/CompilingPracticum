@@ -69,6 +69,11 @@ bool ForNode::typeCheck()
 {
 	bool flag = true;
 	TypeStruct temp = TypeStruct(std::string("integer"));
+	if (scope->lookUp(iterator).getType() != temp)
+	{
+		std::cout << "第" << lineNum << "行: 循环变量类型必须为integer" << std::endl;
+		flag = false;
+	}
 	if (children[0]->getType() != temp || children[1]->getType() != temp)
 	{
 		std::cout << "第" << lineNum << "行: 循环变量上下界表达式类型必须为integer"<< std::endl;

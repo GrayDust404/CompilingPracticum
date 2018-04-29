@@ -58,9 +58,11 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	scope->insert(Symbol(std::string("for")));
-	scope = scope->initializationScope();
-	scope->insert(Symbol(iterator, TypeStruct(std::string("integer"))));
+	if (scope->lookUp(iterator).getId().empty())
+	{
+		std::cout << "第" << lineNum << "行: 变量" << iterator << "未定义" << std::endl;
+		flag = false;
+	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
@@ -207,10 +209,10 @@ bool ProgramNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	scope->insert(Symbol(std::string("program")));
 	std::vector<TypeStruct> randomParameter;
 	randomParameter.push_back(TypeStruct(std::string("integer")));
 	scope->insert(Symbol(std::string("random"), TypeStruct(std::string("integer")),randomParameter));
+	scope->insert(Symbol(std::string("program")));
 	scope = scope->initializationScope();
 	for (auto i : children)
 	{
