@@ -122,10 +122,18 @@ std::string ParameterNode::codeGenerator()
 	string statement;//ParameterNode内的所有内容
 	for (int i = 0; i < idlist.size() - 1; i++)//生成除最后一个id外所有Parameter的代码
 	{
-		statement = statement + getType().getCType() + " "
+		if(isVar)
+			statement = statement + getType().getCType() + " *"
 			+ idlist[i] + ", ";
+		else
+			statement = statement + getType().getCType() + " "
+				+ idlist[i] + ", ";
 	}
-	return statement + getType().getCType() + " "
+	if(isVar)
+		return statement + getType().getCType() + " *"
+			+ idlist[idlist.size() - 1];//加上最后一个id
+	else
+		return statement + getType().getCType() + " "
 		+ idlist[idlist.size() - 1];//加上最后一个id
 }
 
