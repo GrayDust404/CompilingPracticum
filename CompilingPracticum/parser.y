@@ -693,7 +693,7 @@ statement: {
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
 }
-| error assignop expression{
+/*| error assignop expression{
 					lParseError("变量缺失或存在语法错误",@2);
 					}
 | variable error expression{
@@ -701,7 +701,7 @@ statement: {
 					}
 | variable assignop error{
 					lParseError("表达式缺失或存在语法错误",@2);
-					}
+					}*/
 | procedure_call {
 				   parseTree.push_back(ParseTreeNode(std::string("statement"),std::string(""),std::vector<int>{$1}));
 				   //记录指向本节点的指针
@@ -953,13 +953,13 @@ expression: simple_expression{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;		
-}
+}/*
 | error assign simple_expression{
 					lParseError("=前表达式非法",@2);
 					}
 | simple_expression assign error{
 					lParseError("=后表达式非法",@2);
-					}
+					}*/
 | simple_expression noequal simple_expression{
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -970,13 +970,13 @@ expression: simple_expression{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error noequal simple_expression{
 					lParseError("<>前表达式非法",@2);
 					}
 | simple_expression noequal error{
 					lParseError("<>后表达式非法",@2);
-					}
+					}*/
 | simple_expression GE simple_expression{
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -987,13 +987,13 @@ expression: simple_expression{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error GE simple_expression{
 					lParseError(">=前表达式非法",@2);
 					}
 | simple_expression GE error{
 					lParseError(">=后表达式非法",@2);
-					}
+					}*/
 | simple_expression GT simple_expression{
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1021,13 +1021,13 @@ expression: simple_expression{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error LE simple_expression{
 					lParseError("<=前表达式非法",@2);
 					}
 | simple_expression LE error{
 					lParseError("<=后表达式非法",@2);
-					}
+					}*/
 | simple_expression LT simple_expression{
 				   parseTree.push_back(ParseTreeNode(std::string("expression"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1038,7 +1038,7 @@ expression: simple_expression{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error LT simple_expression{
 					lParseError("<前表达式非法",@2);
 					}
@@ -1047,7 +1047,7 @@ expression: simple_expression{
 					}
 | simple_expression error simple_expression{
 					lParseError("非法符号",@1);
-					}
+					}*/
 ;
 simple_expression: simple_expression plus term {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{$1,$2,$3}));
@@ -1059,13 +1059,13 @@ simple_expression: simple_expression plus term {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error plus term{
 					lParseError("+前表达式非法",@2);
 					}
 | simple_expression plus error{
 					lParseError("+后表达式非法",@2);
-					}
+					}*/
 |simple_expression minus term {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1076,13 +1076,13 @@ simple_expression: simple_expression plus term {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error minus term{
 					lParseError("-前表达式非法",@2);
 					}
 | simple_expression minus error{
 					lParseError("-后表达式非法",@2);
-					}
+					}*/
 |simple_expression _or term {
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1093,7 +1093,7 @@ simple_expression: simple_expression plus term {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error _or term{
 					lParseError("or前表达式非法",@2);
 					}
@@ -1102,7 +1102,7 @@ simple_expression: simple_expression plus term {
 					}
 | simple_expression error term{
 					lParseError("非法符号",@1);
-					}
+					}*/
 |term{
 				   parseTree.push_back(ParseTreeNode(std::string("simple_expression"),std::string(""),std::vector<int>{$1}));
 				   //记录指向本节点的指针
@@ -1123,13 +1123,13 @@ term: term multiply factor {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error multiply factor{
 					lParseError("*前表达式非法",@2);
 					}
 | term multiply error{
 					lParseError("*后表达式非法",@2);
-					}
+					}*/
 |term divide factor {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1140,13 +1140,13 @@ term: term multiply factor {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error divide factor{
 					lParseError("/前表达式非法",@2);
 					}
 | term divide error{
 					lParseError("/后表达式非法",@2);
-					}
+					}*/
 |term _div factor {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1157,13 +1157,13 @@ term: term multiply factor {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error _div factor{
 					lParseError("div前表达式非法",@2);
 					}
 | term _div error{
 					lParseError("div后表达式非法",@2);
-					}
+					}*/
 |term _mod factor {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1174,13 +1174,13 @@ term: term multiply factor {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error _mod factor{
 					lParseError("mod前表达式非法",@2);
 					}
 | term _mod error{
 					lParseError("mod后表达式非法",@2);
-					}
+					}*/
 |term _and factor {
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1191,7 +1191,7 @@ term: term multiply factor {
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error _and factor{
 					lParseError("and前表达式非法",@2);
 					}
@@ -1200,7 +1200,7 @@ term: term multiply factor {
 					}
 | term error factor{
 					lParseError("非法符号",@1);
-					}
+					}*/
 |factor{
 				   parseTree.push_back(ParseTreeNode(std::string("term"),std::string(""),std::vector<int>{$1}));
 				   //记录指向本节点的指针
@@ -1248,7 +1248,7 @@ factor: num{
 				   parseTree[$4].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 |error leftB expression_list rightB{
 					lParseError("表达式中函数调用ID格式错误",@2);
 					}
@@ -1260,7 +1260,7 @@ factor: num{
 					}
 |id leftB expression_list error{
 					lParseError("表达式中函数调用缺失右括号",@3);
-					}
+					}*/
 |leftB expression rightB{
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1271,16 +1271,16 @@ factor: num{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;
-}
+}/*
 | error expression_list rightB{
 					lParseError("表达式中缺失左括号",@2);
-					}
+					}*/
 | leftB error rightB{
 					lParseError("表达式括号中存在语法错误",@1);
-					}
+					}/*
 | leftB expression_list error{
 					lParseError("表达式中缺失右括号",@2);
-					}
+					}*/
 | _not factor{
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$2}));
 				   //记录指向本节点的指针
@@ -1303,10 +1303,10 @@ factor: num{
 				   parseTree[$2].setParent(parseTree.size() - 1);
 				   //设置根节点，仅最上层规则需要 
 				   parseTreeRoot = parseTree.size() - 1;	
-};
+};/*
 | minus error{
 					lParseError("‘-’后缺失表达式",@1);
-					}
+					}*/
 type : simple_type{
 				   parseTree.push_back(ParseTreeNode(std::string("type"),std::string(""),std::vector<int>{$1}));
 				   //记录指向本节点的指针
@@ -1327,7 +1327,7 @@ type : simple_type{
 				   parseTree[$4].setParent(parseTree.size() - 1);
 				   parseTree[$5].setParent(parseTree.size() - 1);
 				   parseTree[$6].setParent(parseTree.size() - 1);
-}
+}/*
 | error leftSB period rightSB _of simple_type{
 					lParseError("缺少字段‘array’",@2);
 					}
@@ -1348,6 +1348,7 @@ type : simple_type{
 					}
 | _array leftSB period rightSB error{
 					lParseError("缺少数组类型",@4);
+}*/
 ;
 
 period : period comma digits _range digits{
@@ -1360,7 +1361,7 @@ period : period comma digits _range digits{
 				   parseTree[$3].setParent(parseTree.size() - 1);
 				   parseTree[$4].setParent(parseTree.size() - 1);
 				   parseTree[$5].setParent(parseTree.size() - 1);
-}
+}/*
 | period error digits _range digits{
 					lParseError("缺少','",@1);
 					}
@@ -1372,7 +1373,7 @@ period : period comma digits _range digits{
 					}
 | period comma digits _range error{
 					lParseError("缺少数字或数字格式错误",@4);
-					}
+					}*/
 | digits _range digits{
 				   parseTree.push_back(ParseTreeNode(std::string("period"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
@@ -1381,7 +1382,7 @@ period : period comma digits _range digits{
 				   parseTree[$1].setParent(parseTree.size() - 1);
 				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
-}
+}/*
 | error _range digits{
 					lParseError("缺少数字或数字格式错误",@2);
 					}
@@ -1390,7 +1391,7 @@ period : period comma digits _range digits{
 					}
 | digits _range error{
 					lParseError("缺少数字或数字格式错误",@2);
-					}
+					}*/
 ;
 
 
@@ -1410,12 +1411,13 @@ int main(int argc, char* argv[])
 {
 	yyin = fopen("test.txt","r");
 	yydebug = 0;
+	//yy_flex_debug=0;
 	yyparse();
 	//test();
 	return 0;
 }
 
 void yyerror(const char* s) {
-	//fprintf(stderr, "Parse error: %s in line %d\n", s,yylloc.first_line);
+	fprintf(stderr, "Parse error: %s in line %d\n", s,yylloc.first_line);
 	//exit(1);
 }
