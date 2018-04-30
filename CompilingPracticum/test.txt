@@ -3,7 +3,7 @@ var a:array[1..10] of integer;
     temp:integer;
     i,j,k:integer;
 begin
-   for i:=1 to 10 do //hfjksadl
+   for i:=1 to 10 do {jfilsadjf}
        read(a[i]);
    for i:=1 to 9 do
      begin
