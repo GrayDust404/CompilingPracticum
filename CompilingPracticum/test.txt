@@ -1,22 +1,9 @@
 program main(input,output);
-var a:array[1..10] of integer;
-    temp:integer;
-    i,j,k:integer;
+const a = 5; b = 'c'; c = 1.1;
+
+procedure test(x:integer);
+begin 
+end;
+
 begin
-   for i:=1 to 10 do
-       read(a[i]);
-   for i:=1 to 9 do
-     begin
-       k:=i;
-       for j:=i+1 to 10 do
-           if a[k]>a[j] then k:=j;
-       if i<>k then
-          begin
-            temp:=a[i];
-            a[i]:=a[k];
-            a[k]:=temp;
-          end;
-      end;
-   for i:=1 to 10 do
-       write(a[i]);
- end.
+end.

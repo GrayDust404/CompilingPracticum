@@ -300,7 +300,7 @@ std::shared_ptr<ASTNode> transformCompound(int root)
 			ASTChildren = transformStatementList(children[i]);
 		}
 	}
-	return std::shared_ptr<ASTNode>(new CompoundNode(ASTChildren,ASTChildren[0]->getLineNum()));
+	return std::shared_ptr<ASTNode>(new CompoundNode(ASTChildren, parseTree[root].getLineNum()));
 }
 
 std::vector<std::shared_ptr<ASTNode>> transformSubprogramBody(int root)
