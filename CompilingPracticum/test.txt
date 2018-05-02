@@ -1,11 +1,30 @@
-program main(input,output);
-const a = 5; b = 'c'; c = 1.1;
-
-procedure test(var x:integer;y:real);
-begin 
-x := 3;
-end;
-
+program bubblesort(input,output);
+var ar:array[0..10]of integer;
+    i:integer;
+    tmp:integer;
+    spacec:char;
+procedure bs(l,r:integer);
+var tmp,i,j:integer;
 begin
-test(a,c);
+    for i:=1 to r-l do
+        for j:=l to (r-i) do
+            if ar[j]>ar[j+1] then
+            begin
+                tmp:=ar[j];
+                ar[j]:=ar[j+1];
+                ar[j+1]:=tmp;
+            end;
+end;
+begin
+    for i:=0 to 10 do
+    begin
+        read(tmp);
+        ar[i]:=tmp;
+    end;
+    bs(0,10);
+    for i:=0 to 10 do
+    begin
+        tmp:=ar[i];
+        write(tmp);
+    end;
 end.
