@@ -200,15 +200,24 @@ std::string FunctionCallNode::codeGenerator()
 		return std::string("rand()") + statement + ";";
 	}
 	else {
-		for (int i = 0; i < children.size() - 1; i++)//生成除最后一个expression外所有参数的代码
+		if (children.size() != 0)
 		{
-			statement = statement
-				+ children[i]->codeGenerator()
-				+ ", ";
+			for (int i = 0; i < children.size() - 1; i++)//生成除最后一个expression外所有参数的代码
+			{
+				statement = statement
+					+ children[i]->codeGenerator()
+					+ ", ";
+			}
+
+			return id
+				+ "( " + statement + children[children.size() - 1]->codeGenerator()
+				+ " );";//加上最后一个参数
 		}
-		return id
-			+ "( " + statement + children[children.size() - 1]->codeGenerator()
-			+ " );";//加上最后一个参数
+		else
+		{
+			return id + "();";
+		}
+
 	}
 }
 

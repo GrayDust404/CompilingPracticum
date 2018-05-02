@@ -6,4 +6,5 @@ begin
 end;
 
 begin
+test(b);
 end.
