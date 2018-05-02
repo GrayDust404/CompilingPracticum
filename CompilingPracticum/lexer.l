@@ -120,7 +120,11 @@ void lexerError(char* msg,char* s,int line);
 
 "begin"					{ return BEGINTOK;}
 "end"					{ return ENDTOK;}
-\'[a-zA-Z]\'			{ return letter;}
+\'[a-zA-Z]\'			{ 
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return letter;
+						}
 [a-zA-Z][0-9a-zA-Z]* 	{
 						parseTree.push_back(ParseTreeNode(std::string("id"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;

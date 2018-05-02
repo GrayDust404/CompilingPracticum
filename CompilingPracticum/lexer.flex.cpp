@@ -633,9 +633,9 @@ static const flex_int16_t yy_rule_linenum[51] =
     {   0,
        19,   25,   30,   35,   40,   45,   50,   55,   60,   65,
        70,   75,   80,   85,   90,   95,  100,  105,  110,  115,
-      121,  122,  123,  124,  129,  134,  139,  144,  149,  154,
-      159,  164,  169,  174,  179,  184,  189,  194,  199,  204,
-      209,  214,  219,  220,  221,  222,  228,  233,  238,  239
+      121,  122,  123,  128,  133,  138,  143,  148,  153,  158,
+      163,  168,  173,  178,  183,  188,  193,  198,  203,  208,
+      213,  218,  223,  224,  225,  226,  232,  237,  242,  243
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -1217,11 +1217,15 @@ YY_RULE_SETUP
 case 23:
 YY_RULE_SETUP
 #line 123 "lexer.l"
-{ return letter;}
+{ 
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return letter;
+						}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 124 "lexer.l"
+#line 128 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("id"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1230,7 +1234,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 129 "lexer.l"
+#line 133 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1239,7 +1243,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 134 "lexer.l"
+#line 138 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("digits"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1248,7 +1252,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 139 "lexer.l"
+#line 143 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("left square bracket"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1257,7 +1261,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 144 "lexer.l"
+#line 148 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("right square bracket"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;						
@@ -1266,7 +1270,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 149 "lexer.l"
+#line 153 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("comma"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1275,7 +1279,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 154 "lexer.l"
+#line 158 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("range"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1284,7 +1288,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 159 "lexer.l"
+#line 163 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("semicolon"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1293,7 +1297,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 164 "lexer.l"
+#line 168 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("assginop"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1302,7 +1306,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 169 "lexer.l"
+#line 173 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("colon"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1311,7 +1315,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 174 "lexer.l"
+#line 178 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("assgin"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1320,7 +1324,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 179 "lexer.l"
+#line 183 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("noequal"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1329,7 +1333,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 184 "lexer.l"
+#line 188 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("greatequal"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1338,7 +1342,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 189 "lexer.l"
+#line 193 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("greatthan"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1347,7 +1351,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 194 "lexer.l"
+#line 198 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("lessequal"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1356,7 +1360,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 199 "lexer.l"
+#line 203 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("lessthan"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1365,7 +1369,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 204 "lexer.l"
+#line 208 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("plus"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1374,7 +1378,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 209 "lexer.l"
+#line 213 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("minus"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1383,7 +1387,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 214 "lexer.l"
+#line 218 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("multiply"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1393,24 +1397,24 @@ YY_RULE_SETUP
 case 43:
 /* rule 43 can match eol */
 YY_RULE_SETUP
-#line 219 "lexer.l"
+#line 223 "lexer.l"
 {}
 	YY_BREAK
 case 44:
 /* rule 44 can match eol */
 YY_RULE_SETUP
-#line 220 "lexer.l"
+#line 224 "lexer.l"
 {}
 	YY_BREAK
 case 45:
 /* rule 45 can match eol */
 YY_RULE_SETUP
-#line 221 "lexer.l"
+#line 225 "lexer.l"
 {}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 222 "lexer.l"
+#line 226 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("divide"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1419,7 +1423,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 228 "lexer.l"
+#line 232 "lexer.l"
 {	
 						parseTree.push_back(ParseTreeNode(std::string("left bracket"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1428,7 +1432,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 233 "lexer.l"
+#line 237 "lexer.l"
 {
 						parseTree.push_back(ParseTreeNode(std::string("right bracket"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
@@ -1438,20 +1442,20 @@ YY_RULE_SETUP
 case 49:
 /* rule 49 can match eol */
 YY_RULE_SETUP
-#line 238 "lexer.l"
+#line 242 "lexer.l"
 {}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 239 "lexer.l"
+#line 243 "lexer.l"
 {}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 240 "lexer.l"
+#line 244 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1454 "lexer.flex.cpp"
+#line 1458 "lexer.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2611,7 +2615,7 @@ void yyfree (void * ptr )
 
 /* %ok-for-header */
 
-#line 240 "lexer.l"
+#line 244 "lexer.l"
 
 void lexerError(char* msg,char* s,int line) {
 	fprintf(stderr,"Lexical errors (%s) :%s in line %d\n",msg,s,line);
