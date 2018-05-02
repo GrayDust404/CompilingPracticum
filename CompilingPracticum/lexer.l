@@ -216,6 +216,9 @@ void lexerError(char* msg,char* s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return multiply;						
 						}
+"{".*"}"\n				{}
+"/*"(([^\*]*(\*[^\/])?)*)"*/"  {}
+"//".*\n			{}
 "/"						{
 						parseTree.push_back(ParseTreeNode(std::string("divide"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
