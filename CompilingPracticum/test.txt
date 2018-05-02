@@ -1,10 +1,11 @@
 program main(input,output);
 const a = 5; b = 'c'; c = 1.1;
 
-procedure test(x:integer);
+procedure test(var x:integer;y:real);
 begin 
+x := 3;
 end;
 
 begin
-test(b);
+test(a,c);
 end.

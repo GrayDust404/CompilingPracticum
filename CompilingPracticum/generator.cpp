@@ -242,7 +242,7 @@ std::string FunctionDeclarationNode::codeGenerator()
 			if (parametercount == 0)
 				statement = statement + children[ptr]->codeGenerator();
 			else
-				statement = "," + statement + children[ptr]->codeGenerator();
+				statement = statement + ","+ children[ptr]->codeGenerator();
 			parametercount += children[ptr]->getIdNum();
 			ptr++;
 		}
