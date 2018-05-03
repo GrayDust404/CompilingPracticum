@@ -256,9 +256,12 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return rightB;
 						}
+\.						{
+						return fullstop;
+						}
 \n						{yycolumn = 1;}
 [ \t]					{}
-[^\s]                  {
+[^\s|\.]                {
 						lexerError("Illegal characters",yytext,yylineno);
 						}
 %%

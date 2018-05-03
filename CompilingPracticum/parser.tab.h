@@ -91,7 +91,8 @@ extern int yydebug;
      rightSB = 300,
      program = 301,
      BEGINTOK = 302,
-     ENDTOK = 303
+     ENDTOK = 303,
+     fullstop = 304
    };
 #endif
 
@@ -100,13 +101,13 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 25 "parser.y"
+#line 27 "parser.y"
 
 	int ival;
 
 
 /* Line 2058 of yacc.c  */
-#line 110 "parser.tab.h"
+#line 111 "parser.tab.h"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
