@@ -1,7 +1,11 @@
 program main(input,output);
-function test : integer;
+const a = 5; b = 'c'; c = 1.1;
+
+procedure test(var x:integer;y:real);
 begin 
-    test := test- 4;
+x := 3;
 end;
+
 begin
+test(a,c);
 end.
