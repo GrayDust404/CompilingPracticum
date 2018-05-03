@@ -87,16 +87,18 @@ private:
 
 class ForGenerator {
 public:
-	ForGenerator(string _start_number,string _end_number,string _statement) {
+	ForGenerator(string _start_number,string _end_number,string _statement,string _iterator) {
 		start_number = _start_number;
 		end_number = _end_number;
 		statement = _statement;
+		iterator = _iterator;
 	}
 	string CodeGenerator();
 private:
 	string start_number;	 //起点
 	string end_number;		 //终点
 	string statement;//循环体语句
+	string iterator; //循环变量
 };
 
 class WhileGenerator {

@@ -105,7 +105,7 @@ std::string ForNode::codeGenerator()
 	string start_number = children[0]->codeGenerator();//起点
 	string end_number = children[1]->codeGenerator(); //终点
 	string statement = children[2]->codeGenerator();//循环体语句
-	ForGenerator generator = ForGenerator(start_number, end_number, statement);
+	ForGenerator generator = ForGenerator(start_number, end_number, statement, iterator);
 	return generator.CodeGenerator();
 }
 

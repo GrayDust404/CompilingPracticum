@@ -136,9 +136,9 @@ string IfGenerator::CodeGenerator() {
 }
 
 string ForGenerator::CodeGenerator() {
-	return "for(int i = " + start_number	//提取初始值
-		+ "; i<= " + end_number			//提取界限值
-		+ "; i++ ) " + statement;
+	return "for( " + iterator +  "= " + start_number	//提取初始值
+		+ "; " + iterator + "<= " + end_number			//提取界限值
+		+ "; " + iterator + "++ ) " + statement;
 }
 
 string WhileGenerator::CodeGeneratot() {
