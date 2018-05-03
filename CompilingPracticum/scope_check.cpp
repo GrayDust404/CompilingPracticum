@@ -24,13 +24,20 @@ bool VarNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 		flag = false;
 		std::cout << "第" << lineNum << "行: 变量" << id <<"未定义"<< std::endl;
 	}
+	else if (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>() && scope->lookUp(id).getChildTable() != scope)
+	{
+		if (scope->lookUp(id).getParameterType().size() != 0)
+		{
+			std::cout << "第" << lineNum << "行: 函数" << id << "不能无参数调用" << std::endl;
+			flag = false;
+		}
+	}
 	for (auto i : children)
 	{
 		if (!(i->scopeCheck(scope)))
 		{
 			flag = false;
 		}
-			
 	}
 	return flag;
 }
@@ -39,7 +46,7 @@ bool FunctionCallNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	if (scope->lookUp(id).getId().empty() && id != std::string("read") && id != std::string("write"))
+	if (scope->lookUp(id).getId().empty() || scope->lookUp(id).getChildTable() == std::shared_ptr<SymbolTable>())
 	{
 		std::cout << "第" << lineNum << "行: 函数" << id << "未定义" << std::endl;
 		flag = false;
@@ -58,7 +65,7 @@ bool ForNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	if (scope->lookUp(iterator).getId().empty())
+	if (scope->lookUp(iterator).getId().empty() || (scope->lookUp(iterator).getChildTable() != std::shared_ptr<SymbolTable>() && scope->lookUp(iterator).getChildTable() != scope))
 	{
 		std::cout << "第" << lineNum << "行: 变量" << iterator << "未定义" << std::endl;
 		flag = false;
@@ -79,7 +86,7 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	for (auto id : idlist)
 	{
-		if(scope->localLookUp(id).getId().empty())
+		if(scope->localLookUp(id).getId().empty() && scope->lookUp(id).getChildTable() == std::shared_ptr<SymbolTable>())
 			scope->insert(Symbol(std::string(id), type, false));
 		else
 		{
@@ -101,7 +108,7 @@ bool ConstDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	if (scope->localLookUp(id).getId().empty())
+	if (scope->localLookUp(id).getId().empty() && scope->lookUp(id).getChildTable() == std::shared_ptr<SymbolTable>())
 	{
 		if (value.find(std::string(".")) != std::string::npos)
 		{
@@ -149,7 +156,7 @@ bool ParameterNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	scope = parentScope;
 	for (auto id : idlist)
 	{
-		if (scope->localLookUp(id).getId().empty())
+		if (scope->localLookUp(id).getId().empty() && scope->lookUp(id).getChildTable() == std::shared_ptr<SymbolTable>())
 			scope->insert(Symbol(std::string(id),TypeStruct(std::string(simpleType),isVar)));
 		else
 		{
@@ -172,7 +179,7 @@ bool FunctionDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScop
 	
 	bool flag = true;
 	scope = parentScope;
-	if (scope->localLookUp(id).getId().empty())
+	if (scope->lookUp(id).getId().empty())
 	{
 		std::vector<TypeStruct> parameterType;
 		int count = 0;
@@ -212,6 +219,11 @@ bool ProgramNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	std::vector<TypeStruct> randomParameter;
 	randomParameter.push_back(TypeStruct(std::string("integer")));
 	scope->insert(Symbol(std::string("random"), TypeStruct(std::string("integer")),randomParameter));
+	scope->initializationScope();
+	scope->insert(Symbol(std::string("read"), TypeStruct()));
+	scope->initializationScope();
+	scope->insert(Symbol(std::string("write"), TypeStruct()));
+	scope->initializationScope();
 	scope->insert(Symbol(std::string("program")));
 	scope = scope->initializationScope();
 	for (auto i : children)

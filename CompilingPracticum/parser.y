@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
+#include<fstream>
 #include<string>
 #include"parser.h"
 #include"transform.h"
@@ -384,10 +385,10 @@ subprogram_head : procedure id formal_parameter {
 					parseTreeRoot = parseTree.size() - 1;	
 }
 | function id formal_parameter colon simple_type{
-					parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{$1,$2,$3,$4,$5}));
-					//记录指向本节点的指针
-					$$ = parseTree.size() - 1;
-					//为子节点设置父节点指针
+				   parseTree.push_back(ParseTreeNode(std::string("subprogram_head"),std::string(""),std::vector<int>{$1,$2,$3,$4,$5}));
+				   //记录指向本节点的指针
+				   $$ = parseTree.size() - 1;
+				   //为子节点设置父节点指针
 				   parseTree[$1].setParent(parseTree.size() - 1);
 				   parseTree[$2].setParent(parseTree.size() - 1);
 				   parseTree[$3].setParent(parseTree.size() - 1);
@@ -1083,9 +1084,21 @@ void lParseError(std::string msg,YYLTYPE t)
 
 int main(int argc, char* argv[]) 
 {
-	yyin = fopen("test.txt","r");
-	yydebug = 1;
-	//yy_flex_debug=0;
+	std::fstream f1,f2;
+	f1.open("test.txt",std::fstream::in);
+	f2.open("testCopy.txt",std::fstream::out);
+	char ch;
+	while(f1.get(ch))
+	{
+		if(ch >= 'A' && ch <= 'Z')
+		{
+			ch += 32;
+		}
+		f2.put(ch);
+	}
+	f1.close();
+	f2.close();
+	yyin = fopen("testCopy.txt","r");
 	yyparse();
 	if(parseNum==0)
 		test();

@@ -225,7 +225,7 @@ public:
 	}
 	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
-	TypeStruct getType() override { return TypeStruct(simpleType); }
+	TypeStruct getType() override { return TypeStruct(simpleType,isVar); }
 	int getIdNum() override { return idlist.size(); }
 	void setIsVar() { isVar = true; }
 private:

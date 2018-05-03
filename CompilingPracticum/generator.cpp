@@ -28,26 +28,33 @@ std::string ExpressionNode::codeGenerator()
 
 std::string VarNode::codeGenerator()
 {
-	if (children.size() == 0)
+	if (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>())
 	{
-		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
-		{
-			return "(" + std::string("*") + id + ")";
-		}
-		else//不为引用时
-		{
-			return "(" + id + ")";
-		}
+		return "(" + id + "())";
 	}
 	else
 	{
-		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+		if (children.size() == 0)
 		{
-			return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
+			if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+			{
+				return "(" + std::string("*") + id + ")";
+			}
+			else//不为引用时
+			{
+				return "(" + id + ")";
+			}
 		}
-		else//不为引用时
+		else
 		{
-			return "(" + id + children[0]->codeGenerator() + ")";
+			if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+			{
+				return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
+			}
+			else//不为引用时
+			{
+				return "(" + id + children[0]->codeGenerator() + ")";
+			}
 		}
 	}
 }
@@ -63,9 +70,39 @@ std::string VarDeclarationNode::codeGenerator()
 	for (int i = 0; i < idlist.size(); i++)//生成多个id的字符串
 	{
 		if (i != 0)
-			stringIdList = stringIdList + "," + idlist[i];
+		{
+			if (scope->lookUp(idlist[i]).getType().getPeroid().size() > 0)//判断是否为数组
+			{
+				vector<std::pair<int, int>> peroid = scope->lookUp(idlist[i]).getType().getPeroid();
+				string IdPart;//数组下标
+				for (int j = 0; j < scope->lookUp(idlist[i]).getType().getPeroid().size(); j++)//根据数组维数添加下标
+				{
+					IdPart = IdPart + "[" + to_string(peroid[j].second - peroid[j].first+1) + "]";
+				}
+				stringIdList = stringIdList + "," + idlist[i]+ IdPart;
+			}
+			else//不为数组
+			{
+				stringIdList = stringIdList + "," + idlist[i];
+			}
+		}
 		else
-			stringIdList = stringIdList + " " + idlist[i];
+		{
+			if (scope->lookUp(idlist[i]).getType().getPeroid().size() > 0)//判断是否为数组
+			{
+				vector<std::pair<int, int>> peroid = scope->lookUp(idlist[i]).getType().getPeroid();
+				string IdPart;//数组下标
+				for (int j = 0; j < scope->lookUp(idlist[i]).getType().getPeroid().size(); j++)//根据数组维数添加下标
+				{
+					IdPart = IdPart + "[" + to_string(peroid[j].second - peroid[j].first + 1) + "]";
+				}
+				stringIdList = stringIdList + " " + idlist[i] + IdPart;
+			}
+			else//不为数组
+			{
+				stringIdList = stringIdList + " " + idlist[i];
+			}
+		}
 	}
 	return type.getCType() + stringIdList + ";";
 }
@@ -200,15 +237,24 @@ std::string FunctionCallNode::codeGenerator()
 		return std::string("rand()") + statement + ";";
 	}
 	else {
-		for (int i = 0; i < children.size() - 1; i++)//生成除最后一个expression外所有参数的代码
+		if (children.size() != 0)
 		{
-			statement = statement
-				+ children[i]->codeGenerator()
-				+ ", ";
+			for (int i = 0; i < children.size() - 1; i++)//生成除最后一个expression外所有参数的代码
+			{
+				statement = statement
+					+ children[i]->codeGenerator()
+					+ ", ";
+			}
+
+			return id
+				+ "( " + statement + children[children.size() - 1]->codeGenerator()
+				+ " );";//加上最后一个参数
 		}
-		return id
-			+ "( " + statement + children[children.size() - 1]->codeGenerator()
-			+ " );";//加上最后一个参数
+		else
+		{
+			return id + "();";
+		}
+
 	}
 }
 
@@ -233,7 +279,7 @@ std::string FunctionDeclarationNode::codeGenerator()
 			if (parametercount == 0)
 				statement = statement + children[ptr]->codeGenerator();
 			else
-				statement = "," + statement + children[ptr]->codeGenerator();
+				statement = statement + ","+ children[ptr]->codeGenerator();
 			parametercount += children[ptr]->getIdNum();
 			ptr++;
 		}
