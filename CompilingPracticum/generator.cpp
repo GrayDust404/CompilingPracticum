@@ -32,22 +32,22 @@ std::string VarNode::codeGenerator()
 	{
 		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
 		{
-			return '(' + "*" + id + ')';
+			return "(" + std::string("*") + id + ")";
 		}
 		else//不为引用时
 		{
-			return '(' + id + ')';
+			return "(" + id + ")";
 		}
 	}
 	else
 	{
 		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
 		{
-			return '(' + "*" + id + children[0]->codeGenerator() + ')';
+			return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
 		}
 		else//不为引用时
 		{
-			return '(' + id + children[0]->codeGenerator() + ')';
+			return "(" + id + children[0]->codeGenerator() + ")";
 		}
 	}
 }
@@ -73,8 +73,9 @@ std::string VarDeclarationNode::codeGenerator()
 std::string ConstDeclarationNode::codeGenerator()
 {
 	return "const " +
-		scope->lookUp(id).getType().getSimpleType()
-		+ " " + id + " = "
+		scope->lookUp(id).getType().getCType()
+		+ " " + id + " = " 
+		+ operation
 		+ value + ";";
 }
 
@@ -88,9 +89,9 @@ std::string AssignmentNode::codeGenerator()
 
 std::string ForNode::codeGenerator()
 {
-	return "for(int i = " + children[0]->codeGenerator()
-		+ "; i<= " + children[1]->codeGenerator()
-		+ "; i++ ) " + children[2]->codeGenerator();
+	return "for("+ iterator + " = " + children[0]->codeGenerator()
+		+ "; " + iterator + " <= " + children[1]->codeGenerator()
+		+ "; " + iterator + "++ ) " + children[2]->codeGenerator();
 }
 
 std::string IfNode::codeGenerator()
@@ -121,10 +122,18 @@ std::string ParameterNode::codeGenerator()
 	string statement;//ParameterNode内的所有内容
 	for (int i = 0; i < idlist.size() - 1; i++)//生成除最后一个id外所有Parameter的代码
 	{
-		statement = statement + getType().getCType() + " "
+		if(isVar)
+			statement = statement + getType().getCType() + " *"
 			+ idlist[i] + ", ";
+		else
+			statement = statement + getType().getCType() + " "
+				+ idlist[i] + ", ";
 	}
-	return statement + getType().getCType() + " "
+	if(isVar)
+		return statement + getType().getCType() + " *"
+			+ idlist[idlist.size() - 1];//加上最后一个id
+	else
+		return statement + getType().getCType() + " "
 		+ idlist[idlist.size() - 1];//加上最后一个id
 }
 
@@ -142,9 +151,6 @@ std::string FunctionCallNode::codeGenerator()
 			}
 			else if (children[i]->getType().getSimpleType() == std::string("real")) {
 				statement = statement + "%f";
-			}
-			else if (children[i]->getType().getSimpleType() == std::string("boolean")) {
-				statement = statement + "%d";
 			}
 			else if (children[i]->getType().getSimpleType() == std::string("char")) {
 				statement = statement + "%c";
@@ -209,7 +215,16 @@ std::string FunctionCallNode::codeGenerator()
 std::string FunctionDeclarationNode::codeGenerator()
 {
 	string parStatement;//参数内容
-	string statement = getType().getSimpleType() + " " + id + "(";//函数主体内容
+	
+	string statement = std::string();
+	if (getType().getCType().empty()) 
+	{
+		statement =  "void " + id + "(";//函数主体内容
+	}
+	else
+	{
+		statement = getType().getCType() + " " + id + "(";//函数主体内容
+	}
 
 	int ptr = 0;	//children数组的当前访问指针
 	if (parameterNum != 0) { //判断是否有参数

@@ -3,10 +3,10 @@ const
  maxn=2000;
  maxv=200;
 var
- data,data1,dataq:array [0..10] of integer;
- f:array [0..10,0..10] of integer;
+ data,data1,dataq:array [0..maxn] of integer;
+ f:array [0..maxn,0..maxv] of integer;
  sum,k,t,i,j,n,m,p,ii:integer;
- q:array [0..10] of integer;
+ q:array [0..maxv] of integer;
 
 procedure siftup(x:integer);
 var
@@ -21,13 +21,13 @@ begin
    dataq[0]:=dataq[i];
    dataq[i]:=dataq[j];
    dataq[j]:=dataq[0];
-  end;
+  end else break;
   i:=j;
   j:=j / 2;
  end;
 end;
 
-procedure qsort(l,r:integer);
+procedure qsort(l,r:longint);
 var
  i,j,mid:integer;
 begin
@@ -49,9 +49,9 @@ begin
  if l<j then qsort(l,j);
 end;
 
-procedure siftdown(x:integer);
+procedure siftdown(x:longint);
 var
- i,j:integer;
+ i,j:longint;
 begin
  i:=x;
  j:=x*2;
@@ -63,7 +63,7 @@ begin
    dataq[0]:=dataq[i];
    dataq[i]:=dataq[j];
    dataq[j]:=dataq[0];
-  end;
+  end else break;
   i:=j;
   j:=j*2;
  end;
@@ -75,12 +75,12 @@ begin
  begin
   for i:=0 to 10 do
     for j:=0 to 10 do
-        f[i,j]:= 0;
+        f[i,j]:=0;
   sum:=0;
   read(n,m);
   for i:=1 to m do
    read(data[i]);
-  read(data);
+  read();
   for j:=1 to m-1 do
     for ii:=j+1 to m do
      if data[j]>data[ii] then
@@ -93,7 +93,7 @@ begin
   begin
    for j:=1 to m do
     read(data1[j]);
-   read(data1);
+   read());
 
    for j:=1 to m-1 do
     for ii:=j+1 to m do
@@ -115,14 +115,14 @@ begin
      begin
       dataq[1]:=data1[j]+data[ii];
       siftdown(1);
-     end;
+     end else break;
    data:=dataq;
    qsort(1,m);
-   for i:=0 to 10 do
+   for i:=0 to maxn do
     dataq[i]:=0;
   end;
   for i:=1 to m do
-   write(data[i]);
-  write(data);
+   write(data[i],' ');
+  write();
  end;
 end.

@@ -41,7 +41,9 @@ public:
 	virtual std::string getID() { return std::string(); }
 	virtual TypeStruct getType() { return TypeStruct(); }
 	virtual int getIdNum() { return -1; }
+	virtual bool isVarNode() { return false; }
 	int getLineNum() { return lineNum; }
+	int getChildrenNum() { return children.size(); }
 protected:
 	std::vector<std::shared_ptr<ASTNode>> children;
 	int lineNum;
@@ -56,6 +58,7 @@ public:
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 	std::string getID() override { return id; }
 	TypeStruct getType() override;
+	bool isVarNode() override { return true; }
 private:
 	std::string id;
 };
@@ -188,16 +191,26 @@ private:
 class ConstDeclarationNode : public ASTNode
 {
 public:
-	ConstDeclarationNode(std::string _id,std::string _value, int _lineNum) :ASTNode(std::vector<std::shared_ptr<ASTNode>>(),_lineNum)
+	ConstDeclarationNode(std::string _id,std::vector<std::string> _value, int _lineNum) :ASTNode(std::vector<std::shared_ptr<ASTNode>>(),_lineNum)
 	{
 		id = _id;
-		value = _value;
+		if (_value.size() == 1)
+		{
+			value = _value[0];
+			operation = std::string();
+		}
+		else
+		{
+			value = _value[1];
+			operation = _value[0];
+		}
 	}
 	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
 private:
 	std::string id;
 	std::string value;
+	std::string operation;
 };
 
 class ParameterNode : public ASTNode
