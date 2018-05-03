@@ -1,5 +1,4 @@
 program aa(input,output);
-const a = 1;
 var a :array[1..10] of integer;
 i,j,x:integer;
 
