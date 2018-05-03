@@ -1,7 +1,15 @@
 program main(input,output);
-function test : integer;
+function a(x:integer) : integer;
 begin 
-    test := test- 4;
+    a := a(3) - 4;
+end;
+function test(x:integer) : integer;
+var a : array[0..10] of integer;
+begin 
+    test := test(3) - 4;
 end;
 begin
+ if test > 5 then
+ begin
+ end;
 end.

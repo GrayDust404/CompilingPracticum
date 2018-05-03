@@ -1,11 +1,15 @@
 program main(input,output);
-const a = 5; b = 'c'; c = 1.1;
-
-procedure test(var x:integer;y:real);
+function a(x:integer) : integer;
 begin 
-x := 3;
+    a := a(3) - 4;
 end;
-
+function test(x:integer) : integer;
+var a : array[0..10] of integer;
+begin 
+    test := test(3) - 4;
+end;
 begin
-test(a,c);
+ if test > 5 then
+ begin
+ end;
 end.
