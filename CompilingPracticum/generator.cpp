@@ -169,9 +169,13 @@ std::string FunctionCallNode::codeGenerator()
 {
 	vector<string> parameterlist;
 	vector<string> parameterType;
+	std::vector<TypeStruct> parameterTypeDef = scope->lookUp(id).getParameterType();
 	for (int i = 0; i < children.size(); i++) {
 		parameterType.push_back(children[i]->getType().getSimpleType());
-		parameterlist.push_back(children[i]->codeGenerator());
+		if (parameterTypeDef[i].checkRef())
+			parameterlist.push_back("&" + children[i]->codeGenerator());
+		else
+		 	parameterlist.push_back(children[i]->codeGenerator());
 	}
 	FunctionCallGenerator generator = FunctionCallGenerator(getID(), parameterlist, parameterType);
 	return generator.CodeGenerator();
