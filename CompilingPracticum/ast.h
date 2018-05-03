@@ -252,6 +252,7 @@ public:
 	}
 	std::string codeGenerator() override;
 	bool scopeCheck(std::shared_ptr<SymbolTable> parentScope) override;
+	TypeStruct getType() override;
 private:
 	std::string id;
 	std::string simpleType;

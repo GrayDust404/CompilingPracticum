@@ -177,7 +177,7 @@ string ConstDeclarationGenerator::CodeGenerator() {
 string ProgramGenerator::CodeGenerator() {
 	string statement;//所有program的内容,除了int main的内容
 	string beginStatement;//头文件
-	beginStatement = "#include <stdio.h>\n#include <stdlib.h>\n";
+	beginStatement = "#include <stdio.h>\n#include <stdlib.h>\n#include <stdbool.h>\n";
 	for (int i = 0; i < statementlist.size(); i++)
 	{
 		statement = statement

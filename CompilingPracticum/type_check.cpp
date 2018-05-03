@@ -281,6 +281,12 @@ TypeStruct FunctionCallNode::getType()
 {
 	return scope->lookUp(id).getType();
 }
+
+TypeStruct FunctionDeclarationNode::getType()
+{
+	return scope->lookUp(id).getType();
+}
+
 TypeStruct ExpressionNode::getType()
 {
 	if (operation == std::string("not")

@@ -1,11 +1,11 @@
-program main(input,output);
+program main(input,output);
 var a : array[0..10] of integer;
-function test : integer;
+function test : boolean;
 begin 
-    test := test - 4;
+    test := a[0] > a[1];
 end;
 begin
- if test > 5 then
+ if test then
  begin
  end;
 end.
