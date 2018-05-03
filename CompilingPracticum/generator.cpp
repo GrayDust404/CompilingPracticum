@@ -28,26 +28,33 @@ std::string ExpressionNode::codeGenerator()
 
 std::string VarNode::codeGenerator()
 {
-	if (children.size() == 0)
+	if (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>())
 	{
-		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
-		{
-			return "(" + std::string("*") + id + ")";
-		}
-		else//不为引用时
-		{
-			return "(" + id + ")";
-		}
+		return "(" + id + "())";
 	}
 	else
 	{
-		if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+		if (children.size() == 0)
 		{
-			return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
+			if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+			{
+				return "(" + std::string("*") + id + ")";
+			}
+			else//不为引用时
+			{
+				return "(" + id + ")";
+			}
 		}
-		else//不为引用时
+		else
 		{
-			return "(" + id + children[0]->codeGenerator() + ")";
+			if (scope->lookUp(id).getType().checkRef())//判断是否为引用
+			{
+				return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
+			}
+			else//不为引用时
+			{
+				return "(" + id + children[0]->codeGenerator() + ")";
+			}
 		}
 	}
 }

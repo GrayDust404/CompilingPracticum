@@ -45,6 +45,11 @@ bool AssignmentNode::typeCheck()
 		std::cout << "第" << lineNum << "行：左值不能为常量" << std::endl;
 		flag = false;
 	}
+	if (scope->lookUp(children[0]->getID()).getChildTable() != std::shared_ptr<SymbolTable>() && scope->lookUp(children[0]->getID()).getChildTable() != scope)
+	{
+		std::cout << "第" << lineNum << "行：左值不能为函数调用" << std::endl;
+		flag = false;
+	}
 	for (auto i : children)
 	{
 		if (!(i->typeCheck()))

@@ -19,10 +19,18 @@ bool VarNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 {
 	bool flag = true;
 	scope = parentScope;
-	if (scope->lookUp(id).getId().empty() || (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>() && scope->lookUp(id).getChildTable() != scope))
+	if (scope->lookUp(id).getId().empty())
 	{
 		flag = false;
 		std::cout << "第" << lineNum << "行: 变量" << id <<"未定义"<< std::endl;
+	}
+	else if (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>() && scope->lookUp(id).getChildTable() != scope)
+	{
+		if (scope->lookUp(id).getParameterType().size() != 0)
+		{
+			std::cout << "第" << lineNum << "行: 函数" << id << "不能无参数调用" << std::endl;
+			flag = false;
+		}
 	}
 	for (auto i : children)
 	{
