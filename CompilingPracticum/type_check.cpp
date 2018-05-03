@@ -33,8 +33,16 @@ bool AssignmentNode::typeCheck()
 	if (children[0]->getType() != children[1]->getType())
 	{
 		std::cout << "第" << lineNum << "行：赋值语句类型不匹配" << std::endl;
-		auto temp1 = children[1]->getType();
-		auto temp0 = children[0]->getType();
+		flag = false;
+	}
+	if (children[0]->getType().getPeroid().size() != 0)
+	{
+		std::cout << "第" << lineNum << "行：左值不能为数组" << std::endl;
+		flag = false;
+	}
+	if (scope->lookUp(children[0]->getID()).checkConst())
+	{
+		std::cout << "第" << lineNum << "行：左值不能为常量" << std::endl;
 		flag = false;
 	}
 	for (auto i : children)
@@ -72,6 +80,11 @@ bool ForNode::typeCheck()
 	if (scope->lookUp(iterator).getType() != temp)
 	{
 		std::cout << "第" << lineNum << "行: 循环变量类型必须为integer" << std::endl;
+		flag = false;
+	}
+	if (scope->lookUp(iterator).checkConst())
+	{
+		std::cout << "第" << lineNum << "行: 循环变量不能是常量" << std::endl;
 		flag = false;
 	}
 	if (children[0]->getType() != temp || children[1]->getType() != temp)
@@ -190,7 +203,12 @@ bool FunctionCallNode::typeCheck()
 				}
 				if (!children[i]->isVarNode() && parameterType[i].checkRef())
 				{
-					std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第" << i + 1 << "个参数为引用，不允许使用非变量的参数" << std::endl;
+					std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第" << i + 1 << "个参数为引用，不允许使用表达式或字面常量参数" << std::endl;
+					flag = false;
+				}
+				if (scope->lookUp(children[i]->getID()).checkConst() && parameterType[i].checkRef())
+				{
+					std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第" << i + 1 << "个参数为引用，不允许使用常量参数" << std::endl;
 					flag = false;
 				}
 			}
