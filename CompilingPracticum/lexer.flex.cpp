@@ -453,8 +453,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 /* %% [3.0] code to copy yytext_ptr to yytext[] goes here, if %array \ */\
 	(yy_c_buf_p) = yy_cp;
 /* %% [4.0] data tables for the DFA and the user's section 1 definitions go here */
-#define YY_NUM_RULES 51
-#define YY_END_OF_BUFFER 52
+#define YY_NUM_RULES 52
+#define YY_END_OF_BUFFER 53
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -464,10 +464,10 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[139] =
     {   0,
-        0,    0,   52,   51,   50,   49,   51,   47,   48,   42,
-       40,   29,   41,   51,   46,   26,   33,   31,   39,   34,
+        0,    0,   53,   52,   51,   50,   52,   47,   48,   42,
+       40,   29,   41,   49,   46,   26,   33,   31,   39,   34,
        37,   24,   27,   28,   24,   24,   24,   24,   24,   24,
-       24,   24,   24,   24,   24,   24,   24,   24,   24,   51,
+       24,   24,   24,   24,   24,   24,   24,   24,   24,   52,
         0,   30,    0,    0,    0,   26,   32,   38,   35,   36,
        24,   24,   24,   24,   24,   24,   24,   24,   10,   24,
        24,   24,   24,    3,   24,   24,   24,    8,   11,   24,
@@ -617,11 +617,11 @@ static const flex_int16_t yy_chk[211] =
     } ;
 
 /* Table of booleans, true if rule could match eol. */
-static const flex_int32_t yy_rule_can_match_eol[52] =
+static const flex_int32_t yy_rule_can_match_eol[53] =
     {   0,
 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
-    0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 0, 0,     };
+    0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0,     };
 
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
@@ -629,13 +629,14 @@ static char *yy_last_accepting_cpos;
 extern int yy_flex_debug;
 int yy_flex_debug = 1;
 
-static const flex_int16_t yy_rule_linenum[51] =
+static const flex_int16_t yy_rule_linenum[52] =
     {   0,
        19,   25,   30,   35,   40,   45,   50,   55,   60,   65,
        70,   75,   80,   85,   90,   95,  100,  105,  110,  115,
       121,  122,  123,  128,  133,  138,  143,  148,  153,  158,
       163,  168,  173,  178,  183,  188,  193,  198,  203,  208,
-      213,  218,  223,  224,  225,  226,  232,  237,  242,  243
+      213,  218,  223,  224,  225,  226,  232,  237,  242,  243,
+      244
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -657,8 +658,8 @@ char *yytext;
 #include "parser.tab.h"
 extern std::vector<ParseTreeNode> parseTree;
 void lexerError(char* msg,char* s,int line);
-#line 660 "lexer.flex.cpp"
 #line 661 "lexer.flex.cpp"
+#line 662 "lexer.flex.cpp"
 
 #define INITIAL 0
 
@@ -934,7 +935,7 @@ YY_DECL
 #line 17 "lexer.l"
 
 
-#line 937 "lexer.flex.cpp"
+#line 938 "lexer.flex.cpp"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1002,13 +1003,13 @@ do_action:	/* This label is used only to access EOF actions. */
 			{
 			if ( yy_act == 0 )
 				fprintf( stderr, "--scanner backing up\n" );
-			else if ( yy_act < 51 )
+			else if ( yy_act < 52 )
 				fprintf( stderr, "--accepting rule at line %ld (\"%s\")\n",
 				         (long)yy_rule_linenum[yy_act], yytext );
-			else if ( yy_act == 51 )
+			else if ( yy_act == 52 )
 				fprintf( stderr, "--accepting default rule (\"%s\")\n",
 				         yytext );
-			else if ( yy_act == 52 )
+			else if ( yy_act == 53 )
 				fprintf( stderr, "--(end of buffer or a NUL)\n" );
 			else
 				fprintf( stderr, "--EOF (start condition %d)\n", YY_START );
@@ -1440,12 +1441,12 @@ YY_RULE_SETUP
 						}
 	YY_BREAK
 case 49:
-/* rule 49 can match eol */
 YY_RULE_SETUP
 #line 242 "lexer.l"
-{}
+{return fullstop;}
 	YY_BREAK
 case 50:
+/* rule 50 can match eol */
 YY_RULE_SETUP
 #line 243 "lexer.l"
 {}
@@ -1453,9 +1454,14 @@ YY_RULE_SETUP
 case 51:
 YY_RULE_SETUP
 #line 244 "lexer.l"
+{}
+	YY_BREAK
+case 52:
+YY_RULE_SETUP
+#line 245 "lexer.l"
 ECHO;
 	YY_BREAK
-#line 1458 "lexer.flex.cpp"
+#line 1464 "lexer.flex.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2615,7 +2621,7 @@ void yyfree (void * ptr )
 
 /* %ok-for-header */
 
-#line 244 "lexer.l"
+#line 245 "lexer.l"
 
 void lexerError(char* msg,char* s,int line) {
 	fprintf(stderr,"Lexical errors (%s) :%s in line %d\n",msg,s,line);

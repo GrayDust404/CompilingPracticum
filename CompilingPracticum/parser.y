@@ -4,6 +4,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<iostream>
+#include<fstream>
 #include"parser.h"
 #include"transform.h"
 
@@ -26,7 +27,7 @@ int parseTreeRoot;
 %token<ival> multiply divide _div _mod _and _not
 %token<ival> _if _then _for _else _to _do _or _of _range _while
 %token<ival> noequal GE GT LE LT leftB rightB leftSB rightSB
-%token program BEGINTOK ENDTOK 
+%token program BEGINTOK ENDTOK fullstop
 %type<ival> programstruct program_head program_body idlist type variable const_value
 %type<ival> const_declarations var_declarations const_declaration var_declaration subprogram_declarations subprogram
 %type<ival> subprogram_head subprogram_body formal_parameter parameter_list parameter var_parameter value_parameter
@@ -37,7 +38,7 @@ int parseTreeRoot;
 
 %%
 
-programstruct: program_head semicolon program_body{
+programstruct: program_head semicolon program_body fullstop{
 				   parseTree.push_back(ParseTreeNode(std::string("programstruct"),std::string(""),std::vector<int>{$1,$2,$3}));
 				   //记录指向本节点的指针
 				   $$ = parseTree.size() - 1;
@@ -908,7 +909,21 @@ period : period comma digits _range digits{
 
 int main(int argc, char* argv[]) 
 {
-	yyin = fopen("test.txt","r");
+	std::fstream f1,f2;
+	f1.open("test.txt",std::fstream::in);
+	f2.open("testCopy.txt",std::fstream::out);
+	char ch;
+	while(f1.get(ch))
+	{
+		if(ch >= 'A' && ch <= 'Z')
+		{
+			ch += 32;
+		}
+		f2.put(ch);
+	}
+	f1.close();
+	f2.close();
+	yyin = fopen("testCopy.txt","r");
 	yyparse();
 	test();
 	return 0;

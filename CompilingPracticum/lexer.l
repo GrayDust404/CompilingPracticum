@@ -239,6 +239,7 @@ void lexerError(char* msg,char* s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return rightB;
 						}
+\.						{return fullstop;}
 \n						{}
 [ \t]					{}
 %%
