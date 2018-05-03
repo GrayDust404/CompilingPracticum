@@ -33,6 +33,9 @@
     <ClCompile Include="type_check.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CodeGenerator.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Flex Include="lexer.l">
@@ -58,6 +61,9 @@
       <Filter>源文件</Filter>
     </ClInclude>
     <ClInclude Include="ast.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeGenerator.h">
       <Filter>源文件</Filter>
     </ClInclude>
   </ItemGroup>

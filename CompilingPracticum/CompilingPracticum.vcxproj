@@ -117,6 +117,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CodeGenerator.cpp" />
     <ClCompile Include="type_check.cpp" />
     <ClCompile Include="generator.cpp" />
     <ClCompile Include="lexer.flex.cpp" />
@@ -139,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ast.h" />
+    <ClInclude Include="CodeGenerator.h" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="parser.tab.h" />
     <ClInclude Include="symbol_table.h" />

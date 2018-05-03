@@ -1,4 +1,5 @@
 #include "symbol_table.h"
+#include "CodeGenerator.h"
 using namespace std;
 std::string ExpressionNode::codeGenerator()
 {
@@ -28,35 +29,28 @@ std::string ExpressionNode::codeGenerator()
 
 std::string VarNode::codeGenerator()
 {
-	if (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>())
+	bool isfunction;
+	if (scope->lookUp(id).getChildTable() != std::shared_ptr<SymbolTable>())	//判断是否是函数
 	{
-		return "(" + id + "())";
+		isfunction = true;
+	}
+	else
+		isfunction = false;
+
+	bool isRef = scope->lookUp(id).getType().checkRef();//判断是否为引用
+	string varpart;
+	bool hasVarpart;
+	if (children.size() == 0) {
+		varpart = "";
+		hasVarpart = false;
 	}
 	else
 	{
-		if (children.size() == 0)
-		{
-			if (scope->lookUp(id).getType().checkRef())//判断是否为引用
-			{
-				return "(" + std::string("*") + id + ")";
-			}
-			else//不为引用时
-			{
-				return "(" + id + ")";
-			}
-		}
-		else
-		{
-			if (scope->lookUp(id).getType().checkRef())//判断是否为引用
-			{
-				return "(" + std::string("*") + id + children[0]->codeGenerator() + ")";
-			}
-			else//不为引用时
-			{
-				return "(" + id + children[0]->codeGenerator() + ")";
-			}
-		}
+		varpart = children[0]->codeGenerator();
+		hasVarpart = true;
 	}
+	VarGenerator vargentator = VarGenerator(id, isRef, varpart,hasVarpart,isfunction);
+	return vargentator.CodeGenerator();
 }
 
 std::string ConstNode::codeGenerator()
@@ -66,96 +60,92 @@ std::string ConstNode::codeGenerator()
 
 std::string VarDeclarationNode::codeGenerator()
 {
-	string stringIdList;//多个id的字符串
-	for (int i = 0; i < idlist.size(); i++)//生成多个id的字符串
-	{
-		if (i != 0)
-		{
-			if (scope->lookUp(idlist[i]).getType().getPeroid().size() > 0)//判断是否为数组
+	vector<string> ids;
+	for (int i = 0; i < idlist.size(); i++) {
+
+		if (scope->lookUp(idlist[i]).getType().getPeroid().size() > 0) { //是数组
+			vector<std::pair<int, int>> peroid = scope->lookUp(idlist[i]).getType().getPeroid();
+			string IdPart="";//数组下标
+			for (int j = 0; j < scope->lookUp(idlist[i]).getType().getPeroid().size(); j++)//根据数组维数添加下标
 			{
-				vector<std::pair<int, int>> peroid = scope->lookUp(idlist[i]).getType().getPeroid();
-				string IdPart;//数组下标
-				for (int j = 0; j < scope->lookUp(idlist[i]).getType().getPeroid().size(); j++)//根据数组维数添加下标
-				{
-					IdPart = IdPart + "[" + to_string(peroid[j].second - peroid[j].first+1) + "]";
-				}
-				stringIdList = stringIdList + "," + idlist[i]+ IdPart;
+				IdPart = IdPart + "[" + to_string(peroid[j].second - peroid[j].first + 1) + "]";
 			}
-			else//不为数组
-			{
-				stringIdList = stringIdList + "," + idlist[i];
-			}
+			ids.push_back(idlist[i] + IdPart);
 		}
-		else
-		{
-			if (scope->lookUp(idlist[i]).getType().getPeroid().size() > 0)//判断是否为数组
-			{
-				vector<std::pair<int, int>> peroid = scope->lookUp(idlist[i]).getType().getPeroid();
-				string IdPart;//数组下标
-				for (int j = 0; j < scope->lookUp(idlist[i]).getType().getPeroid().size(); j++)//根据数组维数添加下标
-				{
-					IdPart = IdPart + "[" + to_string(peroid[j].second - peroid[j].first + 1) + "]";
-				}
-				stringIdList = stringIdList + " " + idlist[i] + IdPart;
-			}
-			else//不为数组
-			{
-				stringIdList = stringIdList + " " + idlist[i];
-			}
+		else {		//不是数组
+			ids.push_back(idlist[i]);
 		}
 	}
-	return type.getCType() + stringIdList + ";";
+	VarDeclarationGenerator generator = VarDeclarationGenerator(ids, type.getCType());
+	return generator.CodeGenerator();
 }
 
 std::string ConstDeclarationNode::codeGenerator()
 {
-	return "const " +
-		scope->lookUp(id).getType().getCType()
-		+ " " + id + " = " 
-		+ operation
-		+ value + ";";
+	ConstDeclarationGenerator generator = ConstDeclarationGenerator(
+		scope->lookUp(id).getType().getCType(), id, value, operation);
+	return generator.CodeGenerator();
 }
 
 std::string AssignmentNode::codeGenerator()
 {
+	bool isReturn;
 	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId())//判断是否为return值,是
-		return "return " + children[1]->codeGenerator() + ";";
-	else		//不是return，则输出赋值语句
-		return children[0]->codeGenerator() + " = " + children[1]->codeGenerator() + ";";
+		isReturn = true;
+	else					//不是return
+		isReturn = false;
+	string leftexpression = children[0]->codeGenerator();
+	string rightexpression = children[1]->codeGenerator(); //右表达式
+	AssignmentGenerator generator = AssignmentGenerator(isReturn, leftexpression, rightexpression);
+	return generator.CodeGenerator();
 }
 
 std::string ForNode::codeGenerator()
 {
-	return "for("+ iterator + " = " + children[0]->codeGenerator()
-		+ "; " + iterator + " <= " + children[1]->codeGenerator()
-		+ "; " + iterator + "++ ) " + children[2]->codeGenerator();
+	string start_number = children[0]->codeGenerator();//起点
+	string end_number = children[1]->codeGenerator(); //终点
+	string statement = children[2]->codeGenerator();//循环体语句
+	ForGenerator generator = ForGenerator(start_number, end_number, statement);
+	return generator.CodeGenerator();
 }
 
 std::string IfNode::codeGenerator()
 {
-	return "if(" + children[0]->codeGenerator()
-		+ ") " + children[1]->codeGenerator();
+	string judgement = children[0]->codeGenerator();	//判断条件
+	string statement = children[1]->codeGenerator();	//跳转语句
+	vector<string> else_string;
+	for (int i = 2; i < children.size(); i++) {
+		else_string.push_back(children[i]->codeGenerator());
+	}
+	IfGenerator generator = IfGenerator(judgement, statement,else_string);
+	return generator.CodeGenerator();
 }
 
 std::string WhileNode::codeGenerator()
 {
-	return "while(" + children[0]->codeGenerator()
-		+ ") " + children[1]->codeGenerator();
+	string judgement = children[0]->codeGenerator();
+	string statement = children[1]->codeGenerator();
+	WhileGenerator generator = WhileGenerator(judgement, statement);
+	return generator.CodeGeneratot();
 }
 
 std::string CompoundNode::codeGenerator()
 {
-	string statement;//CompoundNode内所有的内容
+	vector<string> expression_list;	//语句列表
 	for (int i = 0; i < children.size(); i++)
 	{
-		statement = statement + children[i]->codeGenerator()
-			+ "\n";
+		expression_list.push_back(children[i]->codeGenerator());
 	}
-	return "{ " + statement + "}";
+	CompoundGenerator generator = CompoundGenerator(expression_list);
+	return generator.CodeGenerator();
 }
 
 std::string ParameterNode::codeGenerator()
-{																//2018.4.25 jackchance修复pascal类型到C类型的转换
+{	
+	//还没改完
+	ParameterGenerator generator = ParameterGenerator(isVar, getType().getCType(), idlist);
+	return generator.CodeGenerator();
+	/*
 	string statement;//ParameterNode内的所有内容
 	for (int i = 0; i < idlist.size() - 1; i++)//生成除最后一个id外所有Parameter的代码
 	{
@@ -172,90 +162,19 @@ std::string ParameterNode::codeGenerator()
 	else
 		return statement + getType().getCType() + " "
 		+ idlist[idlist.size() - 1];//加上最后一个id
+	*/
 }
 
 std::string FunctionCallNode::codeGenerator()
 {
-	string statement;//参数的内容
-	if (getID() == std::string("read")) {		//将pascal的read函数转化为C语言的scanf
-		statement = statement + "\"";
-		for (int i = 0; i < children.size(); i++) {
-			if (i != 0) {
-				statement = statement + " ";
-			}
-			if (children[i]->getType().getSimpleType() == std::string("integer")) {
-				statement = statement + "%d";
-			}
-			else if (children[i]->getType().getSimpleType() == std::string("real")) {
-				statement = statement + "%f";
-			}
-			else if (children[i]->getType().getSimpleType() == std::string("char")) {
-				statement = statement + "%c";
-			}
-		}
-		statement = statement + "\"";
-		for (int i = 0; i < children.size() - 1; i++) {
-			statement = statement
-				+ ",&" + children[i]->codeGenerator();
-		}
-		return std::string("scanf")
-			+ "( " + statement + ",&" + children[children.size() - 1]->codeGenerator()
-			+ " );";//加上最后一个参数
+	vector<string> parameterlist;
+	vector<string> parameterType;
+	for (int i = 0; i < children.size(); i++) {
+		parameterType.push_back(children[i]->getType().getSimpleType());
+		parameterlist.push_back(children[i]->codeGenerator());
 	}
-	else if (getID() == "write") {	//将pascal的write函数转化为C语言的printf
-		statement = statement + "\"";
-		for (int i = 0; i < children.size(); i++) {
-			if (i != 0) {
-				statement = statement + " ";
-			}
-			if (children[i]->getType().getSimpleType() == std::string("integer")) {
-				statement = statement + "%d";
-			}
-			else if (children[i]->getType().getSimpleType() == std::string("real")) {
-				statement = statement + "%f";
-			}
-			else if (children[i]->getType().getSimpleType() == std::string("boolean")) {
-				statement = statement + "%d";
-			}
-			else if (children[i]->getType().getSimpleType() == std::string("char")) {
-				statement = statement + "%c";
-			}
-		}
-		statement = statement + "\"";
-		for (int i = 0; i < children.size() - 1; i++) {
-			statement = statement
-				+ "," + children[i]->codeGenerator();
-		}
-		return std::string("printf")
-			+ "( " + statement + "," + children[children.size() - 1]->codeGenerator()
-			+ " );";//加上最后一个参数
-	}
-	else if (getID() == "random") {	//将pascal的random函数转化为C语言的
-		if (children.size() != 0) {
-			statement = statement + "%" + children[0]->codeGenerator();
-		}
-		return std::string("rand()") + statement + ";";
-	}
-	else {
-		if (children.size() != 0)
-		{
-			for (int i = 0; i < children.size() - 1; i++)//生成除最后一个expression外所有参数的代码
-			{
-				statement = statement
-					+ children[i]->codeGenerator()
-					+ ", ";
-			}
-
-			return id
-				+ "( " + statement + children[children.size() - 1]->codeGenerator()
-				+ " );";//加上最后一个参数
-		}
-		else
-		{
-			return id + "();";
-		}
-
-	}
+	FunctionCallGenerator generator = FunctionCallGenerator(getID(), parameterlist, parameterType);
+	return generator.CodeGenerator();
 }
 
 std::string FunctionDeclarationNode::codeGenerator()
@@ -294,6 +213,15 @@ std::string FunctionDeclarationNode::codeGenerator()
 
 std::string ProgramNode::codeGenerator()
 {
+	vector<string> statementlist;
+	for (int i = 0; i < children.size() - 1; i++){
+		statementlist.push_back(children[i]->codeGenerator());
+	}
+	string main_compound = children[children.size() - 1]->codeGenerator();
+	ProgramGenerator generator = ProgramGenerator(statementlist, main_compound);
+	return generator.CodeGenerator();
+
+	/*
 	string statement;//所有program的内容,除了int main的内容
 	string beginStatement;//头文件
 	beginStatement = "#include <stdio.h> \n #include <stdlib.h>\n ";
@@ -305,9 +233,21 @@ std::string ProgramNode::codeGenerator()
 	}
 	return beginStatement + statement + "int main( ) \n"
 		+ children[children.size() - 1]->codeGenerator();
+	*/
 }
 
 std::string VarpartNode::codeGenerator() {
+	
+	string statement;
+	vector<std::pair<int, int>> peroid = scope->lookUp(id).getType().getPeroid();
+	vector<string> ids;
+	for (int i = 0; i < children.size(); i++) {
+		ids.push_back(children[i]->codeGenerator());
+	}
+	VarpartGenerator generator = VarpartGenerator(ids, peroid);
+	return generator.CodeGenerator();
+
+	/*
 	string statement;
 	vector<std::pair<int, int>> peroid = scope->lookUp(id).getType().getPeroid();
 
@@ -315,6 +255,7 @@ std::string VarpartNode::codeGenerator() {
 		statement += "[" + children[i]->codeGenerator() + "-" + to_string(peroid[i].first) + "]";
 	}
 	return statement;
+	*/
 }
 
 /****************将TypeStruct中的pascal类型转化为对应的C类型*******************/
