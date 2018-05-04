@@ -60,10 +60,17 @@ string FunctionCallGenerator::CodeGenerator() {
 		}
 		statement = statement + "\"";
 		for (int i = 0; i < parameterlist.size() - 1; i++) {
-			statement = statement
+			if(parameterlist[i][0] == '&')
+				statement = statement + parameterlist[i];
+			else
+				statement = statement
 				+ ",&" + parameterlist[i];
 		}
-		return std::string("scanf")
+		if (parameterlist[parameterlist.size() - 1][0] == '&')
+			return std::string("scanf")
+				+ "( " + statement + parameterlist[parameterlist.size() - 1] + " );";//加上最后一个参数
+		else
+			return std::string("scanf")
 			+ "( " + statement + ",&" + parameterlist[parameterlist.size() - 1] + " );";//加上最后一个参数
 	}
 	else if (id == std::string("write")) {	//将pascal的write函数转化为C语言的printf
@@ -87,9 +94,14 @@ string FunctionCallGenerator::CodeGenerator() {
 		}
 		statement = statement + "\"";
 		for (int i = 0; i < parameterlist.size() - 1; i++) {
+			if (parameterlist[i][0] == '&')
+				parameterlist[i].erase(parameterlist[i].begin());
 			statement = statement
 				+ "," + parameterlist[i];
+
 		}
+		if (parameterlist[parameterlist.size() - 1][0] == '&')
+			parameterlist[parameterlist.size() - 1].erase(parameterlist[parameterlist.size() - 1].begin());
 		return std::string("printf")
 			+ "( " + statement + "," + parameterlist[parameterlist.size() - 1]+ " );";//加上最后一个参数
 	}
@@ -129,7 +141,7 @@ string IfGenerator::CodeGenerator() {
 		return result;
 	else {
 		for (int i = 0; i < else_statements.size(); i++) {
-			result = result + "\nelse" + else_statements[i];
+			result = result + "\nelse " + else_statements[i];
 		}
 		return result;
 	}

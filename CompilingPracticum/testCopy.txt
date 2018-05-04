@@ -1,11 +1,19 @@
-program main(input,output);
-var a : array[0..10] of integer;
-function test : boolean;
-begin 
-    test := a[0] > a[1];
+program test1(aaa);
+var geta:integer;
+function righttest:integer;
+begin
+	righttest:=1;
+end;
+procedure righttest2(a1:integer;var res:integer);
+var a2:integer;
+begin
+	if a1=righttest then
+		a2:=righttest+a1
+	else
+		a2:=righttest-a1;
+	res:=a2;
 end;
 begin
- if test then
- begin
- end;
+	righttest2(1,geta);
+	righttest2(geta+righttest,geta);
 end.
