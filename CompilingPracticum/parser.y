@@ -976,8 +976,11 @@ factor: num{
 |id leftB error rightB{
 					lParseError("表达式中函数调用存在语法错误",@2);
 					}
-| id leftB expression_list error{
-					lParseError("表达式中函数调用右括号缺失",@2);
+| id leftB expression_list error rightB{
+					lParseError("表达式中函数调用存在语法错误",@3);
+					}
+| id leftB expression_list error {
+					lParseError("表达式中函数调用缺少右括号",@3);
 					}
 |leftB expression rightB{
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$2,$3}));
@@ -993,8 +996,8 @@ factor: num{
 | leftB error rightB{
 					lParseError("表达式括号中存在语法错误",@1);
 					}
-| leftB expression error{
-					lParseError("表达式中右括号缺失",@2);
+| leftB expression error rightB{
+					lParseError("表达式括号中存在语法错误",@2);
 					}
 | _not factor{
 				   parseTree.push_back(ParseTreeNode(std::string("factor"),std::string(""),std::vector<int>{$1,$2}));
