@@ -237,7 +237,7 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return multiply;						
 						}
-"{"(([^\*]*(\*[^\/])?)*)"}"			{}
+"{"[^}]*"}"		{}
 "/*"(([^\*]*(\*[^\/])?)*)"*/"  {}
 "//".*\n			{}
 "/"						{

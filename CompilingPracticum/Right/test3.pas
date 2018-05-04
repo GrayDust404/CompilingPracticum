@@ -1,4 +1,5 @@
 {This program is used to test all productions}
+
 Program test1;
 const
     cc=+2;
