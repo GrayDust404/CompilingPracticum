@@ -147,7 +147,7 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return id;
 						}
-[0-9]+'\.'[0-9]+			{
+[0-9]+\.[0-9]+			{
 						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return num;
@@ -172,7 +172,7 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return comma;
 						}
-"\.\."					{
+\.\.					{
 						parseTree.push_back(ParseTreeNode(std::string("range"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
 						return _range;						
@@ -237,7 +237,7 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return multiply;						
 						}
-"{".*"}"\n				{}
+"{"(([^\*]*(\*[^\/])?)*)"}"			{}
 "/*"(([^\*]*(\*[^\/])?)*)"*/"  {}
 "//".*\n			{}
 "/"						{
