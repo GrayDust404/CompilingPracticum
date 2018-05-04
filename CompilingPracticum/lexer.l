@@ -125,7 +125,11 @@ void lexerError(std::string msg,std::string s,int line);
 
 "begin"					{ return BEGINTOK;}
 "end"					{ return ENDTOK;}
-\'[a-zA-Z]\'			{ return letter;}
+\'[a-zA-Z]\'			{
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return letter;
+						}
 \'[a-zA-Z]             {
 						lexerError("Lack of single quotes",yytext,yylineno);
 						return letter;

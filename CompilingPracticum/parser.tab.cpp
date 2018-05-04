@@ -3264,7 +3264,7 @@ yyreduce:
 /* Line 1792 of yacc.c  */
 #line 982 "parser.y"
     {
-					lParseError("表达式中函数调用存在语法错误",(yylsp[(3) - (4)]));
+					lParseError("表达式中函数调用缺少右括号",(yylsp[(3) - (4)]));
 					}
     break;
 

@@ -100,13 +100,18 @@ string FunctionCallGenerator::CodeGenerator() {
 		return std::string("rand()") + statement + ";";
 	}
 	else {
-		for (int i = 0; i < parameterlist.size() - 1; i++)//生成除最后一个expression外所有参数的代码
+		if(parameterlist.size() == 0)
+			return id + "();";
+		else
 		{
-			statement = statement
-				+ parameterlist[i] + ", ";
+			for (int i = 0; i < parameterlist.size() - 1; i++)//生成除最后一个expression外所有参数的代码
+			{
+				statement = statement
+					+ parameterlist[i] + ", ";
+			}
+			return id
+				+ "( " + statement + parameterlist[parameterlist.size() - 1] + " );";//加上最后一个参数	
 		}
-		return id
-			+ "( " + statement + parameterlist[parameterlist.size() - 1] + " );";//加上最后一个参数
 	}
 }
 

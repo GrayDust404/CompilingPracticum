@@ -221,6 +221,11 @@ bool FunctionCallNode::typeCheck()
 	}
 	else if (id == std::string("read"))
 	{
+		if (children.size() == 0)
+		{
+			std::cout << "第" << lineNum << "行: 函数\"" << id << "\"不能无参数调用" << std::endl;
+			flag = false;
+		}
 		for (auto i : children)
 		{
 			if (!i->getType().getPeroid().empty())
@@ -247,6 +252,11 @@ bool FunctionCallNode::typeCheck()
 	}
 	else
 	{
+		if (children.size() == 0)
+		{
+			std::cout << "第" << lineNum << "行: 函数\"" << id << "\"不能无参数调用" << std::endl;
+			flag = false;
+		}
 		for (auto i : children)
 		{
 			if (!i->getType().getPeroid().empty())
