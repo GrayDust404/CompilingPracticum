@@ -219,6 +219,32 @@ bool FunctionCallNode::typeCheck()
 			}
 		}
 	}
+	else if (id == std::string("read"))
+	{
+		for (auto i : children)
+		{
+			if (!i->getType().getPeroid().empty())
+			{
+				std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的参数不能为数组" << std::endl;
+				flag = false;
+			}
+			if (i->getType().getSimpleType() == std::string("boolean"))
+			{
+				std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的参数不能为boolean" << std::endl;
+				flag = false;
+			}
+			if (!i->isVarNode())
+			{
+				std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第" << i << "个参数为引用，不允许使用表达式或字面常量参数" << std::endl;
+				flag = false;
+			}
+			if (scope->lookUp(i->getID()).checkConst())
+			{
+				std::cout << "第" << lineNum << "行: 函数\"" << id << "\"的第" << i << "个参数为引用，不允许使用常量参数" << std::endl;
+				flag = false;
+			}
+		}
+	}
 	else
 	{
 		for (auto i : children)
