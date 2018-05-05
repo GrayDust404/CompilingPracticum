@@ -117,7 +117,7 @@ string FunctionCallGenerator::CodeGenerator() {
 
 string AssignmentGenerator::CodeGenerator() {
 	if (isReturn)//判断是否为return值,是
-		return "return " + rightexpression + ";";
+		return "_" + leftexpression + " = " + rightexpression + ";";
 	else		//不是return，则输出赋值语句
 		return leftexpression + " = " + rightexpression + ";";
 }
@@ -189,8 +189,9 @@ string ProgramGenerator::CodeGenerator() {
 			+ statementlist[i]
 			+ "\n";
 	}
-	return beginStatement + statement + "int main( )\n"
-		+ main_compound;
+	/*******************jackchance:修改时间2018/5/5，添加了system("pause")**********************************/
+	return beginStatement + statement + "int main( )\n {"
+		+ main_compound + "\nsystem(\"pause\");\nreturn 0;}";
 }
 
 string ParameterGenerator::CodeGenerator() {

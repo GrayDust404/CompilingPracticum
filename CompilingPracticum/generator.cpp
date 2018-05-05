@@ -90,11 +90,16 @@ std::string ConstDeclarationNode::codeGenerator()
 std::string AssignmentNode::codeGenerator()
 {
 	bool isReturn;
-	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId())//判断是否为return值,是
+	string leftexpression;
+	if (std::string("_") + children[0]->getID() == scope->getFirstSymbol().getId()) { //判断是否为return值,是
 		isReturn = true;
-	else					//不是return
+		leftexpression = children[0]->getID();
+	}
+	else {
 		isReturn = false;
-	string leftexpression = children[0]->codeGenerator();
+		leftexpression = children[0]->codeGenerator();
+	}
+
 	string rightexpression = children[1]->codeGenerator(); //右表达式
 	AssignmentGenerator generator = AssignmentGenerator(isReturn, leftexpression, rightexpression);
 	return generator.CodeGenerator();
@@ -145,24 +150,6 @@ std::string ParameterNode::codeGenerator()
 	//还没改完
 	ParameterGenerator generator = ParameterGenerator(isVar, getType().getCType(), idlist);
 	return generator.CodeGenerator();
-	/*
-	string statement;//ParameterNode内的所有内容
-	for (int i = 0; i < idlist.size() - 1; i++)//生成除最后一个id外所有Parameter的代码
-	{
-		if(isVar)
-			statement = statement + getType().getCType() + " *"
-			+ idlist[i] + ", ";
-		else
-			statement = statement + getType().getCType() + " "
-				+ idlist[i] + ", ";
-	}
-	if(isVar)
-		return statement + getType().getCType() + " *"
-			+ idlist[idlist.size() - 1];//加上最后一个id
-	else
-		return statement + getType().getCType() + " "
-		+ idlist[idlist.size() - 1];//加上最后一个id
-	*/
 }
 
 std::string FunctionCallNode::codeGenerator()
@@ -195,11 +182,11 @@ std::string FunctionCallNode::codeGenerator()
 std::string FunctionDeclarationNode::codeGenerator()
 {
 	string parStatement;//参数内容
-	
+
 	string statement = std::string();
-	if (getType().getCType().empty()) 
+	if (getType().getCType().empty())
 	{
-		statement =  "void " + id + "(";//函数主体内容
+		statement = "void " + id + "(";//函数主体内容
 	}
 	else
 	{
@@ -213,16 +200,30 @@ std::string FunctionDeclarationNode::codeGenerator()
 			if (parametercount == 0)
 				statement = statement + children[ptr]->codeGenerator();
 			else
-				statement = statement + ","+ children[ptr]->codeGenerator();
+				statement = statement + "," + children[ptr]->codeGenerator();
 			parametercount += children[ptr]->getIdNum();
 			ptr++;
 		}
 	}
-	statement += "){";
+
+	/*****************jackchance：新修正，2018/5/5，创建函数名临时变量*******************/
+	if (!getType().getCType().empty())		//返回值类型不为空，添加临时变量
+	{
+		statement += "){\n" + getType().getCType() + " _" + id + ";\n";
+	}
+	/************************************************************************************/
+
 	for (int i = ptr; i < children.size(); i++) {
 		statement += children[i]->codeGenerator();
 	}
-	statement += "}";
+
+	/*****************jackchance：新修正，2018/5/5，返回临时变量*******************/
+	if (!getType().getCType().empty())		//返回值类型不为空
+	{
+		statement += "\nreturn _" + id + "; }";
+	}
+	else
+		statement += "\nreturn;}";
 	return statement;
 }
 
