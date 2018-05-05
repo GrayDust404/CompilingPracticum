@@ -211,6 +211,10 @@ std::string FunctionDeclarationNode::codeGenerator()
 	{
 		statement += "){\n" + getType().getCType() + " _" + id + ";\n";
 	}
+	else
+	{
+		statement += "){\n";
+	}
 	/************************************************************************************/
 
 	for (int i = ptr; i < children.size(); i++) {
