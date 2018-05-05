@@ -1,4 +1,5 @@
 #include<iostream>
+#include<fstream>
 #include"parser.h"
 #include"ast.h"
 #include"transform.h"
@@ -686,15 +687,22 @@ std::shared_ptr<ASTNode> transformProgramStruct(int root)
 	return std::shared_ptr<ASTNode>(new ProgramNode(ASTChildren,ASTChildren[0]->getLineNum()));
 }
 
-void test()
+void deal(std::string filename)
 {
 	std::shared_ptr<ASTNode> tree = transformProgramStruct(parseTreeRoot);
 	std::shared_ptr<SymbolTable> symbolTable = std::shared_ptr<SymbolTable>(new SymbolTable(nullptr));
+	std::fstream file;
+	file.open(filename + ".c" , std::fstream::out);
 	if (tree->scopeCheck(symbolTable))
 	{
 		if (tree->typeCheck())
-			std::cout << tree->codeGenerator();
+		{
+			std::string code = tree->codeGenerator();
+			std::cout << code << std::endl;
+			file << code;
+		}
 	}
+	file.close();
 	system("pause");
 	return;
 }

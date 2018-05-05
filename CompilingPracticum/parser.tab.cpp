@@ -3664,25 +3664,34 @@ void lParseError(std::string msg,YYLTYPE t)
 int main(int argc, char* argv[]) 
 {
 	std::fstream f1,f2;
-	f1.open("test.txt",std::fstream::in);
-	f2.open("testCopy.txt",std::fstream::out);
-	char ch;
-	while(f1.get(ch))
+	if(argc > 1)
 	{
-		if(ch >= 'A' && ch <= 'Z')
+		f1.open(argv[1],std::fstream::in);
+		std::string filename = std::string(argv[1]);
+		std::string filenameCopy = filename + "Copy";
+		f2.open(filenameCopy.c_str(),std::fstream::out);
+		char ch;
+		while(f1.get(ch))
 		{
-			ch += 32;
+			if(ch >= 'A' && ch <= 'Z')
+			{
+				ch += 32;
+			}
+			f2.put(ch);
 		}
-		f2.put(ch);
+		f1.close();
+		f2.close();
+		yyin = fopen(filenameCopy.c_str(),"r");
+		yyparse();
+		if(parseNum==0)
+			deal(filename);
+		else
+			std::cout<<"存在"<<parseNum<<"个语法错误。"<<std::endl;
 	}
-	f1.close();
-	f2.close();
-	yyin = fopen("testCopy.txt","r");
-	yyparse();
-	if(parseNum==0)
-		test();
 	else
-		std::cout<<"存在"<<parseNum<<"个语法错误。"<<std::endl;
+	{
+		std::cout<<"error:未提供输入文件"<<std::endl;
+	}
 	return 0;
 }
 
