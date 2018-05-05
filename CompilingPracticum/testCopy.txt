@@ -1,4 +1,4 @@
-Program test1(aaa);
+program test1(aaa);
 const
     cc=+2;
     dd=3;
@@ -56,6 +56,6 @@ begin
     write(a);
     print;{这里这里！！！}
 end.
-{End program}
+{end program}
 
 

@@ -1,0 +1,22 @@
+program main(input,output);
+var a:array[1..10] of integer;
+    temp:integer;
+    i,j,k:integer;
+begin
+   for i:=1 to 10 do {jfilsadjf}
+       read(a[i],a[i-1]);
+   for i:=1 to 9 do
+     begin
+       k:=i;
+       for j:=i+1 to 10 do
+           if a[k]>a[j] then k:=j;
+       if i<>k then
+          begin
+            temp:=a[i];
+            a[i]:=a[k];
+            a[k]:=temp;
+          end;
+      end;
+   for i:=1 to 10 do
+       write(a[i]);
+ end.

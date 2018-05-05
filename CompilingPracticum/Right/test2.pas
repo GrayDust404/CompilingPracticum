@@ -1,4 +1,4 @@
-Program test1(aaa);
+Program test1;
 const
     cc=+2;
     dd=3;
@@ -38,10 +38,8 @@ begin
     a:=1;
     a2:=2;
     r:=0.13;
-    write(a);
-    write(a2);
-    write(r);
-    //ar[1,3,7] :=true;
+    write(a,a2,r);
+    ar[1,3,7] :=true;
     for i:=0 to 1 do
     begin
         for j:=0 to 1 do
@@ -54,7 +52,7 @@ begin
     end;
     read(a);
     write(a);
-    print;{这里这里！！！}
+    print;
 end.
 {End program}
 

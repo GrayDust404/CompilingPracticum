@@ -1,0 +1,7 @@
+program main(input,output);
+function test : integer;
+begin 
+    test := test- 4;
+end;
+begin
+end.
