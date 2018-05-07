@@ -127,7 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <Flex Include="lexer.l">
-      <Debug Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</Debug>
+      <Debug Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</Debug>
       <Reentrant Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</Reentrant>
       <Cpp Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</Cpp>
     </Flex>
