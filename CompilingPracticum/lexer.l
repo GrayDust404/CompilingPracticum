@@ -167,7 +167,7 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return num;
 						}
-[0-9]+\.$		    {
+[0-9]+\.[^.]?$		    {
 						lexerError("Illegal number form ",yytext,yylineno);
 						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
