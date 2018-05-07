@@ -87,7 +87,15 @@ bool VarDeclarationNode::scopeCheck(std::shared_ptr<SymbolTable> parentScope)
 	for (auto id : idlist)
 	{
 		if(scope->localLookUp(id).getId().empty() && scope->lookUp(id).getChildTable() == std::shared_ptr<SymbolTable>())
-			scope->insert(Symbol(std::string(id), type, false));
+			if (type.checkPeriod())
+			{
+				scope->insert(Symbol(std::string(id), type, false));
+			}
+			else
+			{
+				std::cout << "第" << lineNum << "行: 数组" << id << "上下界大小关系错误" << std::endl;
+				flag = false;
+			}
 		else
 		{
 			std::cout << "第" << lineNum << "行: 变量" << id << "重定义" << std::endl;
