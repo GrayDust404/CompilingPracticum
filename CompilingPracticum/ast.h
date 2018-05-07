@@ -15,6 +15,15 @@ public:
 	std::string getCType();
 	std::vector<std::pair<int, int>> getPeroid() { return period; }
 	bool checkRef() { return isRef; }
+	bool checkPeriod()
+	{
+		for (auto i : period)
+		{
+			if (i.first > i.second)
+				return false;
+		}
+		return true;
+	}
 	friend bool operator==(const TypeStruct &lhs, const TypeStruct &rhs);
 	friend bool operator!=(const TypeStruct &lhs, const TypeStruct &rhs);
 private:
