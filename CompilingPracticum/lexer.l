@@ -289,7 +289,6 @@ void lexerError(std::string msg,std::string s,int line);
 \n						{yycolumn = 1;}
 [ \t]					{}
 [^\s|\.]                {
-						std::cout<<"aaaaaaaaaaaa:"<<std::string(yytext)<<std::endl;
 						lexerError("Illegal characters",yytext,yylineno);
 						}
 %%
