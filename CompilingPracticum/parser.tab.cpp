@@ -74,12 +74,12 @@
 #include"parser.h"
 #include"transform.h"
 #include"parser.tab.h"
-//#include"lexer.flex.cpp"
 
 extern int yylex();
 extern int yyparse();
 extern FILE* yyin;
 extern int yylineno;
+extern int lexerror;
 
 void yyerror(const char* s);
 std::vector<ParseTreeNode> parseTree;
@@ -3683,10 +3683,16 @@ int main(int argc, char* argv[])
 		f2.close();
 		yyin = fopen(filenameCopy.c_str(),"r");
 		yyparse();
-		if(parseNum==0)
+		if(parseNum==0&&lexerror==0)
 			deal(filename);
 		else
-			std::cout<<"存在"<<parseNum<<"个语法错误。"<<std::endl;
+		{
+			if(lexerror != 0)
+				std::cout<<"存在"<<lexerror<<"个词法错误。"<<std::endl;
+			if(parseNum != 0)
+				std::cout<<"存在"<<parseNum<<"个语法错误。"<<std::endl;
+		}
+			
 	}
 	else
 	{
@@ -3697,6 +3703,6 @@ int main(int argc, char* argv[])
 
 void yyerror(const char* s) {
 	parseNum++;
-	fprintf(stderr, "Parse error: %s in line %d\n", s,yylloc.first_line);
+	//fprintf(stderr, "Parse error: %s in line %d\n", s,yylloc.first_line);
 	//exit(1);
 }

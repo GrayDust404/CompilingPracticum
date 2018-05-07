@@ -1,6 +1,7 @@
 #pragma once
 #include<vector>
 #include<string>
+//int lexerror = 1;
 class ParseTreeNode 
 {
 public:
