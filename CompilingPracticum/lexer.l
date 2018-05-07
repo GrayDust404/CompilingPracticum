@@ -132,23 +132,33 @@ void lexerError(std::string msg,std::string s,int line);
 						}
 \'[a-zA-Z]             {
 						lexerError("Lack of single quotes",yytext,yylineno);
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
 						return letter;
 						}
 \'[a-zA-Z][a-zA-Z]+\'	{
 						lexerError("Do not support string",yytext,yylineno);
-						
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return letter;
 						}
 \'[a-zA-Z][a-zA-Z]+		{
 						lexerError("Illegal alphabet format",yytext,yylineno);
-						
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return letter;
 						}
 \'[ ]*\'				{
 						lexerError("Empty alphabet format",yytext,yylineno);
-						
+						parseTree.push_back(ParseTreeNode(std::string("letter"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return letter;
 						}
 [a-zA-Z][0-9a-zA-Z]* 	{
 						parseTree.push_back(ParseTreeNode(std::string("id"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
+						if(strlen(yytext)>=30)
+						lexerError("id over length limit",yytext,yylineno);
 						return id;
 						}
 [0-9]+\.[0-9]+			{
@@ -156,6 +166,18 @@ void lexerError(std::string msg,std::string s,int line);
 						yylval.ival = parseTree.size() - 1;
 						return num;
 						}
+[0-9]+\.			    {
+						lexerError("Illegal number form ",yytext,yylineno);
+						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return num;
+						}
+[0-9]+\.[a-zA-Z]+		{
+						lexerError("Illegal number form ",yytext,yylineno);
+						parseTree.push_back(ParseTreeNode(std::string("num"),std::string(yytext),yylineno));
+						yylval.ival = parseTree.size() - 1;
+						return num;
+                         }
 [0-9]+					{
 						parseTree.push_back(ParseTreeNode(std::string("digits"),std::string(yytext),yylineno));
 						yylval.ival = parseTree.size() - 1;
